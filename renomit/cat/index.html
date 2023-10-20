@@ -67,22 +67,30 @@
     <h1>ReNomIt!</h1>
     <p id="palabra"></p>
     <button onclick="generar_palabra()">Generar</button>
-    <button onclick="window.location.href='https://17biel06.github.io/renomit/'">Inici</button>
+    <button onclick="window.location.href='https://17biel06.github.io/renomit/index.html'">Inici</button>
   </div>
 
   <script>
     function generar_palabra() {
-      var verbos = ["hablar", "caminar", "comer", "dormir", "mirar"];
-      var sustantivos = ["casa", "perro", "gato", "árbol", "libro"];
+        fetch('verbos.txt')
+            .then(response => response.text())
+            .then(data => {
+                var verbos = data.split('\n');
 
-      var palabra1 = verbos[Math.floor(Math.random() * verbos.length)];
-      var palabra2 = sustantivos[Math.floor(Math.random() * sustantivos.length)];
+                fetch('sustantivos.txt')
+                    .then(response => response.text())
+                    .then(data => {
+                        var sustantivos = data.split('\n');
 
-      var palabra_generada = palabra1 + " " + palabra2;
+                        var palabra1 = verbos[Math.floor(Math.random() * verbos.length)];
+                        var palabra2 = sustantivos[Math.floor(Math.random() * sustantivos.length)];
 
-      document.getElementById("palabra").innerHTML = palabra_generada;
+                        var palabra_generada = palabra1 + " " + palabra2;
+
+                        document.getElementById("palabra").innerHTML = palabra_generada;
+                    });
+            });
     }
   </script>
 </body>
 </html>
-
