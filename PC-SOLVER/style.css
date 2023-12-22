@@ -1,0 +1,119 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,100,900);
+
+.hidden {
+    display: none;
+}
+
+body {
+    background-color: #3498DB;
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 30px;
+}
+
+.item {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.border {
+    margin: 200px;
+    border: 2px solid #fff;
+}
+
+h1, h3 {
+    text-align: center;
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+    padding: 200px 0 0;
+    font-size: 4em;
+}
+
+h3 {
+    padding: 50px;
+    font-size: 1em;
+    font-size: larger;
+}
+
+.yes1, .no1 {
+    width: 300px;
+    font-size: 130%;
+    margin-top: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    color: white;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    
+}
+
+.yes1 {
+    background: linear-gradient(to right, limegreen, green);
+    box-shadow: 0 5px 15px -5px limegreen;
+}
+
+.yes1:hover {
+    background: linear-gradient(to right, green, limegreen);
+    box-shadow: 0 5px 15px -5px green;
+    transform: scale(1.1);
+}
+
+.no1 {
+    background: linear-gradient(to right, crimson, red);
+    box-shadow: 0 5px 15px -5px crimson;
+}
+
+.no1:hover {
+    background: linear-gradient(to right, red, crimson);
+    box-shadow: 0 5px 15px -5px red;
+    transform: scale(1.1);
+}
+
+
+@media only screen and (max-width: 600px) {
+    body {
+        font-size: 1em;
+    }
+
+    .container {
+        margin: 10px;
+    }
+
+    .border {
+        margin: 50px;
+    }
+
+    h1 {
+        padding: 100px 0 0;
+        font-size: 2em;
+    }
+
+    h3 {
+        padding: 25px;
+        font-size: 0.8em;
+    }
+
+    .yes1, .no1 {
+        width: 150px;
+        font-size: 100%;
+        margin-top: 5px;
+        padding: 5px 10px;
+    }
+}
