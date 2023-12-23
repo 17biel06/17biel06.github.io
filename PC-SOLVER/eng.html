@@ -1,0 +1,242 @@
+<!DOCTYPE >
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div class="container border">
+    <div class="container pos">
+        <div class="container">
+            <div class="item">
+                <h1>PC Diagnostic Tool</h1>
+            </div>
+        </div>
+
+        <div id="step1" class="container step ">
+            <div class="item">
+                <h3>1. Does the PC start?</h3>
+            </div>
+            <div class="item ">
+                <button class="yes1" onclick="nextStep('step4')">Yes</button>
+                <button class="no1" onclick="nextStep('step2')">No</button>
+            </div>
+        </div>
+        
+        <div id="step2" class="container step hidden ">
+            <div class="item">
+                <h3>2. Check the power supply. Is the power supply okay?</h3>
+            </div>    
+            <div class="item">
+                <button class="yes1" onclick="nextStep('step3')">Yes, the power supply is fine</button>
+                <button class="no1" onclick="nextStep('step1')">No, replace the power supply and return to step 1</button>
+            </div>
+        </div>
+
+        <div id="step3" class="container hidden step">
+            <div class="item">
+                <h3>3. Check if the hard drive light is on. Is the light on or functional?</h3>
+            </div> 
+            <div class="item">
+                <button class="yes1" onclick="nextStep('step4')">Yes, the light is on or functional</button>
+                <button class="no1" onclick="nextStep('step1')">No, check the hard drive connection and return to step 1</button>
+            </div>
+        </div>
+
+        <div id="step4" class="container hidden step">
+            <div class="item">
+                <h3>4. Press the Num Lock key to see if the light indicator turns on and off.</h3>
+            </div> 
+            <div class="item">
+                <button class="yes1" onclick="nextStep('step5')">Yes, it works</button>
+                <button class="no1" onclick="nextStep('step1')">No, check the keyboard and return to step 1</button>
+            </div>
+        </div>
+        <div id="step5" class="container hidden step">
+            <div class="item">
+                <h3>5. Are there signs of functionality?</h3>
+            </div> 
+            <div class="item">
+                <button class="yes1" onclick="nextStep('step8')">Yes</button>
+                <button class="no1" onclick="nextStep('step6')">No</button>
+            </div>
+        </div>
+        <div id="step6" class="container hidden step">
+            <div class="item">
+                <h3>6. Check the power cord. Is the cord okay?</h3>
+            </div> 
+            <div class="item">
+                <button class="yes1" onclick="nextStep('step7')">Yes, the cord is fine</button>
+                <button class="no1" onclick="nextStep('step1')">No, replace the power cord and return to step 1</button>
+            </div>
+        </div>
+        
+        <div id="step7" class="container hidden step">
+            <div class="item">
+                <h3>7. Check the power switch at the back (if any). Is the switch on?</h3>
+            </div> 
+            <div class="item">
+                <button class="yes1" onclick="nextStep('step8')">Yes, it's on</button>
+                <button class="no1" onclick="nextStep('step1')">No, replace or turn on the power switch and return to step 1</button>
+            </div>
+        </div>
+        
+        <div id="step8" class="container hidden step">
+            <div class="item">
+                <h3>8. Check the internal wiring. Is the wiring okay?</h3>
+            </div> 
+            <div class="item">
+                <button class="yes1" onclick="nextStep('step9')">Yes, the wiring is properly mounted</button>
+                <button class="no1" onclick="nextStep('step1')">No, check and correct the wiring and return to step 1</button>
+            </div>
+        </div>
+        
+        <div id="step9" class="container hidden step">
+            <div class="item">
+                <h3>9. Check the motherboard and CPU. Are the motherboard and CPU okay?</h3>
+            </div> 
+            <div class="item">
+                <button class="yes1" onclick="nextStep('step10')">Yes, the motherboard and CPU are correct</button>
+                <button class="no1" onclick="nextStep('step1')">No, replace the motherboard or CPU and return to step 1</button>
+            </div>
+        </div>
+        
+        <div id="step10" class="container hidden step">
+            <div class="item">
+                <h3>10. Does the PC start but there is no image?</h3>
+            </div> 
+            <div class="item">
+                <button class="yes1" onclick="nextStep('step14')">Image</button>
+                <button class="no1" onclick="nextStep('step11')">No Image</button>
+            </div>
+        </div>
+        
+        <div id="step11" class="container hidden step">
+            <div class="item">
+                <h3>11. Check the monitor connection. Is the connection okay?</h3>
+            </div> 
+            <div class="item">
+                <button class="yes1" onclick="nextStep('step12')">Yes, it's properly connected</button>
+                <button class="no1" onclick="nextStep('step10')">No, check and correct the monitor connection and return to step 10</button>
+            </div>
+        </div>
+        
+        <div id="step12" class="container hidden step">
+            <div class="item">
+                <h3>12. Check the monitor's power supply. Is the power supply okay?</h3>
+            </div> 
+            <div class="item">
+                <button class="yes1" onclick="nextStep('step13')">Yes, it's correct</button>
+                <button class="no1" onclick="nextStep('step10')">No, replace the monitor's power supply and return to step 10</button>
+            </div>
+        </div>
+        
+        <div id="step13" class="container hidden step">
+            <div class="item">
+                <h3>13. Check the graphic card. Is the graphic card okay?</h3>
+            </div> 
+            <div class="item">
+                <button class="yes1" onclick="nextStep('step14')">Yes, the graphic card is fine</button>
+                <button class="no1" onclick="nextStep('step10')">No, replace the graphics card and return to step 10</button>
+            </div>
+        </div>
+        
+        <div id="step14" class="container hidden step">
+            <div class="item">
+                <h3>14. Does the PC start but shut down immediately?</h3>
+            </div> 
+            <div class="item">
+                <button class="yes1" onclick="nextStep('step15')">Yes, it shuts down immediately after starting the PC</button>
+                <button class="no1" onclick="nextStep('step18')">No, check the hard drive connection and return to step 1</button>
+            </div>
+        </div>
+        
+        <div id="step15" class="container hidden step">
+            <div class="item">
+                <h3>15. Check the cooling system and CPU temperature. Are they okay?</h3>
+            </div> 
+            <div class="item">
+                <button class="yes1" onclick="nextStep('step16')">Yes, the cooling system and CPU temperature are correct</button>
+                <button class="no1" onclick="nextStep('step14')">No, improve the cooling system and check the thermal paste on the CPU and return to step 14</button>
+            </div>
+        </div>
+        
+        <div id="step16" class="container hidden step">
+            <div class="item">
+                <h3>16. Check the power supply. Is it correct?</h3>
+            </div> 
+            <div class="item">
+                <button class="yes1" onclick="nextStep('step18')">Yes, the power supply is correct</button>
+                <button class="no1" onclick="nextStep('step14')">No, replace the power supply and return to step 14</button>
+            </div>
+        </div>
+        
+        <div id="step17" class="container hidden step">
+            <div class="item">
+                <h3>17. ¿The PC turns on but the operating system does not load?</h3>
+            </div> 
+            <div class="item">
+                <button class="yes1" onclick="solved()">The PC turns on and the OS also loads</button>
+                <button class="no1" onclick="nextStep('step18')">The PC turns on but does not load the OS</button>
+            </div>
+        </div>
+        
+        <div id="step18" class="container hidden step">
+            <div class="item">
+                <h3>18. Check the BIOS settings. Are they correct?</h3>
+            </div> 
+            <div class="item">
+                <button class="yes1" onclick="nextStep('step19')">Yes, the BIOS settings are correct</button>
+                <button class="no1" onclick="nextStep('step17')">No, reconfigure the BIOS settings and return to step 17</button>
+            </div>
+        </div>
+        
+        <div id="step19" class="container hidden step">
+            <div class="item">
+                <h3>19. Check the hard drive. Is it correct?</h3>
+            </div> 
+            <div class="item">
+                <button class="yes1" onclick="nextStep('step20')">Yes, the hard drive is correct</button>
+                <button class="no1" onclick="nextStep('step17')">No, replace the hard drive and return to step 17</button>
+            </div>
+        </div>
+        <div id="step20" class="container hidden step">
+            <div class="item">
+                <h3>20. Check the operating system installation. Is the operating system installation correct?</h3>
+            </div> 
+            <div class="item">
+                <button class="yes1" onclick="solved()">Yes, solved!</button>
+                <button class="no1" onclick="nextStep('step17')">No, reinstall the operating system and return to step 17</button>
+            </div>
+        </div>
+        
+        <div id="message" class="container hidden step">
+            <div class="item">
+                <h3 id="thanks">Thank you for using our application!</h3>
+                <button class="yes1" onclick="nextStep('step1')">BACK</button>
+            </div>
+        </div>
+        <div class="item">
+            <a href="index.html" class="back">BACK</a>
+        </div>
+        </div>
+        </div>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+           function nextStep(step) {
+                var steps = document.getElementsByClassName('step');
+                for (var i = 0; i < steps.length; i++) {
+                    steps[i].classList.add('hidden');
+                }
+                document.getElementById(step).classList.remove('hidden');
+            }
+            function solved() {
+                var steps = document.getElementsByClassName('step');
+                for (var i = 0; i < steps.length; i++) {
+                    steps[i].classList.add('hidden');
+                }
+                document.getElementById('message').classList.remove('hidden');
+            }
+        </script>
+        </body>
+        </html>
