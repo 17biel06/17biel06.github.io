@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechCo - AI Solutions for Business</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="theme-color" content="#111827">
+  <style>
+    .theme-transition * {
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, fill 0.3s ease !important;
+    }
+    
+    .theme-toggle-clicked {
+      animation: clickEffect 0.3s ease;
+    }
+
+    @keyframes clickEffect {
+      0% { transform: scale(1); }
+      50% { transform: scale(0.95); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <nav class="nav">
+        <h1 class="logo">TechCo</h1>
+        <ul class="nav-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <!-- Insertar el botón de tema integrado en el header -->
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+        <button class="btn btn-primary">
+          Get Started
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-text">
+            <h1 class="hero-title">Transform Your Business with AI-Powered Solutions</h1>
+            <p class="hero-subtitle">Harness the power of artificial intelligence to streamline operations, boost productivity, and drive innovation across your organization.</p>
+            <div class="flex gap-4">
+              <button class="btn btn-primary">
+                Start Free Trial
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </button>
+              <button class="btn btn-secondary">Schedule Demo</button>
+            </div>
+            <div class="users-trust">
+              <div class="users-avatars">
+                <img src="https://i.pravatar.cc/150?img=1" alt="User 1" class="user-avatar">
+                <img src="https://i.pravatar.cc/150?img=8" alt="User 2" class="user-avatar">
+                <img src="https://i.pravatar.cc/150?img=3" alt="User 3" class="user-avatar">
+                <img src="https://i.pravatar.cc/150?img=11" alt="User 4" class="user-avatar">
+              </div>
+              <p><strong>1,000+</strong> companies already trust us</p>
+            </div>
+          </div>
+          <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&q=80" alt="AI Technology Visualization">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Value Props -->
+    <section class="value-props">
+      <div class="container">
+        <h2 class="section-title">Why Choose Our Platform?</h2>
+        <p class="section-subtitle">Discover how we're revolutionizing business operations</p>
+        <div class="grid grid-3">
+          <div class="value-prop-card">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+            <h3>Lightning Fast</h3>
+            <p>Process data 10x faster than traditional solutions with our optimized AI algorithms.</p>
+          </div>
+          <div class="value-prop-card">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <h3>Enterprise Security</h3>
+            <p>Bank-grade encryption and compliance with major security standards (SOC 2, GDPR, HIPAA).</p>
+          </div>
+          <div class="value-prop-card">
+            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 20V10M12 20V4M6 20v-6"/>
+            </svg>
+            <h3>Advanced Analytics</h3>
+            <p>Get actionable insights with our real-time analytics and predictive modeling.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+      <div class="container">
+        <h2 class="section-title">Powerful Features for Modern Businesses</h2>
+        <p class="section-subtitle">Our platform combines cutting-edge technology with intuitive design to deliver exceptional results for your business.</p>
+        <div class="features-grid">
+          <!-- Features will be dynamically populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+      <div class="container">
+        <h2 class="section-title">What Our Clients Say</h2>
+        <p class="section-subtitle">Join hundreds of satisfied companies transforming their business with our AI solutions</p>
+        <div class="testimonials-grid">
+          <!-- Will be populated by JavaScript -->
+        </div>
+        <div class="clients-logos">
+          <img src="https://logo.clearbit.com/microsoft.com" alt="Microsoft">
+          <img src="https://logo.clearbit.com/adobe.com" alt="Adobe">
+          <img src="https://logo.clearbit.com/salesforce.com" alt="Salesforce">
+          <img src="https://logo.clearbit.com/spotify.com" alt="Spotify">
+        </div>
+      </div>
+    </section>
+
+    <!-- ROI Section -->
+    <section class="roi">
+      <div class="container">
+        <h2 class="section-title">Real Results, Real Value</h2>
+        <p class="section-subtitle">Our clients see measurable impact within the first month</p>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number">300%</div>
+            <p>Average ROI</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">5x</div>
+            <p>Faster Processing</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">60%</div>
+            <p>Cost Reduction</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+      <div class="container">
+        <h2 class="section-title">Simple, Transparent Pricing</h2>
+        <p class="section-subtitle">Choose the perfect plan for your business needs</p>
+        
+        <div class="timer-banner">
+          <div class="countdown" id="countdown">
+            <span class="time-block">23</span>:<span class="time-block">59</span>:<span class="time-block">59</span>
+          </div>
+          <p>🚀 Limited Time Offer - Save 50% on Annual Plans</p>
+          <span class="seats-left">Only 5 seats left at this price!</span>
+        </div>
+
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <div class="pricing-header">
+              <h3>Starter</h3>
+              <div class="price">
+                <span class="currency">$</span>
+                <span class="amount">49</span>
+                <span class="period">/month</span>
+              </div>
+              <div class="price-details">
+                <span class="original-price">$99/month</span>
+                <span class="save-badge">Save 50%</span>
+              </div>
+            </div>
+            <ul class="pricing-features">
+              <li>
+                <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5"/>
+                </svg>
+                Up to 1,000 AI Operations
+              </li>
+              <li>
+                <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5"/>
+                </svg>
+                5 Team Members
+              </li>
+              <li>
+                <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5"/>
+                </svg>
+                Basic Analytics
+              </li>
+              <li>
+                <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5"/>
+                </svg>
+                24/7 Support
+              </li>
+            </ul>
+            <button class="btn btn-secondary">Start Free Trial</button>
+            <p class="trial-note">14-day free trial, no credit card required</p>
+          </div>
+          
+          <div class="pricing-card popular">
+            <div class="popular-badge">Most Popular</div>
+            <div class="pricing-header">
+              <h3>Professional</h3>
+              <div class="price">
+                <span class="currency">$</span>
+                <span class="amount">99</span>
+                <span class="period">/month</span>
+              </div>
+              <div class="price-details">
+                <span class="original-price">$199/month</span>
+                <span class="save-badge">Save 50%</span>
+              </div>
+            </div>
+            <ul class="pricing-features">
+              <li>
+                <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5"/>
+                </svg>
+                <strong>Unlimited</strong> AI Operations
+              </li>
+              <li>
+                <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5"/>
+                </svg>
+                <strong>Unlimited</strong> Team Members
+              </li>
+              <li>
+                <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5"/>
+                </svg>
+                Advanced Analytics + Reports
+              </li>
+              <li>
+                <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5"/>
+                </svg>
+                Priority 24/7 Support
+              </li>
+              <li>
+                <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5"/>
+                </svg>
+                Custom API Integrations
+              </li>
+              <li>
+                <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 6L9 17l-5-5"/>
+                </svg>
+                Dedicated Account Manager
+              </li>
+            </ul>
+            <button class="btn btn-primary">Get Started Now</button>
+            <p class="trial-note">30-day money-back guarantee</p>
+          </div>
+        </div>
+
+        <div class="guarantee-box">
+          <div class="guarantee-badges">
+            <div class="badge">
+              <svg class="shield-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              <span>100% Secure</span>
+            </div>
+            <div class="badge">
+              <svg class="clock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+              <span>30-Day Guarantee</span>
+            </div>
+            <div class="badge">
+              <svg class="support-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+              </svg>
+              <span>24/7 Support</span>
+            </div>
+          </div>
+          <div class="guarantee-content">
+            <h4>100% Satisfaction Guarantee</h4>
+            <p>Not satisfied? Get a full refund within 30 days. No questions asked.</p>
+          </div>
+        </div>
+
+        <div class="comparison-link">
+          <a href="#compare">
+            See Full Feature Comparison
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14m-7-7l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+      <div class="container">
+        <div class="final-cta-content">
+          <div class="final-cta-grid">
+            <div class="final-cta-images">
+              <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=400" alt="Business Team" class="image-1">
+              <img src="https://images.unsplash.com/photo-1550305080-4e029753abcf?auto=format&fit=crop&q=80&w=400" alt="AI Technology" class="image-2">
+              <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&q=80&w=400" alt="Data Analytics" class="image-3">
+            </div>
+            <div class="final-cta-text">
+              <h2>Ready to Transform Your Business?</h2>
+              <p>Join over 1,000+ companies already growing with our AI solutions</p>
+              <div class="cta-buttons">
+                <button class="btn btn-primary">Start Free Trial</button>
+                <button class="btn btn-secondary">Schedule Demo</button>
+              </div>
+              <div class="trust-badges">
+                <div class="badge-item">
+                  <div class="badge-icon soc2-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                      <path d="M12 8v4M12 16h.01"/>
+                    </svg>
+                  </div>
+                  <div class="badge-text">
+                    <strong>SOC 2 Type II</strong>
+                    <span>Certified</span>
+                  </div>
+                </div>
+                <div class="badge-item">
+                  <div class="badge-icon gdpr-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <circle cx="12" cy="12" r="10"/>
+                      <path d="M12 8v4M12 16h.01M8 12h8"/>
+                    </svg>
+                  </div>
+                  <div class="badge-text">
+                    <strong>GDPR</strong>
+                    <span>Compliant</span>
+                  </div>
+                </div>
+                <div class="badge-item">
+                  <div class="badge-icon hipaa-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M12 22s8-4 8-10V7l-8-3-8 3v5c0 6 8 10 8 10z"/>
+                      <path d="M8 11h8M12 8v7"/>
+                    </svg>
+                  </div>
+                  <div class="badge-text">
+                    <strong>HIPAA</strong>
+                    <span>Compliant</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+      <div class="container">
+        <div class="contact-grid">
+          <div class="contact-info">
+            <h2 class="section-title">Get in Touch</h2>
+            <p class="section-subtitle">Have questions? We're here to help with anything you need.</p>
+            
+            <div class="contact-methods">
+              <div class="contact-method">
+                <svg class="method-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+                <div class="method-details">
+                  <h3>Call Us</h3>
+                  <p>+1 (555) 123-4567</p>
+                  <span>Mon-Fri, 9am-6pm EST</span>
+                </div>
+              </div>
+              
+              <div class "contact-method">
+                <svg class="method-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <path d="M22 6l-10 7L2 6"/>
+                </svg>
+                <div class="method-details">
+                  <h3>Email Us</h3>
+                  <p>support@techco.ai</p>
+                  <span>24/7 Support</span>
+                </div>
+              </div>
+
+              <div class="contact-method">
+                <svg class="method-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                <div class="method-details">
+                  <h3>Visit Us</h3>
+                  <p>123 AI Street, Suite 456</p>
+                  <span>San Francisco, CA 94105</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-form-wrapper">
+            <form class="contact-form">
+              <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="John Doe" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="john@company.com" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="company">Company Name</label>
+                <input type="text" id="company" placeholder="Your Company Ltd.">
+              </div>
+              
+              <div class="form-group">
+                <label for="subject">Subject</label>
+                <select id="subject" required>
+                  <option value="">Select a topic</option>
+                  <option value="sales">Sales Inquiry</option>
+                  <option value="support">Technical Support</option>
+                  <option value="demo">Request Demo</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" rows="5" placeholder="How can we help you?" required></textarea>
+              </div>
+              
+              <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chat Widget -->
+    <button id="chatToggle" class="chat-toggle">
+      <svg class="chat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+    </button>
+
+    <div id="chatWidget" class="chat-widget hidden">
+      <div class="chat-header">
+        <h3>Chat with us</h3>
+        <button id="chatClose" class="chat-close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="chat-messages"></div>
+      <div class="chat-input">
+        <input type="text" placeholder="Type your message...">
+        <button class="btn btn-primary">Send</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="theme.js"></script>
+  <script src="features.js"></script>
+</body>
+</html>
