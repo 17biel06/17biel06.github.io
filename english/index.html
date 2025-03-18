@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbos Irregulares en Inglés</title>
+    <style>
+        /* Reset y variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --bg-color: #ecf0f1;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 15px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .instructions {
+            margin-bottom: 15px;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        button, select {
+            padding: 8px 15px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 0.9rem;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        select {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--secondary-color);
+        }
+        
+        .progress {
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        /* Tarjeta principal */
+        .card-container {
+            perspective: 1000px;
+            width: 280px;
+            height: 180px;
+            margin: 0 auto 30px;
+        }
+        
+        .card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+        
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            padding: 15px;
+        }
+        
+        .card-front {
+            background-color: var(--card-bg);
+        }
+        
+        .card-back {
+            background-color: var(--secondary-color);
+            color: white;
+            transform: rotateY(180deg);
+        }
+        
+        .verb-base {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .verb-past {
+            font-size: 1.4rem;
+            margin: 5px 0;
+        }
+        
+        .hint {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 15px;
+        }
+        
+        /* Lista de verbos */
+        .verb-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .mini-card {
+            padding: 8px;
+            background-color: var(--card-bg);
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-size: 0.8rem;
+            text-align: center;
+            width: 90px;
+        }
+        
+        .mini-card:hover {
+            transform: translateY(-3px);
+        }
+        
+        .mini-card.learned {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            padding: 10px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 480px) {
+            .card-container {
+                width: 260px;
+                height: 170px;
+            }
+            
+            .verb-base {
+                font-size: 1.8rem;
+            }
+            
+            .verb-past {
+                font-size: 1.2rem;
+            }
+            
+            .mini-card {
+                width: 80px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Verbos Irregulares en Inglés</h1>
+        <p class="instructions">Toca la tarjeta para ver las formas del pasado. Haz doble clic en los verbos de la lista para marcarlos como aprendidos.</p>
+    </header>
+    
+    <div class="controls">
+        <button id="prev-btn">Anterior</button>
+        <button id="next-btn">Siguiente</button>
+        <button id="shuffle-btn">Mezclar</button>
+        <select id="difficulty">
+            <option value="all">Todos los verbos</option>
+            <option value="easy">Básicos</option>
+            <option value="medium">Intermedios</option>
+            <option value="hard">Avanzados</option>
+        </select>
+    </div>
+    
+    <div class="progress">
+        <span id="current-index">1</span>/<span id="total-cards">87</span>
+    </div>
+    
+    <div class="card-container">
+        <div class="card" id="card">
+            <div class="card-face card-front">
+                <div class="verb-base" id="base-form">be</div>
+                <div class="hint">Toca para ver la respuesta</div>
+            </div>
+            <div class="card-face card-back">
+                <div class="verb-past" id="past-simple">Pasado: was/were</div>
+                <div class="verb-past" id="past-participle">Participio: been</div>
+                <div class="hint">Toca para volver</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="verb-list" id="verb-list">
+        <!-- Se llenará con JavaScript -->
+    </div>
+    
+    <footer>
+        <p>Desarrollado por 17biel06 - 2025</p>
+    </footer>
+
+    <script>
+        // Datos de los verbos irregulares
+        const verbs = [
+            {base: "be", pastSimple: "was/were", pastParticiple: "been", difficulty: "easy"},
+            {base: "become", pastSimple: "became", pastParticiple: "become", difficulty: "medium"},
+            {base: "begin", pastSimple: "began", pastParticiple: "begun", difficulty: "easy"},
+            {base: "bend", pastSimple: "bent", pastParticiple: "bent", difficulty: "medium"},
+            {base: "bite", pastSimple: "bit", pastParticiple: "bitten", difficulty: "medium"},
+            {base: "blow", pastSimple: "blew", pastParticiple: "blown", difficulty: "medium"},
+            {base: "break", pastSimple: "broke", pastParticiple: "broken", difficulty: "easy"},
+            {base: "bring", pastSimple: "brought", pastParticiple: "brought", difficulty: "easy"},
+            {base: "build", pastSimple: "built", pastParticiple: "built", difficulty: "easy"},
+            {base: "burn", pastSimple: "burned/burnt", pastParticiple: "burned/burnt", difficulty: "medium"},
+            {base: "buy", pastSimple: "bought", pastParticiple: "bought", difficulty: "easy"},
+            {base: "can", pastSimple: "could", pastParticiple: "been able to", difficulty: "easy"},
+            {base: "catch", pastSimple: "caught", pastParticiple: "caught", difficulty: "easy"},
+            {base: "choose", pastSimple: "chose", pastParticiple: "chosen", difficulty: "medium"},
+            {base: "come", pastSimple: "came", pastParticiple: "come", difficulty: "easy"},
+            {base: "cost", pastSimple: "cost", pastParticiple: "cost", difficulty: "easy"},
+            {base: "cut", pastSimple: "cut", pastParticiple: "cut", difficulty: "easy"},
+            {base: "do", pastSimple: "did", pastParticiple: "done", difficulty: "easy"},
+            {base: "draw", pastSimple: "drew", pastParticiple: "drawn", difficulty: "medium"},
+            {base: "drink", pastSimple: "drank", pastParticiple: "drunk", difficulty: "easy"},
+            {base: "drive", pastSimple: "drove", pastParticiple: "driven", difficulty: "easy"},
+            {base: "eat", pastSimple: "ate", pastParticiple: "eaten", difficulty: "easy"},
+            {base: "fall", pastSimple: "fell", pastParticiple: "fallen", difficulty: "easy"},
+            {base: "feel", pastSimple: "felt", pastParticiple: "felt", difficulty: "easy"},
+            {base: "fight", pastSimple: "fought", pastParticiple: "fought", difficulty: "medium"},
+            {base: "find", pastSimple: "found", pastParticiple: "found", difficulty: "easy"},
+            {base: "fly", pastSimple: "flew", pastParticiple: "flown", difficulty: "easy"},
+            {base: "forget", pastSimple: "forgot", pastParticiple: "forgotten", difficulty: "easy"},
+            {base: "get", pastSimple: "got", pastParticiple: "got", difficulty: "easy"},
+            {base: "give", pastSimple: "gave", pastParticiple: "given", difficulty: "easy"},
+            {base: "go", pastSimple: "went", pastParticiple: "gone", difficulty: "easy"},
+            {base: "grow", pastSimple: "grew", pastParticiple: "grown", difficulty: "medium"},
+            {base: "hang", pastSimple: "hung", pastParticiple: "hung", difficulty: "medium"},
+            {base: "have", pastSimple: "had", pastParticiple: "had", difficulty: "easy"},
+            {base: "hear", pastSimple: "heard", pastParticiple: "heard", difficulty: "easy"},
+            {base: "hide", pastSimple: "hid", pastParticiple: "hidden", difficulty: "medium"},
+            {base: "hit", pastSimple: "hit", pastParticiple: "hit", difficulty: "easy"},
+            {base: "keep", pastSimple: "kept", pastParticiple: "kept", difficulty: "easy"},
+            {base: "know", pastSimple: "knew", pastParticiple: "known", difficulty: "easy"},
+            {base: "lay", pastSimple: "laid", pastParticiple: "laid", difficulty: "hard"},
+            {base: "lead", pastSimple: "led", pastParticiple: "led", difficulty: "medium"},
+            {base: "learn", pastSimple: "learned/learnt", pastParticiple: "learned/learnt", difficulty: "easy"},
+            {base: "leave", pastSimple: "left", pastParticiple: "left", difficulty: "easy"},
+            {base: "lend", pastSimple: "lent", pastParticiple: "lent", difficulty: "medium"},
+            {base: "lose", pastSimple: "lost", pastParticiple: "lost", difficulty: "easy"},
+            {base: "make", pastSimple: "made", pastParticiple: "made", difficulty: "easy"},
+            {base: "mean", pastSimple: "meant", pastParticiple: "meant", difficulty: "medium"},
+            {base: "meet", pastSimple: "met", pastParticiple: "met", difficulty: "easy"},
+            {base: "overcome", pastSimple: "overcame", pastParticiple: "overcome", difficulty: "hard"},
+            {base: "pay", pastSimple: "paid", pastParticiple: "paid", difficulty: "easy"},
+            {base: "put", pastSimple: "put", pastParticiple: "put", difficulty: "easy"},
+            {base: "read", pastSimple: "read", pastParticiple: "read", difficulty: "easy"},
+            {base: "ride", pastSimple: "rode", pastParticiple: "ridden", difficulty: "medium"},
+            {base: "ring", pastSimple: "rang", pastParticiple: "rung", difficulty: "medium"},
+            {base: "run", pastSimple: "ran", pastParticiple: "run", difficulty: "easy"},
+            {base: "say", pastSimple: "said", pastParticiple: "said", difficulty: "easy"},
+            {base: "see", pastSimple: "saw", pastParticiple: "seen", difficulty: "easy"},
+            {base: "sell", pastSimple: "sold", pastParticiple: "sold", difficulty: "easy"},
+            {base: "send", pastSimple: "sent", pastParticiple: "sent", difficulty: "easy"},
+            {base: "set", pastSimple: "set", pastParticiple: "set", difficulty: "easy"},
+            {base: "shake", pastSimple: "shook", pastParticiple: "shaken", difficulty: "medium"},
+            {base: "shine", pastSimple: "shone", pastParticiple: "shone", difficulty: "medium"},
+            {base: "shoot", pastSimple: "shot", pastParticiple: "shot", difficulty: "medium"},
+            {base: "show", pastSimple: "showed", pastParticiple: "showed/shown", difficulty: "easy"},
+            {base: "shut", pastSimple: "shut", pastParticiple: "shut", difficulty: "easy"},
+            {base: "sing", pastSimple: "sang", pastParticiple: "sung", difficulty: "medium"},
+            {base: "sink", pastSimple: "sank", pastParticiple: "sunk", difficulty: "hard"},
+            {base: "sit", pastSimple: "sat", pastParticiple: "sat", difficulty: "easy"},
+            {base: "sleep", pastSimple: "slept", pastParticiple: "slept", difficulty: "easy"},
+            {base: "smell", pastSimple: "smelled/smelt", pastParticiple: "smelled/smelt", difficulty: "medium"},
+            {base: "speak", pastSimple: "spoke", pastParticiple: "spoken", difficulty: "easy"},
+            {base: "spell", pastSimple: "spelled/spelt", pastParticiple: "spelled/spelt", difficulty: "medium"},
+            {base: "spend", pastSimple: "spent", pastParticiple: "spent", difficulty: "easy"},
+            {base: "spill", pastSimple: "spilled/spilt", pastParticiple: "spilled/spilt", difficulty: "medium"},
+            {base: "stand", pastSimple: "stood", pastParticiple: "stood", difficulty: "easy"},
+            {base: "steal", pastSimple: "stole", pastParticiple: "stolen", difficulty: "medium"},
+            {base: "swim", pastSimple: "swam", pastParticiple: "swum", difficulty: "medium"},
+            {base: "take", pastSimple: "took", pastParticiple: "taken", difficulty: "easy"},
+            {base: "teach", pastSimple: "taught", pastParticiple: "taught", difficulty: "easy"},
+            {base: "tell", pastSimple: "told", pastParticiple: "told", difficulty: "easy"},
+            {base: "think", pastSimple: "thought", pastParticiple: "thought", difficulty: "easy"},
+            {base: "throw", pastSimple: "threw", pastParticiple: "thrown", difficulty: "medium"},
+            {base: "understand", pastSimple: "understood", pastParticiple: "understood", difficulty: "easy"},
+            {base: "wake", pastSimple: "woke", pastParticiple: "woken", difficulty: "medium"},
+            {base: "wear", pastSimple: "wore", pastParticiple: "worn", difficulty: "medium"},
+            {base: "win", pastSimple: "won", pastParticiple: "won", difficulty: "easy"},
+            {base: "write", pastSimple: "wrote", pastParticiple: "written", difficulty: "easy"}
+        ];
+        
+        // Variables globales
+        let currentVerbs = [...verbs];
+        let currentIndex = 0;
+        let learnedVerbs = [];
+        
+        // Elementos del DOM
+        const card = document.getElementById('card');
+        const baseForm = document.getElementById('base-form');
+        const pastSimple = document.getElementById('past-simple');
+        const pastParticiple = document.getElementById('past-participle');
+        const currentIndexEl = document.getElementById('current-index');
+        const totalCardsEl = document.getElementById('total-cards');
+        const verbList = document.getElementById('verb-list');
+        
+        // Inicializar juego
+        function init() {
+            // Cargar verbos aprendidos del localStorage si existen
+            const savedLearned = localStorage.getItem('learnedVerbs');
+            if (savedLearned) {
+                learnedVerbs = JSON.parse(savedLearned);
+            }
+            
+            updateCard();
+            renderVerbList();
+            
+            // Event listeners
+            card.addEventListener('click', flipCard);
+            document.getElementById('prev-btn').addEventListener('click', prevCard);
+            document.getElementById('next-btn').addEventListener('click', nextCard);
+            document.getElementById('shuffle-btn').addEventListener('click', shuffleCards);
+            document.getElementById('difficulty').addEventListener('change', filterByDifficulty);
+        }
+        
+        // Mostrar la tarjeta actual
+        function updateCard() {
+            const verb = currentVerbs[currentIndex];
+            baseForm.textContent = verb.base;
+            pastSimple.textContent = `Pasado: ${verb.pastSimple}`;
+            pastParticiple.textContent = `Participio: ${verb.pastParticiple}`;
+            currentIndexEl.textContent = currentIndex + 1;
+            totalCardsEl.textContent = currentVerbs.length;
+            
+            // Asegurar que la tarjeta muestre el frente
+            card.classList.remove('flipped');
+        }
+        
+        // Girar la tarjeta
+        function flipCard() {
+            card.classList.toggle('flipped');
+        }
+        
+        // Tarjeta anterior
+        function prevCard() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCard();
+            }
+        }
+        
+        // Tarjeta siguiente
+        function nextCard() {
+            if (currentIndex < currentVerbs.length - 1) {
+                currentIndex++;
+                updateCard();
+            }
+        }
+        
+        // Mezclar tarjetas
+        function shuffleCards() {
+            currentVerbs = [...currentVerbs].sort(() => Math.random() - 0.5);
+            currentIndex = 0;
+            updateCard();
+            renderVerbList();
+        }
+        
+        // Filtrar por dificultad
+        function filterByDifficulty() {
+            const difficulty = document.getElementById('difficulty').value;
+            
+            if (difficulty === 'all') {
+                currentVerbs = [...verbs];
+            } else {
+                currentVerbs = verbs.filter(verb => verb.difficulty === difficulty);
+            }
+            
+            currentIndex = 0;
+            updateCard();
+            renderVerbList();
+        }
+        
+        // Renderizar lista de verbos
+        function renderVerbList() {
+            verbList.innerHTML = '';
+            
+            currentVerbs.forEach((verb, index) => {
+                const miniCard = document.createElement('div');
+                miniCard.className = 'mini-card';
+                miniCard.textContent = verb.base;
+                
+                // Marcar como aprendido si está en la lista
+                if (learnedVerbs.includes(verb.base)) {
+                    miniCard.classList.add('learned');
+                }
+                
+                // Al hacer clic, mostrar ese verbo
+                miniCard.addEventListener('click', () => {
+                    currentIndex = index;
+                    updateCard();
+                });
+                
+                // Al hacer doble clic, marcar como aprendido
+                miniCard.addEventListener('dblclick', () => {
+                    toggleLearned(verb.base, miniCard);
+                });
+                
+                verbList.appendChild(miniCard);
+            });
+        }
+        
+        // Alternar estado de aprendido
+        function toggleLearned(verbBase, element) {
+            const index = learnedVerbs.indexOf(verbBase);
+            
+            if (index === -1) {
+                // Marcar como aprendido
+                learnedVerbs.push(verbBase);
+                element.classList.add('learned');
+            } else {
+                // Desmarcar
+                learnedVerbs.splice(index, 1);
+                element.classList.remove('learned');
+            }
+            
+            // Guardar en localStorage
+            localStorage.setItem('learnedVerbs', JSON.stringify(learnedVerbs));
+        }
+        
+        // Iniciar cuando se cargue la página
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
