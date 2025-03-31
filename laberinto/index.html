@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
-    <title>Laberinto Pro V4</title>
+    <title>Laberinto</title>
     <style>
         /* --- ROOT VARIABLES --- */
         :root {
@@ -262,25 +263,51 @@
         #bottom-nav {
             flex-shrink: 0; height: var(--bottom-nav-height); background-color: var(--panel-bg);
             border-top: 1px solid var(--border-color); box-shadow: 0 -2px 5px var(--shadow);
-            display: flex; justify-content: space-around; align-items: center; padding: 0 15px; gap: 10px;
+            display: flex; justify-content: space-around; align-items: center; padding: 0 10px; /* Reduced padding slightly */
+            gap: 5px; /* Reduced gap slightly */
             z-index: 1000;
             transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
         }
-        #bottom-nav button { /* ... (button styles unchanged) ... */ background: none; border: none; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; padding: 5px 10px; font-size: 0.75rem; cursor: pointer; transition: color 0.2s ease, background-color 0.2s ease; border-radius: 4px; min-height: 50px; justify-content: center; flex-grow: 1; max-width: 120px; text-align: center; }
-        #bottom-nav button .icon { font-size: 1.5rem; margin-bottom: 2px; }
+        #bottom-nav button {
+             background: none; border: none; color: var(--text-muted);
+             display: flex; flex-direction: column; align-items: center;
+             padding: 4px 8px; /* Adjusted padding */
+             font-size: 0.7rem; /* Slightly smaller text */
+             cursor: pointer; transition: color 0.2s ease, background-color 0.2s ease;
+             border-radius: 4px; min-height: 50px; justify-content: center;
+             flex-grow: 1; max-width: 100px; /* Limit max width */
+             text-align: center;
+             white-space: nowrap; /* Prevent text wrapping */
+        }
+        #bottom-nav button .icon { font-size: 1.4rem; margin-bottom: 1px; } /* Slightly smaller icon */
         #bottom-nav button.active { color: var(--primary-color); background-color: rgba(var(--primary-color-rgb), 0.1); }
         #bottom-nav button:hover:not(:disabled):not(.active) { background-color: rgba(var(--primary-color-rgb), 0.05); }
         #bottom-nav button:disabled { color: var(--border-color); cursor: not-allowed; opacity: 0.6; }
 
-        /* --- Modal, Message Overlay, Loading, Minimap --- */
+        /* --- Modals Common --- */
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1.2rem; border-bottom: 1px solid var(--border-color); flex-shrink: 0; transition: border-color var(--transition-speed) ease; }
+        .modal-header h2 { margin: 0; font-size: 1.2rem; color: var(--primary-color); transition: color var(--transition-speed) ease; }
+        .modal-content { /* Shared base style for modal content areas */
+             overflow-y: auto;
+             display: flex;
+             flex-direction: column;
+             flex-grow: 1; /* Allow content to take up space */
+        }
+        .modal-footer {
+             flex-shrink: 0;
+             padding: 0.8rem 1.2rem;
+             border-top: 1px solid var(--border-color);
+             text-align: right;
+             transition: border-color var(--transition-speed) ease;
+         }
+
+        /* --- Settings Modal Specific --- */
         #settings-modal-backdrop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.6); z-index: 1100; opacity: 0; visibility: hidden; transition: opacity var(--transition-speed) ease, visibility 0s linear var(--transition-speed); }
         #settings-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); width: 90%; max-width: var(--modal-max-width); max-height: 85vh; background-color: var(--panel-bg); border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 1110; opacity: 0; visibility: hidden; transition: opacity var(--transition-speed) ease, transform var(--transition-speed) ease, visibility 0s linear var(--transition-speed), background-color var(--transition-speed) ease; display: flex; flex-direction: column; }
         #settings-modal-backdrop.visible { opacity: 1; visibility: visible; transition-delay: 0s; }
         #settings-modal.visible { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); transition-delay: 0s; }
-        .modal-header { /* ... (unchanged) ... */ display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1.2rem; border-bottom: 1px solid var(--border-color); flex-shrink: 0; transition: border-color var(--transition-speed) ease; }
-        .modal-header h2 { margin: 0; font-size: 1.2rem; color: var(--primary-color); transition: color var(--transition-speed) ease; }
         #closeSettingsBtn { background: none; border: none; font-size: 1.8rem; line-height: 1; color: var(--text-muted); cursor: pointer; padding: 0.2rem; transition: color var(--transition-speed) ease; }
-        .modal-content { padding: 1rem 1.2rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1.2rem; }
+        #settings-modal .modal-content { padding: 1rem 1.2rem; gap: 1.2rem; } /* Specific padding/gap for settings */
         .control-group { background-color: var(--control-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.8rem 1rem; box-shadow: 0 1px 3px var(--shadow); transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease; }
         .control-group h3 { margin: 0 0 0.8rem 0; font-size: 0.9rem; font-weight: 600; color: var(--primary-color); padding-bottom: 0.4rem; border-bottom: 1px solid var(--border-color); transition: color var(--transition-speed) ease, border-color var(--transition-speed) ease; }
         label, .label-like { display: block; margin-bottom: 0.3rem; font-weight: 500; font-size: 0.85rem; color: var(--text-muted); padding-top: 0.2rem; transition: color var(--transition-speed) ease; }
@@ -298,10 +325,115 @@
         input:checked + .slider:before { transform: translateX(20px); }
         .choice-group { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
         .choice-group label { margin-bottom: 0; cursor: pointer; }
+        .choice-group label[hidden] { display: none; } /* Hide labels based on attribute */
         .choice-group input[type="radio"], .choice-group input[type="checkbox"] { display: none; }
         .choice-group span { display: inline-flex; align-items: center; justify-content: center; padding: 0.5rem 0.8rem; border: 1px solid var(--border-color); border-radius: 4px; background-color: var(--input-bg); font-size: 0.85rem; text-align: center; min-width: 36px; min-height: 36px; transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease, color var(--transition-speed) ease, box-shadow var(--transition-speed) ease; }
         .choice-group span.color-preview { width: 32px; height: 32px; padding: 0; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--border-color); }
         .choice-group input:checked + span { background-color: var(--primary-color); color: white; border-color: var(--primary-color); box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.4); }
+
+        /* --- Scores Modal Specific --- */
+         #scores-modal-backdrop {
+             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+             background-color: rgba(0, 0, 0, 0.6); z-index: 1090; /* Slightly lower z-index than settings */
+             opacity: 0; visibility: hidden;
+             transition: opacity var(--transition-speed) ease, visibility 0s linear var(--transition-speed);
+         }
+         #scores-modal {
+             position: fixed; top: 50%; left: 50%;
+             transform: translate(-50%, -50%) scale(0.9);
+             width: 90%; max-width: 450px; /* Slightly narrower? Or same as settings */
+             max-height: 75vh; /* Limit height */
+             background-color: var(--panel-bg);
+             border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+             z-index: 1095; /* Below settings, above backdrop */
+             opacity: 0; visibility: hidden;
+             transition: opacity var(--transition-speed) ease, transform var(--transition-speed) ease, visibility 0s linear var(--transition-speed), background-color var(--transition-speed) ease;
+             display: flex; flex-direction: column;
+         }
+         #scores-modal-backdrop.visible { opacity: 1; visibility: visible; transition-delay: 0s; }
+         #scores-modal.visible { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); transition-delay: 0s; }
+         #scores-modal .modal-header h2 { color: var(--primary-color); } /* Reuse header style */
+         #closeScoresBtn { /* Style close button like settings */
+            background: none; border: none; font-size: 1.8rem; line-height: 1;
+            color: var(--text-muted); cursor: pointer; padding: 0.2rem;
+            transition: color var(--transition-speed) ease;
+         }
+         #scores-list-container {
+             padding: 0.5rem 0; /* Reduced padding for list */
+             /* overflow-y: auto; */ /* Provided by .modal-content */
+             /* flex-grow: 1; */ /* Provided by .modal-content */
+         }
+         .score-entry {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             padding: 0.7rem 1.2rem;
+             border-bottom: 1px solid var(--border-color);
+             font-size: 0.95rem;
+             transition: background-color 0.2s ease, border-color var(--transition-speed) ease;
+         }
+         .score-entry:last-child {
+             border-bottom: none;
+         }
+         .score-entry:hover {
+             background-color: rgba(var(--primary-color-rgb), 0.05);
+         }
+         .score-size {
+             font-weight: 600;
+             color: var(--text-color);
+             flex-basis: 40%; /* Allocate space */
+             transition: color var(--transition-speed) ease;
+             overflow: hidden; text-overflow: ellipsis; white-space: nowrap; /* Prevent overflow */
+         }
+         .score-time {
+             font-weight: 500;
+             color: var(--primary-color);
+             flex-basis: 50%; /* Allocate space */
+             text-align: right;
+             font-family: 'Courier New', Courier, monospace; /* Monospace for alignment */
+             font-size: 1rem;
+             transition: color var(--transition-speed) ease;
+         }
+         .no-scores-message {
+              display: none; /* JS controls visibility */
+              text-align: center;
+              color: var(--text-muted);
+              padding: 2rem 1.2rem; /* Padding inside the list area */
+              transition: color var(--transition-speed) ease;
+         }
+         #clearScoresBtn { /* Secondary Look */
+             background-color: transparent;
+             color: var(--text-muted);
+             border: 1px solid var(--border-color);
+             padding: 0.5rem 1rem; /* Smaller padding */
+             font-size: 0.8rem;
+             border-radius: 5px; /* Match other buttons */
+             cursor: pointer;
+             min-height: auto; /* Override default modal button height */
+             width: auto; /* Don't take full width */
+             display: inline-block; /* Allow right alignment */
+             transition: background-color 0.2s ease, color 0.2s ease, border-color var(--transition-speed) ease;
+         }
+         body.dark-mode #clearScoresBtn { color: var(--text-muted-dark); }
+         #clearScoresBtn:hover:not(:disabled) {
+             background-color: rgba(220, 53, 69, 0.1); /* Danger subtle hover */
+             color: #dc3545; /* Bootstrap danger color */
+             border-color: rgba(220, 53, 69, 0.3);
+         }
+         #clearScoresBtn:disabled {
+              opacity: 0.5;
+              cursor: not-allowed;
+              background-color: transparent !important; /* Ensure no hover effect */
+              color: var(--text-muted) !important;
+              border-color: var(--border-color) !important;
+         }
+         /* Active state for scores button */
+         #bottom-nav button#scoresBtn.active {
+             color: var(--primary-color);
+             background-color: rgba(var(--primary-color-rgb), 0.1);
+         }
+
+        /* --- Message Overlay, Loading, Minimap --- */
         #message-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.75); display: flex; justify-content: center; align-items: center; z-index: 1200; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s linear 0.3s; padding: 1rem; }
         #message-overlay.visible { opacity: 1; visibility: visible; transition-delay: 0s; }
         #message-box { background-color: var(--panel-bg); color: var(--text-color); padding: 1.5rem 2rem; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.25); transform: scale(0.9); transition: transform 0.3s ease, background-color var(--transition-speed) ease, color var(--transition-speed) ease; width: 90%; max-width: 350px; }
@@ -336,7 +468,7 @@
         /* --- Print Styles --- */
         @media print {
             body { --transition-speed: 0s !important; }
-            #bottom-nav, #settings-modal-backdrop, #settings-modal, #game-ui-overlay, #message-overlay, #loading-indicator, #minimapContainer { display: none !important; }
+            #bottom-nav, #settings-modal-backdrop, #settings-modal, #scores-modal-backdrop, #scores-modal, #game-ui-overlay, #message-overlay, #loading-indicator, #minimapContainer { display: none !important; }
             #main-content { border: none; padding: 0; width: 100% !important; height: 100% !important; flex-grow: 1 !important; }
             #maze-container { width: 100% !important; height: auto !important; max-height: 95vh !important; padding: 0 !important; margin: 0 !important; overflow: visible !important; border: 1px solid #ccc !important; background-color: #fff !important; justify-content: flex-start !important; align-items: flex-start !important; flex-grow: 1 !important; }
             body, body.dark-mode { /* Force light theme for printing */
@@ -368,7 +500,6 @@
 </head>
 <body data-maze-style="classic"> <!-- Default style -->
 
-<!-- HTML Structure (unchanged) -->
 <main id="main-content">
     <div id="game-ui-overlay"><div class="timer-display"><span id="current-time">00:00</span></div></div>
     <div id="maze-container">
@@ -378,7 +509,7 @@
     <div id="message-overlay">
         <div id="message-box">
             <h2>¡Victoria!</h2>
-            <p>¡Has encontrado la salida!</p>
+            <p>¡Has encontrado la salida!</p> <!-- Default text -->
             <p id="final-time-msg"></p>
             <p id="final-best-time-msg"></p>
             <button id="playAgainBtn" class="modal-button">Jugar Otra Vez</button>
@@ -386,18 +517,22 @@
     </div>
     <div id="loading-indicator">Generando...</div>
 </main>
+
 <nav id="bottom-nav">
     <button id="newGameBtn" title="Generar Nuevo Laberinto"><span class="icon">➕</span><span>Nuevo</span></button>
     <button id="viewModeBtn" title="Cambiar Vista (Actual: General)" data-mode="overview"><span class="icon">👁️</span><span>Vista</span></button>
+    <button id="scoresBtn" title="Ver Mejores Tiempos"><span class="icon">🏆</span><span>Marcas</span></button> <!-- Scores Button -->
     <button id="settingsBtn" title="Abrir Ajustes"><span class="icon">⚙️</span><span>Ajustes</span></button>
 </nav>
+
+<!-- Settings Modal -->
 <div id="settings-modal-backdrop"></div>
 <div id="settings-modal" role="dialog" aria-labelledby="settingsModalTitle" aria-modal="true">
     <div class="modal-header">
         <h2 id="settingsModalTitle">Ajustes</h2>
         <button id="closeSettingsBtn" aria-label="Cerrar Ajustes">×</button>
     </div>
-    <div class="modal-content">
+    <div class="modal-content"> <!-- Specific content for settings -->
         <div class="control-group">
             <h3>Generación</h3>
             <label for="modal-width">Ancho (5-500):</label>
@@ -426,22 +561,23 @@
             </div>
             <label class="label-like">Personaje:</label>
              <div class="choice-group" id="modal-playerChoice">
+                 <!-- Generic Choices -->
                  <label title="Rojo"><input type="radio" name="modal-player" value="#e63946" data-light="#e63946" data-dark="#ff8a80" checked> <span class="color-preview" style="background-color: #e63946;"></span></label>
                  <label title="Azul"><input type="radio" name="modal-player" value="#1d3557" data-light="#1d3557" data-dark="#a1c4fd"> <span class="color-preview" style="background-color: #1d3557;"></span></label>
                  <label title="Verde"><input type="radio" name="modal-player" value="#588157" data-light="#588157" data-dark="#a5d6a7"> <span class="color-preview" style="background-color: #588157;"></span></label>
                  <label title="Amarillo"><input type="radio" name="modal-player" value="#ffb703" data-light="#ffb703" data-dark="#fff176"> <span class="color-preview" style="background-color: #ffb703;"></span></label>
                  <label title="Púrpura"><input type="radio" name="modal-player" value="#6a0dad" data-light="#6a0dad" data-dark="#ce93d8"> <span class="color-preview" style="background-color: #6a0dad;"></span></label>
-                 <!-- Colors specific to styles -->
-                 <label title="Matrix Player" data-style-specific="matrix"><input type="radio" name="modal-player" value="#ffffff" data-light="#ffffff" data-dark="#ffffff"> <span class="color-preview" style="background-color: #ffffff;"></span></label>
-                 <label title="Blueprint Player" data-style-specific="blueprint"><input type="radio" name="modal-player" value="#ffeb3b" data-light="#ffeb3b" data-dark="#fff59d"> <span class="color-preview" style="background-color: #ffeb3b;"></span></label>
-                 <label title="Neon Player" data-style-specific="neon"><input type="radio" name="modal-player" value="#00ffff" data-light="#00ffff" data-dark="#7fffd4"> <span class="color-preview" style="background-color: #00ffff;"></span></label>
-                 <label title="Cyber Player" data-style-specific="cyber"><input type="radio" name="modal-player" value="#ff69b4" data-light="#ff69b4" data-dark="#ff85c0"> <span class="color-preview" style="background-color: #ff69b4;"></span></label>
+                 <!-- Style-Specific Choices (Hidden by default, shown by JS) -->
+                 <label title="Matrix Player" data-style-specific="matrix" hidden><input type="radio" name="modal-player" value="#ffffff" data-light="#ffffff" data-dark="#ffffff"> <span class="color-preview" style="background-color: #ffffff;"></span></label>
+                 <label title="Blueprint Player" data-style-specific="blueprint" hidden><input type="radio" name="modal-player" value="#ffeb3b" data-light="#ffeb3b" data-dark="#fff59d"> <span class="color-preview" style="background-color: #ffeb3b;"></span></label>
+                 <label title="Neon Player" data-style-specific="neon" hidden><input type="radio" name="modal-player" value="#00ffff" data-light="#00ffff" data-dark="#7fffd4"> <span class="color-preview" style="background-color: #00ffff;"></span></label>
+                 <label title="Cyber Player" data-style-specific="cyber" hidden><input type="radio" name="modal-player" value="#ff69b4" data-light="#ff69b4" data-dark="#ff85c0"> <span class="color-preview" style="background-color: #ff69b4;"></span></label>
              </div>
             <label class="label-like">Indicador Salida:</label>
             <div class="choice-group" id="modal-exitChoice">
                 <label><input type="radio" name="modal-exit" value="🏁" checked> <span>🏁</span></label>
                 <label><input type="radio" name="modal-exit" value="★"> <span>★</span></label>
-                <label><input type="radio" name="modal-exit" value="◎"> <span>◎</span></label> <!-- Changed from door -->
+                <label><input type="radio" name="modal-exit" value="◎"> <span>◎</span></label>
                 <label><input type="radio" name="modal-exit" value="🎯"> <span>🎯</span></label>
                 <label><input type="radio" name="modal-exit" value="✅"> <span>✅</span></label>
             </div>
@@ -450,7 +586,31 @@
             </div>
         </div>
     </div>
+    <!-- No footer needed for settings modal currently -->
 </div>
+
+<!-- Scores Modal -->
+<div id="scores-modal-backdrop"></div>
+<div id="scores-modal" role="dialog" aria-labelledby="scoresModalTitle" aria-modal="true">
+    <div class="modal-header">
+        <h2 id="scoresModalTitle">Mejores Tiempos</h2>
+        <button id="closeScoresBtn" aria-label="Cerrar Mejores Tiempos">×</button>
+    </div>
+    <div class="modal-content" id="scores-list-container"> <!-- Scores will be populated here by JS -->
+        <div class="no-scores-message" style="display: none;"> <!-- Initially hidden -->
+            Aún no has completado ningún laberinto. ¡Juega para registrar tus marcas!
+        </div>
+        <!-- Example Entry (for structure reference, removed by JS): -->
+        <!-- <div class="score-entry">
+            <span class="score-size">15x15</span>
+            <span class="score-time">00:42</span>
+        </div> -->
+    </div>
+    <div class="modal-footer">
+         <button id="clearScoresBtn" class="modal-button secondary-button" title="Borrar todos los récords guardados">Borrar Todo</button>
+    </div>
+</div>
+
 
 <script>
     // --- Constants & Settings ---
@@ -468,17 +628,17 @@
     const SWIPE_THRESHOLD = 25; // Min pixels for swipe gesture
     const EFFECTS_MIN_CELL_SIZE = 12; // Minimum cell size to show glow/shadow effects
 
-    // --- Polyfills --- (unchanged)
+    // --- Polyfills ---
     if (!Element.prototype.requestFullscreen) Element.prototype.requestFullscreen = Element.prototype.mozRequestFullScreen || Element.prototype.webkitRequestFullscreen || Element.prototype.msRequestFullscreen;
     if (!document.exitFullscreen) document.exitFullscreen = document.mozCancelFullScreen || document.webkitExitFullscreen || document.msExitFullscreen;
     Object.defineProperty(document, 'fullscreenElement', { get: () => document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement || document._fullscreenElement });
 
-    // --- Helper Functions --- (unchanged)
+    // --- Helper Functions ---
     const lerp = (a, b, t) => a + (b - a) * t;
     const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
     const getCssVariable = (varName) => getComputedStyle(document.body).getPropertyValue(varName).trim();
 
-    // --- Classes (Cell, MazeGenerator, Player) --- (unchanged)
+    // --- Classes (Cell, MazeGenerator, Player) ---
     class Cell { constructor(x, y) { this.x = x; this.y = y; this.visited = false; this.walls = { top: true, right: true, bottom: true, left: true }; } }
     class MazeGenerator {
         constructor() { this.grid = []; this.width = 0; this.height = 0; this.start = { x: 0, y: 0 }; this.end = { x: 0, y: 0 }; this.generationComplete = false; }
@@ -506,7 +666,7 @@
     }
     class Player { constructor(x, y, color) { this.x = x; this.y = y; this.targetX = x; this.targetY = y; this.pixelX = x; this.pixelY = y; this.color = color; this.isMoving = false; } moveTo(newX, newY) { this.targetX = newX; this.targetY = newY; if (Math.abs(this.targetX - this.pixelX) > 0.01 || Math.abs(this.targetY - this.pixelY) > 0.01) { this.isMoving = true; } } update(deltaTime) { if (!this.isMoving) return; this.pixelX = lerp(this.pixelX, this.targetX, PLAYER_SMOOTHING); this.pixelY = lerp(this.pixelY, this.targetY, PLAYER_SMOOTHING); if (Math.abs(this.pixelX - this.targetX) < 0.01 && Math.abs(this.pixelY - this.targetY) < 0.01) { this.pixelX = this.targetX; this.pixelY = this.targetY; this.x = Math.round(this.targetX); /* Snap logical position */ this.y = Math.round(this.targetY); this.isMoving = false; } } canMove(dx, dy, maze) { if (this.isMoving) return false; const currentX = this.x; const currentY = this.y; const nextX = currentX + dx; const nextY = currentY + dy; if (nextX < 0 || nextX >= maze.width || nextY < 0 || nextY >= maze.height) return false; const currentCell = maze.grid[currentY]?.[currentX]; if (!currentCell) return false; if (dx === 1 && currentCell.walls.right) return false; if (dx === -1 && currentCell.walls.left) return false; if (dy === 1 && currentCell.walls.bottom) return false; if (dy === -1 && currentCell.walls.top) return false; return { newX: nextX, newY: nextY }; } setColor(color) { this.color = color; } }
 
-    // --- Minimap Class --- (Largely unchanged, relies on CSS variables being set correctly)
+    // --- Minimap Class ---
     class Minimap {
         constructor(canvasId, containerId) {
             this.container = document.getElementById(containerId);
@@ -555,14 +715,14 @@
 
             let colorsChanged = false;
             if (this.wallColor !== newWallColor) { this.wallColor = newWallColor; colorsChanged = true; }
-            if (this.playerColor !== newPlayerColor) { this.playerColor = newPlayerColor; colorsChanged = true; }
+            if (this.playerColor !== newPlayerColor) { this.playerColor = newPlayerColor; /* No need to redraw static for player color */ }
             if (this.bgColor !== newBgColor) { this.bgColor = newBgColor; this.container.style.backgroundColor = this.bgColor; colorsChanged = true; }
-            if (this.borderColor !== newBorderColor) { this.borderColor = newBorderColor; this.container.style.borderColor = this.borderColor; colorsChanged = true; }
+            if (this.borderColor !== newBorderColor) { this.borderColor = newBorderColor; this.container.style.borderColor = this.borderColor; colorsChanged = true; } // Border change doesn't require canvas redraw
             if (this.startColor !== newStartColor) { this.startColor = newStartColor; colorsChanged = true; }
             if (this.endColor !== newEndColor) { this.endColor = newEndColor; colorsChanged = true; }
 
             if (colorsChanged) {
-                this.needsRedraw = true; // Need to redraw offscreen canvas if colors changed
+                this.needsRedraw = true; // Need to redraw offscreen canvas if static colors changed
             }
         }
 
@@ -618,9 +778,12 @@
         draw() {
             // Don't draw if hidden, or no maze/player data
             if (!this.visible || !this.maze || !this.player || !this.maze.generationComplete) {
-                //this.hide(); // Optionally hide if conditions aren't met
                 return;
             }
+
+            // Update player color before drawing player dot
+             const newPlayerColor = getCssVariable('--minimap-player');
+             if (this.playerColor !== newPlayerColor) this.playerColor = newPlayerColor;
 
             // Redraw static background if needed
             if (this.needsRedraw) {
@@ -708,8 +871,7 @@
         }
     }
 
-
-    // --- Renderer Class (REFACTORED FOR PROFESSIONAL LOOK & CAMERA) ---
+    // --- Renderer Class (REFACTORED) ---
     class Renderer {
          constructor(canvasId, mazeContainerId) {
             this.canvas = document.getElementById(canvasId);
@@ -724,6 +886,7 @@
             this.cellSize = 20; // Default/Overview size, Player view uses BASE_CELL_SIZE_PLAYER_VIEW
             this.viewMode = 'overview'; // 'overview' or 'playerCamera'
             this.isPrinting = false;
+            this.lastDrawTime = 0; // For delta time calculation
 
             // Camera state (world coordinates, center of the view)
             this.cameraX = 0;
@@ -925,20 +1088,17 @@
 
          drawFrame(timestamp = 0) { // timestamp might be passed from requestAnimationFrame
             if (!this.maze || !this.player || !this.maze.generationComplete || this.isPrinting) {
-                //console.log("Draw frame skipped (conditions not met)");
                 return;
             }
 
             const stylesPossiblyChanged = this.updateStyleSettings(); // Update style cache, check if changed
 
             // --- Update ---
+            const deltaTime = timestamp > 0 && this.lastDrawTime > 0 ? timestamp - this.lastDrawTime : 16.67;
             if (this.player.isMoving) {
-                 // Assuming deltaTime is roughly 16ms for 60fps if timestamp isn't reliable
-                const deltaTime = timestamp > 0 && this.lastDrawTime > 0 ? timestamp - this.lastDrawTime : 16.67;
                 this.player.update(deltaTime);
             }
             if (this.viewMode === 'playerCamera') {
-                const deltaTime = timestamp > 0 && this.lastDrawTime > 0 ? timestamp - this.lastDrawTime : 16.67;
                 this.updateCamera(deltaTime); // Smoothly move camera
             }
             this.lastDrawTime = timestamp; // Store timestamp for delta calculation next frame
@@ -1037,11 +1197,9 @@
                         const drawX = Math.round(x * currentCellSize + offsetX); // Use Math.round for potentially crisper lines
                         const drawY = Math.round(y * currentCellSize + offsetY);
 
-                        // Optimization: Check if cell is roughly within canvas bounds before drawing details
-                        // (Could be more precise, but this is a quick check)
                          if (drawX + currentCellSize < -ctx.lineWidth || drawX > canvasW + ctx.lineWidth ||
                             drawY + currentCellSize < -ctx.lineWidth || drawY > canvasH + ctx.lineWidth) {
-                            continue;
+                            continue; // Basic culling
                         }
 
                         // Add walls to the single path
@@ -1074,10 +1232,7 @@
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
                     ctx.fillStyle = this.wallColor; // Use wall color for good contrast on endColor bg
-                    // Optional small shadow for marker itself
-                    // ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 2; ctx.shadowOffsetY = 1;
                     ctx.fillText(this.exitMarker, markerX, markerY);
-                    // ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
                 }
 
                 // --- Draw Player ---
@@ -1093,8 +1248,6 @@
          }
 
          // Helper to draw the player (used by both view modes)
-         // worldX, worldY: top-left corner of player's CELL in world coordinates
-         // offsetX, offsetY: world-to-canvas offset (0 for overview, calculated for playerCamera)
          drawPlayer(ctx, worldX, worldY, offsetX, offsetY) {
              const currentCellSize = this.cellSize; // Cell size for the current view
              // Calculate the center position of the player on the canvas
@@ -1149,26 +1302,34 @@
 
 
          // Draws static maze elements (walls, start/end, marker) to the offscreen canvas
-         // Used ONLY for overview mode rendering and print mode preparation.
          drawMazeStaticToOffscreen() {
-            // Should only run if needed (overview/print)
             if (this.viewMode === 'playerCamera' && !this.isPrinting) {
                 console.warn("drawMazeStaticToOffscreen called unexpectedly in playerCamera mode (non-print)");
                 return;
             }
-            if (!this.maze || !this.canvas.width || !this.canvas.height) {
-                console.warn("drawMazeStaticToOffscreen skipped: no maze or canvas dimensions.");
-                return;
-            }
+            if (!this.maze || this.maze.width <= 0 || this.maze.height <= 0) {
+                 console.warn("drawMazeStaticToOffscreen skipped: no valid maze.");
+                 // Clear the offscreen canvas if it exists?
+                 if (this.wallCanvas.width > 0) this.wallCtx.clearRect(0, 0, this.wallCanvas.width, this.wallCanvas.height);
+                 return;
+             }
 
-            // Use the cellSize appropriate for the current mode (overview or print calculated size)
             const currentCellSize = this.cellSize;
+             if (currentCellSize <= 0) {
+                 console.warn(`drawMazeStaticToOffscreen skipped: invalid cellSize ${currentCellSize}`);
+                 return;
+             }
 
-            // Resize wall canvas to match main canvas size for this mode
             // Use Math.ceil to avoid potential 1px gaps if canvas size isn't integer multiple
             const canvasW = Math.ceil(this.maze.width * currentCellSize);
             const canvasH = Math.ceil(this.maze.height * currentCellSize);
 
+             if (canvasW <= 0 || canvasH <= 0) {
+                 console.warn(`drawMazeStaticToOffscreen skipped: invalid calculated canvas size ${canvasW}x${canvasH}`);
+                 return;
+             }
+
+            // Resize wall canvas only if needed
             if (this.wallCanvas.width !== canvasW || this.wallCanvas.height !== canvasH) {
                  this.wallCanvas.width = canvasW;
                  this.wallCanvas.height = canvasH;
@@ -1290,17 +1451,13 @@
             this.startColor = '#e0e0e0'; this.endColor = '#cccccc'; // Slightly darker end
             this.wallGlow = 'transparent'; this.wallShadow = 'transparent'; // No effects for print clarity
             this.playerGlow = 'transparent'; this.playerShadow = 'transparent';
-            // Use specific print player color, don't rely on selected one
-            const printPlayerColor = '#aaaaaa';
+            const printPlayerColor = '#aaaaaa'; // Use specific print player color
             this.wallThicknessFactor = 0.1; // Use a standard thickness
             this.playerSizeFactor = 0.6;
             this.endMarkerSizeFactor = 0.7;
-            // Keep original exit marker
-            this.exitMarker = savedState.originalExitMarker;
+            this.exitMarker = savedState.originalExitMarker; // Keep original exit marker
 
             // 4. Resize main canvas ELEMENT temporarily for print media query layout
-            // The @media print CSS will handle the actual page fitting.
-            // Setting element style ensures JS calculations use the high-res size.
             this.canvas.style.width = `${printCanvasWidth}px`;
             this.canvas.style.height = `${printCanvasHeight}px`;
             this.canvas.style.left = '0px'; this.canvas.style.top = '0px';
@@ -1374,9 +1531,7 @@
          }
     }
 
-
     // --- Game Controller Logic ---
-    // (Mostly unchanged, relies on Renderer fixes and style application via CSS/Renderer)
     class Game {
         constructor() {
              this.mazeGenerator = new MazeGenerator();
@@ -1406,6 +1561,13 @@
              this.playerChoiceGroup = document.getElementById('modal-playerChoice');
              this.exitChoiceGroup = document.getElementById('modal-exitChoice');
              this.viewModeBtn = document.getElementById('viewModeBtn');
+             // Scores Modal Refs
+             this.scoresModal = document.getElementById('scores-modal');
+             this.scoresModalBackdrop = document.getElementById('scores-modal-backdrop');
+             this.scoresListContainer = document.getElementById('scores-list-container');
+             this.noScoresMessage = this.scoresModal.querySelector('.no-scores-message');
+             this.clearScoresBtn = document.getElementById('clearScoresBtn');
+
              // Initial setup
              this.bindUI();
              this.applyInitialSettings();
@@ -1419,6 +1581,7 @@
              // Bottom Nav
              document.getElementById('newGameBtn').addEventListener('click', () => this.startNewGame());
              this.viewModeBtn.addEventListener('click', () => this.toggleViewMode());
+             document.getElementById('scoresBtn').addEventListener('click', () => this.openScoresModal()); // Scores button
              document.getElementById('settingsBtn').addEventListener('click', () => this.openSettingsModal());
 
              // Settings Modal
@@ -1428,8 +1591,7 @@
              this.heightInput.addEventListener('input', () => this.validateDimensionsAndUpdateBestTime());
              document.getElementById('modal-generateBtn').addEventListener('click', () => {
                  this.closeSettingsModal();
-                 // Brief delay to allow modal to close before intensive generation starts
-                 setTimeout(() => this.startNewGame(), 50);
+                 setTimeout(() => this.startNewGame(), 50); // Brief delay
              });
              this.darkModeToggle.addEventListener('change', (e) => this.setDarkMode(e.target.checked));
              this.mazeStyleGroup.addEventListener('change', (e) => {
@@ -1441,11 +1603,15 @@
              this.exitChoiceGroup.addEventListener('change', (e) => {
                  if (e.target.checked) {
                      this.renderer.setExitMarker(e.target.value);
-                     // Redraw immediately if game is running or maze exists
                      if (this.gameActive || this.renderer.maze) this.renderer.drawFrame();
                  }
              });
              document.getElementById('modal-printBtn').addEventListener('click', () => this.handlePrint());
+
+             // Scores Modal
+             document.getElementById('closeScoresBtn').addEventListener('click', () => this.closeScoresModal());
+             this.scoresModalBackdrop.addEventListener('click', () => this.closeScoresModal());
+             this.clearScoresBtn.addEventListener('click', () => this.confirmClearScores());
 
              // Message Overlay
              document.getElementById('playAgainBtn').addEventListener('click', () => {
@@ -1457,9 +1623,9 @@
              document.addEventListener('keydown', (e) => this.handleKeyDown(e));
              const mazeContainer = document.getElementById('maze-container');
              mazeContainer.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: false });
-             mazeContainer.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false }); // Prevent scroll during swipe
+             mazeContainer.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false });
              mazeContainer.addEventListener('touchend', (e) => this.handleTouchEnd(e));
-             mazeContainer.addEventListener('touchcancel', (e) => this.handleTouchEnd(e)); // Treat cancel like end
+             mazeContainer.addEventListener('touchcancel', (e) => this.handleTouchEnd(e));
         }
 
          toggleViewMode() {
@@ -1472,7 +1638,12 @@
              this.syncModalControls(); // Ensure modal reflects current state
              document.getElementById('settings-modal-backdrop').classList.add('visible');
              document.getElementById('settings-modal').classList.add('visible');
-             document.getElementById('settingsBtn').classList.add('active');
+             document.getElementById('settingsBtn').classList.add('active'); // Highlight button
+             // Deactivate scores button if active
+             document.getElementById('scoresBtn').classList.remove('active');
+             if (this.scoresModal.classList.contains('visible')) {
+                  this.closeScoresModal(); // Close scores if open
+             }
          }
 
          closeSettingsModal() {
@@ -1480,6 +1651,112 @@
              document.getElementById('settings-modal').classList.remove('visible');
              document.getElementById('settingsBtn').classList.remove('active');
          }
+
+         // --- Scores Modal Methods ---
+         openScoresModal() {
+             this.populateScoresModalContent(); // Fill content first
+             this.scoresModalBackdrop.classList.add('visible');
+             this.scoresModal.classList.add('visible');
+             document.getElementById('scoresBtn').classList.add('active'); // Highlight button
+             // Deactivate settings button if active
+             document.getElementById('settingsBtn').classList.remove('active');
+             if (document.getElementById('settings-modal').classList.contains('visible')) {
+                 this.closeSettingsModal(); // Close settings if open
+             }
+         }
+
+         closeScoresModal() {
+             this.scoresModalBackdrop.classList.remove('visible');
+             this.scoresModal.classList.remove('visible');
+             document.getElementById('scoresBtn').classList.remove('active'); // Unhighlight button
+         }
+
+         sortMazeSizes(sizeA, sizeB) {
+             const [wA, hA] = sizeA.split('x').map(Number);
+             const [wB, hB] = sizeB.split('x').map(Number);
+             // Sort primarily by area (width * height)
+             const areaA = wA * hA;
+             const areaB = wB * hB;
+             if (areaA !== areaB) {
+                 return areaA - areaB;
+             }
+             // If areas are equal, sort by width
+             if (wA !== wB) {
+                 return wA - wB;
+             }
+             // If width also equal, sort by height (shouldn't happen if areas equal)
+             return hA - hB;
+         }
+
+         populateScoresModalContent() {
+             // Clear previous entries ensuring the message template is kept/re-added if needed
+             this.scoresListContainer.innerHTML = '';
+
+             const scoreKeys = Object.keys(this.bestTimes);
+
+             if (scoreKeys.length === 0) {
+                 // Show "no scores" message
+                 if (!this.noScoresMessage) { // Defensive check
+                     this.noScoresMessage = document.createElement('div');
+                     this.noScoresMessage.className = 'no-scores-message';
+                     this.noScoresMessage.textContent = 'Aún no has completado ningún laberinto. ¡Juega para registrar tus marcas!';
+                 }
+                 this.noScoresMessage.style.display = 'block';
+                 this.scoresListContainer.appendChild(this.noScoresMessage);
+                 this.clearScoresBtn.disabled = true; // Disable clear button
+             } else {
+                 // Hide "no scores" message if it exists and was visible
+                 if (this.noScoresMessage) this.noScoresMessage.style.display = 'none';
+                 this.clearScoresBtn.disabled = false; // Enable clear button
+
+                 // Sort keys for consistent display order (e.g., by area)
+                 scoreKeys.sort(this.sortMazeSizes);
+
+                 // Create and append score entries
+                 scoreKeys.forEach(size => {
+                     const time = this.bestTimes[size];
+                     if (time === undefined || time === null) return; // Skip invalid entries
+
+                     const formattedTime = this.formatTime(time);
+
+                     const entryDiv = document.createElement('div');
+                     entryDiv.className = 'score-entry';
+
+                     const sizeSpan = document.createElement('span');
+                     sizeSpan.className = 'score-size';
+                     sizeSpan.textContent = size; // e.g., "15x15"
+                     sizeSpan.title = size; // Tooltip for potentially truncated sizes
+
+                     const timeSpan = document.createElement('span');
+                     timeSpan.className = 'score-time';
+                     timeSpan.textContent = formattedTime; // e.g., "01:23"
+
+                     entryDiv.appendChild(sizeSpan);
+                     entryDiv.appendChild(timeSpan);
+                     this.scoresListContainer.appendChild(entryDiv);
+                 });
+             }
+         }
+
+         confirmClearScores() {
+             if (confirm('¿Estás seguro de que quieres borrar todos tus récords guardados? Esta acción no se puede deshacer.')) {
+                 this.clearAllScores();
+             }
+         }
+
+         clearAllScores() {
+             this.bestTimes = {}; // Clear in memory
+             localStorage.removeItem('mazeBestTimes'); // Clear from storage
+             console.log("All best times cleared.");
+
+             this.populateScoresModalContent(); // Refresh the scores modal
+
+             // Update the best time display in the settings modal for the current size shown there
+             const modalWidth = this.widthInput?.value || 0;
+             const modalHeight = this.heightInput?.value || 0;
+             this.updateBestTimeDisplay(`${modalWidth}x${modalHeight}`, true);
+         }
+
 
          // Sync modal controls TO the current game/renderer state
          syncModalControls() {
@@ -1503,9 +1780,12 @@
             if (playerRadio && !playerRadio.parentElement.hidden) { // Check if visible
                  playerRadio.checked = true;
              } else { // Find first visible generic choice as fallback
-                 const firstGenericChoice = document.querySelector('#modal-playerChoice input[name="modal-player"]:not([data-style-specific])');
-                 if (firstGenericChoice) firstGenericChoice.checked = true;
-                 else document.querySelector('#modal-playerChoice input[name="modal-player"]').checked = true; // Absolute fallback
+                 const firstVisibleChoice = document.querySelector('#modal-playerChoice input[name="modal-player"]:not([data-style-specific]):not([hidden])');
+                 if (firstVisibleChoice) firstVisibleChoice.checked = true;
+                 else { // Absolute fallback
+                     const absoluteFallback = document.querySelector('#modal-playerChoice input[name="modal-player"]');
+                     if (absoluteFallback) absoluteFallback.checked = true;
+                 }
              }
              this.updatePlayerColorVisuals(this.darkModeToggle.checked); // Update previews
 
@@ -1526,28 +1806,32 @@
             const maxInputDim = isLikelyMobile ? MOBILE_MAX_INPUT_DIMENSION : MAX_MAZE_DIMENSION;
             this.widthInput.max = maxInputDim;
             this.heightInput.max = maxInputDim;
-            // Update labels dynamically (using previousElementSibling assuming label is before input)
              if (this.widthInput.previousElementSibling?.tagName === 'LABEL') {
                 this.widthInput.previousElementSibling.textContent = `Ancho (${MIN_MAZE_DIMENSION}-${maxInputDim}):`;
              }
              if (this.heightInput.previousElementSibling?.tagName === 'LABEL') {
                  this.heightInput.previousElementSibling.textContent = `Alto (${MIN_MAZE_DIMENSION}-${maxInputDim}):`;
              }
-            // Clamp initial values just in case
             this.widthInput.value = clamp(parseInt(this.widthInput.value || 15), MIN_MAZE_DIMENSION, maxInputDim);
             this.heightInput.value = clamp(parseInt(this.heightInput.value || 15), MIN_MAZE_DIMENSION, maxInputDim);
 
             // Dark mode preference
             const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            this.setDarkMode(prefersDark); // Apply initial dark mode
-            this.darkModeToggle.checked = prefersDark; // Sync toggle
+            this.setDarkMode(prefersDark);
+            this.darkModeToggle.checked = prefersDark;
 
             // Apply default selected style, player, exit marker
-            this.setMazeStyle(document.querySelector('#modal-mazeStyle input:checked')?.value || 'classic');
-            this.updatePlayerColor(document.querySelector('#modal-playerChoice input:checked')); // Apply initial player color
-            this.renderer.setExitMarker(document.querySelector('#modal-exitChoice input:checked')?.value || '🏁'); // Apply initial exit marker
+             const initialStyle = document.querySelector('#modal-mazeStyle input:checked')?.value || 'classic';
+            this.setMazeStyle(initialStyle); // Calls filterPlayerChoicesByStyle inside
+             // Ensure initial player choice is valid after filtering
+             if (!document.querySelector('#modal-playerChoice input:checked') || document.querySelector('#modal-playerChoice input:checked').parentElement.hidden) {
+                 const firstVisibleChoice = document.querySelector(`#modal-playerChoice label:not([hidden]) input`);
+                 if (firstVisibleChoice) firstVisibleChoice.checked = true;
+             }
+            this.updatePlayerColor(document.querySelector('#modal-playerChoice input:checked'));
+            this.renderer.setExitMarker(document.querySelector('#modal-exitChoice input:checked')?.value || '🏁');
 
-             // Set initial view mode button text based on default renderer state
+             // Set initial view mode button text
              this.viewModeBtn.title = this.renderer.viewMode === 'overview' ? 'Cambiar Vista (Actual: General)' : 'Cambiar Vista (Actual: Jugador)';
          }
 
@@ -1567,12 +1851,12 @@
              this.timerStarted = true;
              this.gameStartTime = Date.now();
              this.currentTime = 0;
-             this.updateTimerDisplay(); // Show 00:00 immediately
-             clearInterval(this.gameTimer); // Clear any previous timer
+             this.updateTimerDisplay();
+             clearInterval(this.gameTimer);
              this.gameTimer = setInterval(() => {
                  this.currentTime = Math.floor((Date.now() - this.gameStartTime) / 1000);
                  this.updateTimerDisplay();
-             }, 1000); // Update every second
+             }, 1000);
              console.log("Timer started");
          }
 
@@ -1587,7 +1871,7 @@
 
          stopTimer() {
              clearInterval(this.gameTimer);
-             const finalTime = this.currentTime; // Use the last updated time
+             const finalTime = this.currentTime;
              const mazeSize = `${this.mazeGenerator.width}x${this.mazeGenerator.height}`;
              let isNewBest = false;
 
@@ -1596,44 +1880,60 @@
                  localStorage.setItem('mazeBestTimes', JSON.stringify(this.bestTimes));
                  isNewBest = true;
                  console.log(`New best time for ${mazeSize}: ${finalTime}s`);
-                 // Update display in modal if it's open
-                 this.updateBestTimeDisplay(mazeSize, true);
+                 this.updateBestTimeDisplay(mazeSize, true); // Update settings modal display
+                 // If the scores modal is currently open, refresh its content
+                 if (this.scoresModal.classList.contains('visible')) {
+                     this.populateScoresModalContent();
+                 }
              }
              console.log(`Timer stopped. Final time: ${finalTime}s`);
              return { time: finalTime, isNewBest: isNewBest };
          }
 
+
          formatTime(totalSeconds) {
-             const minutes = Math.floor(totalSeconds / 60);
+             if (totalSeconds === undefined || totalSeconds === null || totalSeconds < 0) {
+                 return '--:--:--'; // Handle invalid input
+             }
+             const hours = Math.floor(totalSeconds / 3600);
+             const minutes = Math.floor((totalSeconds % 3600) / 60);
              const seconds = totalSeconds % 60;
-             return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+             if (hours > 0) {
+                  return `${hours.toString()}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+             } else {
+                  return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+             }
          }
 
          updateTimerDisplay() {
-             document.getElementById('current-time').textContent = this.formatTime(this.currentTime);
+             // Only show hours if current time exceeds 1 hour
+             const displayTime = this.currentTime >= 3600 ? this.formatTime(this.currentTime) : this.formatTime(this.currentTime).split(':').slice(-2).join(':');
+             document.getElementById('current-time').textContent = displayTime;
          }
 
          updateBestTimeDisplay(mazeSize, targetModal = false) {
              const bestTime = this.bestTimes[mazeSize];
-             let timeStr = '--:--';
-             if (bestTime !== undefined && bestTime !== null) { // Check for null too
-                 timeStr = this.formatTime(bestTime);
+             let timeStr = '--:--'; // Default for no time or short times
+             if (bestTime !== undefined && bestTime !== null) {
+                 timeStr = this.formatTime(bestTime); // Use formatTime which handles hours
              }
-             const label = `Record (${mazeSize === '0x0' ? 'N/A' : mazeSize}): ${timeStr}`;
+             const label = `Record (${mazeSize === '0x0' || !mazeSize ? 'N/A' : mazeSize}): ${timeStr}`;
 
              if (targetModal) {
                  const bestTimeEl = document.getElementById('best-time-modal');
                  if (bestTimeEl) bestTimeEl.textContent = label;
              }
-             // Could potentially update another display outside the modal here too
          }
 
         async startNewGame() {
             if (document.getElementById('settings-modal').classList.contains('visible')) {
-                 console.warn("Attempted to start new game while settings modal is open. Closing modal first.");
                  this.closeSettingsModal();
-                 // Add a small delay to allow modal closing animation before potentially heavy generation
-                 await new Promise(resolve => setTimeout(resolve, 100));
+                 await new Promise(resolve => setTimeout(resolve, 50));
+            }
+            if (document.getElementById('scores-modal').classList.contains('visible')) {
+                 this.closeScoresModal();
+                 await new Promise(resolve => setTimeout(resolve, 50));
             }
             if (this.isLoading) {
                 console.warn("Attempted to start new game while already loading.");
@@ -1641,17 +1941,19 @@
             }
 
             this.isLoading = true;
-            this.gameActive = false; // Stop game logic during generation
-            this.stopGameLoop(); // Ensure previous loop is stopped
+            this.gameActive = false;
+            this.stopGameLoop();
             this.showLoading(true, 'Generando...');
             this.hideMessage();
             this.resetTimer();
             document.getElementById('newGameBtn').disabled = true;
             this.viewModeBtn.disabled = true;
             document.getElementById('settingsBtn').disabled = true;
+            document.getElementById('scoresBtn').disabled = true; // Disable scores btn too
+
 
             try {
-                this.validateDimensions(); // Ensure dimensions are valid before generating
+                this.validateDimensions();
                 const width = parseInt(this.widthInput.value);
                 const height = parseInt(this.heightInput.value);
 
@@ -1659,11 +1961,11 @@
                 this.setDarkMode(this.darkModeToggle.checked);
                 const currentStyle = document.querySelector('#modal-mazeStyle input:checked')?.value || 'classic';
                 this.setMazeStyle(currentStyle, true); // Force style update
-                const initialPlayerColor = this.getCurrentPlayerColor(); // Get color based on current settings
+                const initialPlayerColor = this.getCurrentPlayerColor();
                 const initialExitMarker = document.querySelector('#modal-exitChoice input:checked')?.value || '🏁';
                 this.renderer.setExitMarker(initialExitMarker);
 
-                // Generate Maze (potentially async)
+                // Generate Maze
                 const maze = await this.mazeGenerator.generate(width, height, (progress) => {
                     this.showLoading(true, `Generando... ${Math.round(progress * 100)}%`);
                 });
@@ -1672,60 +1974,60 @@
 
                 // Setup Renderer and Player
                 this.player = new Player(maze.start.x, maze.start.y, initialPlayerColor);
-                this.renderer.setMaze(maze); // Must be called before setPlayer if resetCamera depends on maze
+                this.renderer.setMaze(maze);
                 this.renderer.setPlayer(this.player);
-                // Set view mode AFTER maze/player are set, renderer handles resize/camera internally
                 this.renderer.setViewMode(this.viewModeBtn.dataset.mode || 'overview');
 
-                // Update best time display for the generated size
+                // Update best time display
                 const currentMazeSize = `${maze.width}x${maze.height}`;
                 this.updateBestTimeDisplay(currentMazeSize, true); // Update modal display
-                this.updateBestTimeDisplay(currentMazeSize); // Update any other display if needed
+                // this.updateBestTimeDisplay(currentMazeSize); // Update other display if needed
 
                 // Start Game
                 this.gameActive = true;
-                this.lastTimestamp = performance.now(); // Reset timestamp for game loop
-                this.startGameLoop(); // Start the rendering/update loop
+                this.lastTimestamp = performance.now();
+                this.startGameLoop();
                 console.log("New game started successfully.");
 
             } catch (error) {
                 console.error("Error starting new game:", error);
                 this.showMessage("Error", `No se pudo generar el laberinto.\n(${error.message})`);
-                this.gameActive = false; // Ensure game is inactive on error
+                this.gameActive = false;
             } finally {
-                this.showLoading(false); // Hide loading indicator
-                this.isLoading = false; // Reset loading flag
-                // Re-enable buttons
+                this.showLoading(false);
+                this.isLoading = false;
                 document.getElementById('newGameBtn').disabled = false;
                 this.viewModeBtn.disabled = false;
                 document.getElementById('settingsBtn').disabled = false;
+                document.getElementById('scoresBtn').disabled = false; // Re-enable scores btn
             }
         }
 
-
-         // Centralized game loop start function
          startGameLoop() {
-             if (this.animationFrameId) {
-                 //console.log("Game loop already running.");
-                 return;
-             }
+             if (this.animationFrameId) return;
              console.log("Starting game loop...");
+             let lastLoopTime = performance.now();
              const loop = (timestamp) => {
+                 // Check loop condition
                  if (!this.gameActive && !this.player?.isMoving && this.renderer.viewMode !== 'playerCamera') {
-                      // Optimization: Stop loop if game inactive, player not moving, and not in player view (which needs camera updates)
                      console.log("Game loop stopping (inactive).");
                      this.animationFrameId = null;
                      return;
                  }
-                 // Pass timestamp for accurate delta time calculations in renderer/player update
-                 this.renderer.drawFrame(timestamp);
+                 // Calculate delta time (more robustly)
+                 const deltaTime = timestamp - lastLoopTime;
+                 lastLoopTime = timestamp;
+
+                 // Update and Draw (pass delta time)
+                 if (this.player?.isMoving) this.player.update(deltaTime);
+                 if (this.renderer.viewMode === 'playerCamera') this.renderer.updateCamera(deltaTime);
+                 this.renderer.drawFrame(timestamp); // Pass timestamp for potential use in drawFrame
+
                  this.animationFrameId = requestAnimationFrame(loop); // Continue loop
              };
-             this.lastTimestamp = performance.now(); // Initialize timestamp for first frame delta
              this.animationFrameId = requestAnimationFrame(loop);
          }
 
-         // Centralized game loop stop function
          stopGameLoop() {
              if (this.animationFrameId) {
                  cancelAnimationFrame(this.animationFrameId);
@@ -1734,58 +2036,45 @@
              }
          }
 
-
          handleMoveAttempt(dx, dy) {
-             if (!this.gameActive || !this.player || this.isLoading || this.player.isMoving) {
-                // console.log("Move attempt ignored (inactive, loading, or already moving)");
-                 return;
-             }
+             if (!this.gameActive || !this.player || this.isLoading || this.player.isMoving) return;
 
              const moveResult = this.player.canMove(dx, dy, this.mazeGenerator);
              if (moveResult) {
-                 // Start timer on first successful move
-                 if (!this.timerStarted) {
-                     this.startTimer();
-                 }
+                 if (!this.timerStarted) this.startTimer();
                  this.player.moveTo(moveResult.newX, moveResult.newY);
+                 if (!this.animationFrameId) this.startGameLoop();
 
-                 // Ensure the game loop is running if player starts moving
-                 if (!this.animationFrameId) {
-                     this.startGameLoop();
-                 }
-
-                 // Check for win condition (player *reached* the target cell)
                  if (moveResult.newX === this.mazeGenerator.end.x && moveResult.newY === this.mazeGenerator.end.y) {
-                     this.gameActive = false; // Stop further moves immediately
-                     const finalTimeResult = this.stopTimer(); // Stop timer and check best time
+                     this.gameActive = false; // Stop further moves
+                     const finalTimeResult = this.stopTimer();
 
-                     // Delay showing the message slightly to allow player animation to (almost) finish
+                     // Delay showing the message slightly
                      setTimeout(() => {
-                         // Double-check player is near the end (in case of quick restarts/issues)
+                         // Check player is still at the end coordinates
                          if (this.player && Math.round(this.player.pixelX) === this.mazeGenerator.end.x && Math.round(this.player.pixelY) === this.mazeGenerator.end.y) {
                              const finalTimeStr = this.formatTime(finalTimeResult.time);
                              const mazeSize = `${this.mazeGenerator.width}x${this.mazeGenerator.height}`;
                              if (finalTimeResult.isNewBest) {
-                                 this.showMessage("¡Nuevo Récord! 🏆", "¡Increíble! Has establecido un nuevo récord.", finalTimeStr, `Nuevo récord (${mazeSize}): ${finalTimeStr}`);
+                                 this.showMessage("¡Nuevo Récord! 🏆", "¡Increíble! Has establecido un nuevo récord.", finalTimeStr, `Récord (${mazeSize}): ${finalTimeStr}`);
                              } else {
                                  const bestTime = this.bestTimes[mazeSize];
                                  const bestTimeStr = bestTime !== undefined ? this.formatTime(bestTime) : '--:--';
                                  this.showMessage("¡Completado! 🎉", "Has encontrado la salida del laberinto.", finalTimeStr, `Mejor tiempo (${mazeSize}): ${bestTimeStr}`);
                              }
                          } else {
-                             console.warn("Win condition met, but player not at end coordinates after delay. Showing generic win message.");
-                              this.showMessage("¡Completado! 🎉", "Has encontrado la salida del laberinto."); // Fallback message
+                              console.warn("Win condition met, but player not at end coordinates after delay. Showing generic win message.");
+                              this.showMessage("¡Completado! 🎉", "Has encontrado la salida del laberinto.");
                          }
-                         // Optionally stop the game loop here if not already stopped by inactivity check
-                          // this.stopGameLoop();
                      }, PLAYER_SMOOTHING * 800); // Wait slightly longer than player smooth time
                  }
              }
          }
 
          handleKeyDown(e) {
-             // Ignore input if modal is open, game not active, or loading
-             if (document.getElementById('settings-modal').classList.contains('visible') || !this.gameActive || this.isLoading) return;
+             if (document.getElementById('settings-modal').classList.contains('visible') ||
+                 document.getElementById('scores-modal').classList.contains('visible') || // Also check scores modal
+                 !this.gameActive || this.isLoading) return;
 
              let dx = 0; let dy = 0;
              switch (e.key) {
@@ -1793,36 +2082,37 @@
                  case 'ArrowDown': case 's': case 'S': dy = 1; break;
                  case 'ArrowLeft': case 'a': case 'A': dx = -1; break;
                  case 'ArrowRight': case 'd': case 'D': dx = 1; break;
-                 default: return; // Ignore other keys
+                 default: return;
              }
-             e.preventDefault(); // Prevent page scrolling with arrow keys
+             e.preventDefault();
              this.handleMoveAttempt(dx, dy);
          }
 
         // --- Touch Controls ---
          handleTouchStart(e) {
-             if (document.getElementById('settings-modal').classList.contains('visible') || !this.gameActive || this.isLoading || e.touches.length !== 1) return;
-             // Capture starting coordinates
+             if (document.getElementById('settings-modal').classList.contains('visible') ||
+                 document.getElementById('scores-modal').classList.contains('visible') ||
+                 !this.gameActive || this.isLoading || e.touches.length !== 1) return;
              this.touchStartX = e.touches[0].clientX;
              this.touchStartY = e.touches[0].clientY;
-             this.touchEndX = this.touchStartX; // Initialize end coords
+             this.touchEndX = this.touchStartX;
              this.touchEndY = this.touchStartY;
-             // e.preventDefault(); // Prevent default only if movement is detected in touchmove
          }
 
          handleTouchMove(e) {
-             if (document.getElementById('settings-modal').classList.contains('visible') || !this.gameActive || this.isLoading || e.touches.length !== 1) return;
-             // Update end coordinates
+             if (document.getElementById('settings-modal').classList.contains('visible') ||
+                 document.getElementById('scores-modal').classList.contains('visible') ||
+                 !this.gameActive || this.isLoading || e.touches.length !== 1) return;
              this.touchEndX = e.touches[0].clientX;
              this.touchEndY = e.touches[0].clientY;
-             // Prevent scrolling *while* dragging on the maze
-             e.preventDefault();
+             e.preventDefault(); // Prevent scroll while dragging
          }
 
          handleTouchEnd(e) {
-            if (document.getElementById('settings-modal').classList.contains('visible') || !this.gameActive || this.isLoading) return;
-             // If touchstart wasn't captured properly, exit
-             if (this.touchStartX === 0 && this.touchStartY === 0) return;
+            if (document.getElementById('settings-modal').classList.contains('visible') ||
+                document.getElementById('scores-modal').classList.contains('visible') ||
+                !this.gameActive || this.isLoading) return;
+             if (this.touchStartX === 0 && this.touchStartY === 0) return; // No start registered
 
              const deltaX = this.touchEndX - this.touchStartX;
              const deltaY = this.touchEndY - this.touchStartY;
@@ -1830,30 +2120,21 @@
              const absDeltaY = Math.abs(deltaY);
 
              let dx = 0; let dy = 0;
-             // Check if the swipe distance exceeds the threshold
              if (Math.max(absDeltaX, absDeltaY) > SWIPE_THRESHOLD) {
-                 // Determine primary direction (horizontal or vertical)
-                 if (absDeltaX > absDeltaY) {
-                     dx = deltaX > 0 ? 1 : -1; // Right or Left
-                 } else {
-                     dy = deltaY > 0 ? 1 : -1; // Down or Up
-                 }
+                 if (absDeltaX > absDeltaY) dx = deltaX > 0 ? 1 : -1;
+                 else dy = deltaY > 0 ? 1 : -1;
                  this.handleMoveAttempt(dx, dy);
              }
-             // Reset touch coordinates
              this.touchStartX = 0; this.touchStartY = 0;
              this.touchEndX = 0; this.touchEndY = 0;
          }
 
          // --- Visual Settings ---
          setDarkMode(isDark) {
-             const changed = document.body.classList.toggle('dark-mode', isDark);
-             // Always update visuals even if class didn't toggle (e.g., initial load)
-             this.updatePlayerColorVisuals(isDark); // Update modal previews
-             this.updatePlayerColor(document.querySelector('#modal-playerChoice input:checked')); // Update actual player color
-
+             document.body.classList.toggle('dark-mode', isDark);
+             this.updatePlayerColorVisuals(isDark);
+             this.updatePlayerColor(document.querySelector('#modal-playerChoice input:checked'));
              if (this.renderer) {
-                  // Force renderer to re-read CSS variables and redraw
                  this.renderer.updateStyleSettings(true);
                  if (this.gameActive || this.renderer.maze) this.renderer.drawFrame();
              }
@@ -1862,72 +2143,61 @@
 
          setMazeStyle(styleName, forceUpdate = false) {
              const currentStyle = document.body.dataset.mazeStyle;
-             if (!forceUpdate && currentStyle === styleName) return; // No change needed
+             if (!forceUpdate && currentStyle === styleName) return;
 
              document.body.dataset.mazeStyle = styleName;
              console.log(`Maze style set to: ${styleName}`);
 
-             // Update player color choices based on the new style
              this.filterPlayerChoicesByStyle(styleName);
-             // Reselect player color - prefer current if still visible, else default for style, else generic default
+             // Reselect player color
              const currentSelectedPlayerRadio = document.querySelector('#modal-playerChoice input:checked');
              if (!currentSelectedPlayerRadio || currentSelectedPlayerRadio.parentElement.hidden) {
                  const firstVisibleChoice = document.querySelector(`#modal-playerChoice label:not([hidden]) input`);
                  if (firstVisibleChoice) firstVisibleChoice.checked = true;
+                 else { // Absolute fallback if no visible choices somehow
+                     const fallback = document.querySelector('#modal-playerChoice input[name="modal-player"]');
+                     if(fallback) fallback.checked = true;
+                 }
              }
-             this.updatePlayerColor(document.querySelector('#modal-playerChoice input:checked')); // Apply the (potentially new) selection
+             this.updatePlayerColor(document.querySelector('#modal-playerChoice input:checked'));
 
              if (this.renderer) {
-                  // Force renderer to re-read CSS variables (including factors) and redraw
                  this.renderer.updateStyleSettings(true);
-                 this.renderer.setExitMarker(document.querySelector('#modal-exitChoice input:checked')?.value || '🏁'); // Re-apply marker (style might affect appearance)
+                 this.renderer.setExitMarker(document.querySelector('#modal-exitChoice input:checked')?.value || '🏁');
                  if (this.gameActive || this.renderer.maze) this.renderer.drawFrame();
              }
          }
 
-        // Show/hide player color choices based on current maze style
          filterPlayerChoicesByStyle(styleName) {
              const playerLabels = document.querySelectorAll('#modal-playerChoice label');
              playerLabels.forEach(label => {
                  const input = label.querySelector('input');
                  const specificStyle = input.dataset.styleSpecific;
-                 if (specificStyle && specificStyle !== styleName) {
-                     label.hidden = true; // Hide choices specific to other styles
-                 } else {
-                     label.hidden = false; // Show generic choices and choices for the current style
-                 }
+                 label.hidden = specificStyle && specificStyle !== styleName;
              });
               this.updatePlayerColorVisuals(document.body.classList.contains('dark-mode')); // Refresh previews
          }
 
-
-         // Update the actual player color based on the selected radio button
          updatePlayerColor(radioElement) {
              if (!radioElement || !radioElement.checked) {
-                  // Attempt to find the currently checked one if none provided
                  radioElement = document.querySelector('#modal-playerChoice input:checked');
-                 if (!radioElement) return; // Exit if still nothing selected
+                 if (!radioElement) return;
              }
-             const newColor = this.calculatePlayerColor(radioElement); // Use helper to get color based on theme
+             const newColor = this.calculatePlayerColor(radioElement);
              if (this.player) {
                  this.player.setColor(newColor);
                  console.log(`Player color updated to: ${newColor}`);
-                 // Redraw if game active or maze exists
                  if(this.renderer && (this.gameActive || this.renderer.maze)) {
-                     this.renderer.drawFrame(); // Immediate redraw to show new color
+                     this.renderer.drawFrame();
                  }
              }
-             // Also update minimap color setting (Minimap reads --minimap-player which should reflect current player color)
-             if (this.minimap) {
-                this.minimap.updateColors(); // Tell minimap to re-read CSS vars
-             }
+             if (this.minimap) this.minimap.updateColors();
          }
 
-         // Update the visual appearance of the color preview swatches in the modal
          updatePlayerColorVisuals(isDark) {
              const playerRadios = document.querySelectorAll('#modal-playerChoice input[type="radio"]');
              playerRadios.forEach(radio => {
-                 const colorToShow = this.calculatePlayerColor(radio, isDark); // Use helper
+                 const colorToShow = this.calculatePlayerColor(radio, isDark);
                  const previewSpan = radio.nextElementSibling;
                  if (previewSpan && previewSpan.classList.contains('color-preview')) {
                      previewSpan.style.backgroundColor = colorToShow;
@@ -1935,35 +2205,26 @@
              });
          }
 
-         // Helper to get the correct player color string based on theme (light/dark)
          calculatePlayerColor(radioElement, isDark = document.body.classList.contains('dark-mode')) {
-              if (!radioElement) return getCssVariable('--player-color'); // Fallback
+              if (!radioElement) return getCssVariable('--player-color');
               const lightColor = radioElement.dataset.light;
               const darkColor = radioElement.dataset.dark;
-              const baseColor = radioElement.value; // The value attribute often serves as fallback or light color
+              const baseColor = radioElement.value;
               return isDark ? (darkColor || baseColor) : (lightColor || baseColor);
          }
 
-         // Get the CURRENTLY applied player color (respecting theme)
-         // Pass getBaseValue = true to get the value="" attribute instead.
          getCurrentPlayerColor(getBaseValue = false) {
              const selectedRadio = document.querySelector('#modal-playerChoice input:checked');
-             if (!selectedRadio) {
-                 console.warn("No player color selected, returning default CSS var.");
-                 return getCssVariable('--player-color'); // Fallback to default CSS variable
-             }
-             if (getBaseValue) {
-                 return selectedRadio.value; // Return the base value attribute
-             }
-             return this.calculatePlayerColor(selectedRadio); // Calculate based on current theme
+             if (!selectedRadio) return getCssVariable('--player-color');
+             if (getBaseValue) return selectedRadio.value;
+             return this.calculatePlayerColor(selectedRadio);
          }
 
          // --- Utility Methods ---
          showMessage(title, text, finalTimeStr = '', bestTimeMsg = '') {
             const overlay = document.getElementById('message-overlay');
             overlay.querySelector('h2').textContent = title;
-            // Safely set text, replacing newline chars with <br>
-            const textParagraph = overlay.querySelector('p:not([id])'); // Target the main text paragraph
+            const textParagraph = overlay.querySelector('p:not([id])');
             if (textParagraph) textParagraph.innerHTML = text.replace(/\n/g, '<br>');
 
             const finalTimeEl = document.getElementById('final-time-msg');
@@ -1975,8 +2236,8 @@
             bestTimeEl.style.display = bestTimeMsg ? 'block' : 'none';
 
             overlay.classList.add('visible');
-            this.gameActive = false; // Ensure game stops
-            this.stopGameLoop(); // Stop rendering loop
+            this.gameActive = false;
+            this.stopGameLoop();
             console.log(`Message shown: ${title}`);
          }
 
@@ -1987,8 +2248,9 @@
          showLoading(show, text = 'Generando...') {
             const indicator = document.getElementById('loading-indicator');
             const newGameBtn = document.getElementById('newGameBtn');
-            const viewModeBtn = this.viewModeBtn; // Use stored ref
+            const viewModeBtn = this.viewModeBtn;
             const settingsBtn = document.getElementById('settingsBtn');
+            const scoresBtn = document.getElementById('scoresBtn'); // Scores button ref
 
             if (show) {
                 indicator.textContent = text;
@@ -1996,6 +2258,7 @@
                 if(newGameBtn) newGameBtn.disabled = true;
                 if(viewModeBtn) viewModeBtn.disabled = true;
                 if(settingsBtn) settingsBtn.disabled = true;
+                if(scoresBtn) scoresBtn.disabled = true; // Disable scores btn
             } else {
                 indicator.classList.remove('visible');
                 // Only enable buttons if not currently loading another maze
@@ -2003,6 +2266,7 @@
                      if(newGameBtn) newGameBtn.disabled = false;
                      if(viewModeBtn) viewModeBtn.disabled = false;
                      if(settingsBtn) settingsBtn.disabled = false;
+                     if(scoresBtn) scoresBtn.disabled = false; // Re-enable scores btn
                 }
             }
          }
@@ -2012,7 +2276,7 @@
                  alert('Genera un laberinto completo antes de imprimir.');
                  return;
              }
-             if (this.isLoading || this.isPrinting) {
+             if (this.isLoading || this.renderer.isPrinting) { // Check renderer printing flag
                  alert('Espera a que termine la acción actual antes de imprimir.');
                  return;
              }
@@ -2022,41 +2286,35 @@
              if (!savedState) {
                  console.error("Failed to prepare renderer for printing.");
                  alert("Error al preparar la impresión.");
-                 this.renderer.isPrinting = false; // Ensure flag is reset on error
+                 this.renderer.isPrinting = false;
                  return;
              }
 
-             // Use setTimeout to allow the browser to redraw with print styles/canvas
              setTimeout(() => {
                  try {
-                     window.print(); // Trigger browser print dialog
+                     window.print();
                      console.log("Print dialog should be open.");
-                     // Restore happens *after* print dialog is closed or cancelled
-                     // Using a timeout for restore is less reliable than `onafterprint` but more compatible
                       setTimeout(() => {
                          this.renderer.restoreAfterPrint(savedState);
                      }, 200); // Delay restore slightly
                  } catch (e) {
                      console.error("Error during window.print():", e);
                      alert("Ocurrió un error al intentar imprimir.");
-                     // Ensure restoration even if print fails
-                     this.renderer.restoreAfterPrint(savedState);
+                     this.renderer.restoreAfterPrint(savedState); // Ensure restore on error
                  }
-             }, 100); // Delay before calling print()
+             }, 100);
          }
-    }
+    } // End of Game class
 
     // --- Initialization ---
     document.addEventListener('DOMContentLoaded', () => {
-        // Use requestAnimationFrame to ensure layout is complete before initializing
         requestAnimationFrame(() => {
             try {
                  window.mazeGame = new Game();
                  console.log("Maze Game Initialized.");
             } catch (error) {
                  console.error("Failed to initialize Maze Game:", error);
-                 // Display a user-friendly error message on the page?
-                 document.body.innerHTML = `<div style="padding: 20px; text-align: center; color: red;">Error crítico al iniciar la aplicación: ${error.message}</div>`;
+                 document.body.innerHTML = `<div style="padding: 20px; text-align: center; color: red;">Error crítico al iniciar la aplicación: ${error.message}. Por favor, recarga la página.</div>`;
             }
         });
     });
