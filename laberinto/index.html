@@ -3,342 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
-    <title>Laberinto App V3</title>
+    <title>Laberinto Pro V4</title>
     <style>
-        /* --- ROOT VARIABLES (Ajustadas) --- */
+        /* --- ROOT VARIABLES --- */
         :root {
-            /* ... (Variables de tema claro/oscuro como antes) ... */
             --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            /* Light Theme */
-            --bg-color-light: #f8f9fa; /* Slightly off-white */
-            --panel-bg-light: #ffffff; /* White panels */
-            --control-bg-light: #ffffff;
-            --text-color-light: #212529;
-            --text-muted-light: #6c757d;
-            --border-color-light: #dee2e6;
-            --primary-color-light: #007bff;
-            --primary-hover-light: #0056b3;
-            --shadow-light: rgba(0, 0, 0, 0.08); /* Lighter shadow */
-            --input-bg-light: #ffffff;
-            --input-border-light: #ced4da;
-            --maze-bg-light: #e9ecef; /* Light grey maze bg */
-            --wall-color-light: #343a40;
-            --wall-glow-light: rgba(52, 58, 64, 0.2);
-            --wall-shadow-light: rgba(0, 0, 0, 0.15);
-            --player-color-light: #e63946;
-            --player-glow-light: rgba(230, 57, 70, 0.3);
-            --player-shadow-light: rgba(230, 57, 70, 0.5);
-            --start-color-light: #a8dadc;
-            --end-color-light: #457b9d;
-            --path-color-light: rgba(227, 242, 253, 0.3);
-            --minimap-bg-light: rgba(255, 255, 255, 0.88); /* More opaque */
-            --minimap-border-light: #adb5bd;
-            --minimap-player-light: var(--player-color-light);
-
-            /* Dark Theme */
-            --bg-color-dark: #121212;
-            --panel-bg-dark: #1e1e1e;
-            --control-bg-dark: #2a2a2a;
-            --text-color-dark: #e0e0e0;
-            --text-muted-dark: #adb5bd;
-            --border-color-dark: #333; /* Slightly lighter border */
-            --primary-color-dark: #4dabf7;
-            --primary-hover-dark: #1e88e5;
-            --shadow-dark: rgba(255, 255, 255, 0.06);
-            --input-bg-dark: #252525; /* Darker input */
-            --input-border-dark: #444;
-            --maze-bg-dark: #212121; /* Darker maze bg */
-            --wall-color-dark: #ced4da;
-            --wall-glow-dark: rgba(206, 212, 218, 0.25);
-            --wall-shadow-dark: rgba(255, 255, 255, 0.1);
-            --player-color-dark: #ff8a80;
-            --player-glow-dark: rgba(255, 138, 128, 0.35);
-            --player-shadow-dark: rgba(255, 138, 128, 0.5);
-            --start-color-dark: #546e7a;
-            --end-color-dark: #81d4fa;
-            --path-color-dark: rgba(50, 50, 70, 0.3);
-            --minimap-bg-dark: rgba(30, 30, 30, 0.9); /* More opaque */
-            --minimap-border-dark: #6c757d;
-            --minimap-player-dark: var(--player-color-dark);
-
-            /* Default assignments (Light initially) */
-            --bg-color: var(--bg-color-light);
-            --panel-bg: var(--panel-bg-light);
-            --control-bg: var(--control-bg-light);
-            --text-color: var(--text-color-light);
-            --text-muted: var(--text-muted-light);
-            --border-color: var(--border-color-light);
-            --primary-color: var(--primary-color-light);
-            --primary-hover: var(--primary-hover-light);
-            --shadow: var(--shadow-light);
-            --input-bg: var(--input-bg-light);
-            --input-border: var(--input-border-light);
-            --maze-bg: var(--maze-bg-light);
-            --wall-color: var(--wall-color-light);
-            --wall-glow: var(--wall-glow-light);
-            --wall-shadow: var(--wall-shadow-light);
-            --player-color: var(--player-color-light);
-            --player-glow: var(--player-glow-light);
-            --player-shadow: var(--player-shadow-light);
-            --start-color: var(--start-color-light);
-            --end-color: var(--end-color-light);
-            --path-color: var(--path-color-light);
-            --minimap-bg: var(--minimap-bg-light);
-            --minimap-border: var(--minimap-border-light);
-            --minimap-player: var(--minimap-player-light);
-
-            /* Factors */
-            --wall-thickness-factor: 0.1;
-            --player-size-factor: 0.6;
-            --end-marker-size-factor: 0.7;
             --transition-speed: 0.3s;
-
-            /* UI Dimensions */
             --bottom-nav-height: 60px;
             --modal-max-width: 500px;
             --top-ui-height: 40px;
+
+            /* Factors */
+            /* Default values, can be overridden by styles */
+            --wall-thickness-factor: 0.1;
+            --player-size-factor: 0.6;
+            --end-marker-size-factor: 0.7;
+
+            /* --- Light Theme Defaults --- */
+            --bg-color-light: #f8f9fa; --panel-bg-light: #ffffff; --control-bg-light: #ffffff;
+            --text-color-light: #212529; --text-muted-light: #6c757d; --border-color-light: #dee2e6;
+            --primary-color-light: #007bff; --primary-hover-light: #0056b3; --shadow-light: rgba(0, 0, 0, 0.08);
+            --input-bg-light: #ffffff; --input-border-light: #ced4da;
+            /* Maze Specific - Light */
+            --maze-bg-light: #e9ecef;
+            --wall-color-light: #343a40; --wall-glow-light: transparent; --wall-shadow-light: rgba(0, 0, 0, 0.1);
+            --player-color-light: #e63946; --player-glow-light: rgba(230, 57, 70, 0.3); --player-shadow-light: rgba(230, 57, 70, 0.4);
+            --start-color-light: #a8dadc; --end-color-light: #457b9d; --path-color-light: rgba(227, 242, 253, 0.3); /* Path not currently used in drawing */
+            --minimap-bg-light: rgba(255, 255, 255, 0.9); --minimap-border-light: #adb5bd;
+            /* Minimap elements derive from main colors by default */
+            --minimap-player-light: var(--player-color-light); --minimap-start-light: var(--start-color-light); --minimap-end-light: var(--end-color-light);
+
+            /* --- Dark Theme Defaults --- */
+            --bg-color-dark: #121212; --panel-bg-dark: #1e1e1e; --control-bg-dark: #2a2a2a;
+            --text-color-dark: #e0e0e0; --text-muted-dark: #adb5bd; --border-color-dark: #333;
+            --primary-color-dark: #4dabf7; --primary-hover-dark: #1e88e5; --shadow-dark: rgba(255, 255, 255, 0.06);
+            --input-bg-dark: #252525; --input-border-dark: #444;
+            /* Maze Specific - Dark */
+            --maze-bg-dark: #212121;
+            --wall-color-dark: #ced4da; --wall-glow-dark: rgba(206, 212, 218, 0.15); --wall-shadow-dark: transparent;
+            --player-color-dark: #ff8a80; --player-glow-dark: rgba(255, 138, 128, 0.35); --player-shadow-dark: rgba(255, 138, 128, 0.5);
+            --start-color-dark: #546e7a; --end-color-dark: #81d4fa; --path-color-dark: rgba(50, 50, 70, 0.3); /* Path not currently used */
+            --minimap-bg-dark: rgba(30, 30, 30, 0.92); --minimap-border-dark: #6c757d;
+            /* Minimap elements derive from main colors by default */
+            --minimap-player-dark: var(--player-color-dark); --minimap-start-dark: var(--start-color-dark); --minimap-end-dark: var(--end-color-dark);
+
+            /* --- Default assignments (will be overridden by theme) --- */
+            --bg-color: var(--bg-color-light); --panel-bg: var(--panel-bg-light); --control-bg: var(--control-bg-light);
+            --text-color: var(--text-color-light); --text-muted: var(--text-muted-light); --border-color: var(--border-color-light);
+            --primary-color: var(--primary-color-light); --primary-hover: var(--primary-hover-light); --shadow: var(--shadow-light);
+            --input-bg: var(--input-bg-light); --input-border: var(--input-border-light);
+            --maze-bg: var(--maze-bg-light); --wall-color: var(--wall-color-light); --wall-glow: var(--wall-glow-light); --wall-shadow: var(--wall-shadow-light);
+            --player-color: var(--player-color-light); --player-glow: var(--player-glow-light); --player-shadow: var(--player-shadow-light);
+            --start-color: var(--start-color-light); --end-color: var(--end-color-light); --path-color: var(--path-color-light);
+            --minimap-bg: var(--minimap-bg-light); --minimap-border: var(--minimap-border-light); --minimap-player: var(--minimap-player-light);
+            --minimap-start: var(--minimap-start-light); --minimap-end: var(--minimap-end-light);
+            --primary-color-rgb: 0, 123, 255; --panel-bg-rgb: 255, 255, 255;
         }
 
         /* --- Theme Application --- */
-        /* These rules now apply the theme variables correctly */
         body {
-             --bg-color: var(--bg-color-light); --panel-bg: var(--panel-bg-light); --control-bg: var(--control-bg-light);
-             --text-color: var(--text-color-light); --text-muted: var(--text-muted-light); --border-color: var(--border-color-light);
-             --primary-color: var(--primary-color-light); --primary-hover: var(--primary-hover-light); --shadow: var(--shadow-light);
-             --input-bg: var(--input-bg-light); --input-border: var(--input-border-light);
-             /* Style-dependent variables default to classic light */
-             --maze-bg: var(--_maze-classic-light, var(--maze-bg-light));
-             --wall-color: var(--_wall-classic-light, var(--wall-color-light));
-             --wall-glow: var(--_wall-glow-classic-light, var(--wall-glow-light));
-             --wall-shadow: var(--_wall-shadow-classic-light, var(--wall-shadow-light));
-             --player-color: var(--_player-classic-light, var(--player-color-light));
-             --player-glow: var(--_player-glow-classic-light, var(--player-glow-light));
-             --player-shadow: var(--_player-shadow-classic-light, var(--player-shadow-light));
-             --start-color: var(--_start-classic-light, var(--start-color-light));
-             --end-color: var(--_end-classic-light, var(--end-color-light));
-             --minimap-bg: var(--_minimap-bg-classic-light, var(--minimap-bg-light));
-             --minimap-border: var(--_minimap-border-classic-light, var(--minimap-border-light));
-             --minimap-player: var(--_minimap-player-classic-light, var(--minimap-player-light));
+            /* Light Theme Variables */
+            --bg-color: var(--bg-color-light); --panel-bg: var(--panel-bg-light); --control-bg: var(--control-bg-light);
+            --text-color: var(--text-color-light); --text-muted: var(--text-muted-light); --border-color: var(--border-color-light);
+            --primary-color: var(--primary-color-light); --primary-hover: var(--primary-hover-light); --shadow: var(--shadow-light);
+            --input-bg: var(--input-bg-light); --input-border: var(--input-border-light);
+            --primary-color-rgb: 0, 123, 255; --panel-bg-rgb: 255, 255, 255;
+
+            /* Style defaults point to Light theme values initially */
+            --maze-bg: var(--_maze-style-light, var(--maze-bg-light));
+            --wall-color: var(--_wall-style-light, var(--wall-color-light));
+            --wall-glow: var(--_wall-glow-style-light, var(--wall-glow-light));
+            --wall-shadow: var(--_wall-shadow-style-light, var(--wall-shadow-light));
+            --player-color: var(--_player-style-light, var(--player-color-light)); /* Player color is special, set via JS */
+            --player-glow: var(--_player-glow-style-light, var(--player-glow-light));
+            --player-shadow: var(--_player-shadow-style-light, var(--player-shadow-light));
+            --start-color: var(--_start-style-light, var(--start-color-light));
+            --end-color: var(--_end-style-light, var(--end-color-light));
+            --minimap-bg: var(--_minimap-bg-style-light, var(--minimap-bg-light));
+            --minimap-border: var(--_minimap-border-style-light, var(--minimap-border-light));
+            --minimap-player: var(--_minimap-player-style-light, var(--player-color)); /* Minimap player uses current player color */
+            --minimap-start: var(--_minimap-start-style-light, var(--start-color-light));
+            --minimap-end: var(--_minimap-end-style-light, var(--end-color-light));
         }
+
         body.dark-mode {
-             --bg-color: var(--bg-color-dark); --panel-bg: var(--panel-bg-dark); --control-bg: var(--control-bg-dark);
-             --text-color: var(--text-color-dark); --text-muted: var(--text-muted-dark); --border-color: var(--border-color-dark);
-             --primary-color: var(--primary-color-dark); --primary-hover: var(--primary-hover-dark); --shadow: var(--shadow-dark);
-             --input-bg: var(--input-bg-dark); --input-border: var(--input-border-dark);
-              /* Style-dependent variables default to classic dark */
-             --maze-bg: var(--_maze-classic-dark, var(--maze-bg-dark));
-             --wall-color: var(--_wall-classic-dark, var(--wall-color-dark));
-             --wall-glow: var(--_wall-glow-classic-dark, var(--wall-glow-dark));
-             --wall-shadow: var(--_wall-shadow-classic-dark, var(--wall-shadow-dark));
-             --player-color: var(--_player-classic-dark, var(--player-color-dark));
-             --player-glow: var(--_player-glow-classic-dark, var(--player-glow-dark));
-             --player-shadow: var(--_player-shadow-classic-dark, var(--player-shadow-dark));
-             --start-color: var(--_start-classic-dark, var(--start-color-dark));
-             --end-color: var(--_end-classic-dark, var(--end-color-dark));
-             --minimap-bg: var(--_minimap-bg-classic-dark, var(--minimap-bg-dark));
-             --minimap-border: var(--_minimap-border-classic-dark, var(--minimap-border-dark));
-             --minimap-player: var(--_minimap-player-classic-dark, var(--minimap-player-dark));
+            /* Dark Theme Variables */
+            --bg-color: var(--bg-color-dark); --panel-bg: var(--panel-bg-dark); --control-bg: var(--control-bg-dark);
+            --text-color: var(--text-color-dark); --text-muted: var(--text-muted-dark); --border-color: var(--border-color-dark);
+            --primary-color: var(--primary-color-dark); --primary-hover: var(--primary-hover-dark); --shadow: var(--shadow-dark);
+            --input-bg: var(--input-bg-dark); --input-border: var(--input-border-dark);
+            --primary-color-rgb: 74, 171, 247; --panel-bg-rgb: 30, 30, 30;
+
+            /* Style defaults point to Dark theme values */
+            --maze-bg: var(--_maze-style-dark, var(--maze-bg-dark));
+            --wall-color: var(--_wall-style-dark, var(--wall-color-dark));
+            --wall-glow: var(--_wall-glow-style-dark, var(--wall-glow-dark));
+            --wall-shadow: var(--_wall-shadow-style-dark, var(--wall-shadow-dark));
+            --player-color: var(--_player-style-dark, var(--player-color-dark)); /* Player color is special, set via JS */
+            --player-glow: var(--_player-glow-style-dark, var(--player-glow-dark));
+            --player-shadow: var(--_player-shadow-style-dark, var(--player-shadow-dark));
+            --start-color: var(--_start-style-dark, var(--start-color-dark));
+            --end-color: var(--_end-style-dark, var(--end-color-dark));
+            --minimap-bg: var(--_minimap-bg-style-dark, var(--minimap-bg-dark));
+            --minimap-border: var(--_minimap-border-style-dark, var(--minimap-border-dark));
+            --minimap-player: var(--_minimap-player-style-dark, var(--player-color)); /* Minimap player uses current player color */
+            --minimap-start: var(--_minimap-start-style-dark, var(--start-color-dark));
+            --minimap-end: var(--_minimap-end-style-dark, var(--end-color-dark));
         }
 
-        /* --- Maze Style Overrides --- */
-        /* Define style-specific base variables first using underscore convention */
+        /* --- Maze Style Definitions (_style-theme variants) --- */
+        /* These define the specific look for each style in both light and dark mode */
+
+        /* Classic Style */
         body[data-maze-style="classic"] {
-            --_maze-classic-light: var(--maze-bg-light); --_maze-classic-dark: var(--maze-bg-dark);
-            --_wall-classic-light: var(--wall-color-light); --_wall-classic-dark: var(--wall-color-dark);
-            --_wall-glow-classic-light: var(--wall-glow-light); --_wall-glow-classic-dark: var(--wall-glow-dark);
-            --_wall-shadow-classic-light: var(--wall-shadow-light); --_wall-shadow-classic-dark: var(--wall-shadow-dark);
-            --_player-classic-light: var(--player-color-light); --_player-classic-dark: var(--player-color-dark);
-            --_player-glow-classic-light: var(--player-glow-light); --_player-glow-classic-dark: var(--player-glow-dark);
-            --_player-shadow-classic-light: var(--player-shadow-light); --_player-shadow-classic-dark: var(--player-shadow-dark);
-            --_start-classic-light: var(--start-color-light); --_start-classic-dark: var(--start-color-dark);
-            --_end-classic-light: var(--end-color-light); --_end-classic-dark: var(--end-color-dark);
-            --_minimap-bg-classic-light: var(--minimap-bg-light); --_minimap-bg-classic-dark: var(--minimap-bg-dark);
-            --_minimap-border-classic-light: var(--minimap-border-light); --_minimap-border-classic-dark: var(--minimap-border-dark);
-            --_minimap-player-classic-light: var(--minimap-player-light); --_minimap-player-classic-dark: var(--minimap-player-dark);
+            --_maze-style-light: var(--maze-bg-light);           --_maze-style-dark: var(--maze-bg-dark);
+            --_wall-style-light: var(--wall-color-light);         --_wall-style-dark: var(--wall-color-dark);
+            --_wall-glow-style-light: transparent;                --_wall-glow-style-dark: rgba(206, 212, 218, 0.1);
+            --_wall-shadow-style-light: rgba(0, 0, 0, 0.1);       --_wall-shadow-style-dark: transparent;
+            --_player-glow-style-light: var(--player-glow-light); --_player-glow-style-dark: var(--player-glow-dark);
+            --_player-shadow-style-light: var(--player-shadow-light); --_player-shadow-style-dark: var(--player-shadow-dark);
+            --_start-style-light: var(--start-color-light);       --_start-style-dark: var(--start-color-dark);
+            --_end-style-light: var(--end-color-light);           --_end-style-dark: var(--end-color-dark);
+            --_minimap-bg-style-light: var(--minimap-bg-light);   --_minimap-bg-style-dark: var(--minimap-bg-dark);
+            --_minimap-border-style-light: var(--minimap-border-light); --_minimap-border-style-dark: var(--minimap-border-dark);
+            --_minimap-start-style-light: var(--_start-style-light); --_minimap-start-style-dark: var(--_start-style-dark);
+            --_minimap-end-style-light: var(--_end-style-light);     --_minimap-end-style-dark: var(--_end-style-dark);
             --wall-thickness-factor: 0.1;
+            --player-size-factor: 0.6;
         }
+
+        /* Matrix Style */
         body[data-maze-style="matrix"] {
-            --_maze-classic-light: #050505; --_maze-classic-dark: #000000;
-            --_wall-classic-light: #00ff41; --_wall-classic-dark: #39ff14;
-            --_wall-glow-classic-light: rgba(0, 255, 65, 0.3); --_wall-glow-classic-dark: rgba(57, 255, 20, 0.3);
-            --_wall-shadow-classic-light: rgba(0,0,0,0.1); --_wall-shadow-classic-dark: rgba(0,0,0,0.2);
-            --_player-classic-light: #ffdf00; --_player-classic-dark: #ffee58;
-            --_player-glow-classic-light: rgba(255, 223, 0, 0.4); --_player-glow-classic-dark: rgba(255, 238, 88, 0.4);
-            --_player-shadow-classic-light: rgba(255, 223, 0, 0.6); --_player-shadow-classic-dark: rgba(255, 238, 88, 0.6);
-            --_start-classic-light: #333; --_start-classic-dark: #222;
-            --_end-classic-light: #ccc; --_end-classic-dark: #eee;
-            --_minimap-bg-classic-light: rgba(0, 10, 0, 0.8); --_minimap-bg-classic-dark: rgba(0, 0, 0, 0.85);
-            --_minimap-border-classic-light: var(--_wall-classic-light); --_minimap-border-classic-dark: var(--_wall-classic-dark);
-            --_minimap-player-classic-light: var(--_player-classic-light); --_minimap-player-classic-dark: var(--_player-classic-dark);
-            --wall-thickness-factor: 0.1;
+            --_maze-style-light: #030303;                         --_maze-style-dark: #000000;
+            --_wall-style-light: #00ff41;                         --_wall-style-dark: #00ff41;
+            --_wall-glow-style-light: rgba(0, 255, 65, 0.3);      --_wall-glow-style-dark: rgba(0, 255, 65, 0.35);
+            --_wall-shadow-style-light: transparent;              --_wall-shadow-style-dark: transparent;
+            --_player-glow-style-light: rgba(255, 255, 255, 0.4); --_player-glow-style-dark: rgba(255, 255, 255, 0.5);
+            --_player-shadow-style-light: transparent;            --_player-shadow-style-dark: transparent;
+            --_start-style-light: #00330a;                        --_start-style-dark: #004d11;
+            --_end-style-light: #00801c;                          --_end-style-dark: #00cc2e;
+            --_minimap-bg-style-light: rgba(0, 20, 0, 0.9);       --_minimap-bg-style-dark: rgba(0, 10, 0, 0.95);
+            --_minimap-border-style-light: #00ff41;               --_minimap-border-style-dark: #00cc2e;
+            --_minimap-start-style-light: var(--_start-style-light); --_minimap-start-style-dark: var(--_start-style-dark);
+            --_minimap-end-style-light: var(--_end-style-light);     --_minimap-end-style-dark: var(--_end-style-dark);
+            --wall-thickness-factor: 0.08;
+            --player-size-factor: 0.55;
         }
-         body[data-maze-style="blueprint"] {
-             --_maze-classic-light: #2962ff; --_maze-classic-dark: #1e88e5;
-             --_wall-classic-light: #ffffff; --_wall-classic-dark: #ffffff;
-             --_wall-glow-classic-light: rgba(255, 255, 255, 0.2); --_wall-glow-classic-dark: rgba(255, 255, 255, 0.15);
-             --_wall-shadow-classic-light: rgba(0,0,0,0.1); --_wall-shadow-classic-dark: rgba(0,0,0,0.2);
-             --_player-classic-light: #ffeb3b; --_player-classic-dark: #fff59d;
-             --_player-glow-classic-light: rgba(255, 235, 59, 0.4); --_player-glow-classic-dark: rgba(255, 245, 157, 0.4);
-             --_player-shadow-classic-light: rgba(255, 235, 59, 0.6); --_player-shadow-classic-dark: rgba(255, 245, 157, 0.6);
-             --_start-classic-light: rgba(255,255,255,0.2); --_start-classic-dark: rgba(255,255,255,0.15);
-             --_end-classic-light: #ffffff; --_end-classic-dark: #ffffff;
-             --_minimap-bg-classic-light: rgba(0, 50, 150, 0.85); --_minimap-bg-classic-dark: rgba(30, 136, 229, 0.85);
-             --_minimap-border-classic-light: #bbdefb; --_minimap-border-classic-dark: #90caf9;
-             --_minimap-player-classic-light: var(--_player-classic-light); --_minimap-player-classic-dark: var(--_player-classic-dark);
-             --wall-thickness-factor: 0.05;
-         }
-         body[data-maze-style="neon"] {
-             --_maze-classic-light: #1a1a2e; --_maze-classic-dark: #121212;
-             --_wall-classic-light: #ff00ff; --_wall-classic-dark: #f06292;
-             --_wall-glow-classic-light: rgba(255, 0, 255, 0.4); --_wall-glow-classic-dark: rgba(240, 98, 146, 0.4);
-             --_wall-shadow-classic-light: rgba(255, 0, 255, 0.2); --_wall-shadow-classic-dark: rgba(240, 98, 146, 0.2);
-             --_player-classic-light: #00ffff; --_player-classic-dark: #4dd0e1;
-             --_player-glow-classic-light: rgba(0, 255, 255, 0.5); --_player-glow-classic-dark: rgba(77, 208, 225, 0.5);
-             --_player-shadow-classic-light: rgba(0, 255, 255, 0.7); --_player-shadow-classic-dark: rgba(77, 208, 225, 0.7);
-             --_start-classic-light: rgba(50, 0, 50, 0.5); --_start-classic-dark: rgba(30, 0, 30, 0.5);
-             --_end-classic-light: #ffff00; --_end-classic-dark: #fff176;
-             --_minimap-bg-classic-light: rgba(26, 26, 46, 0.9); --_minimap-bg-classic-dark: rgba(18, 18, 18, 0.9);
-             --_minimap-border-classic-light: var(--_wall-classic-light); --_minimap-border-classic-dark: var(--_wall-classic-dark);
-             --_minimap-player-classic-light: var(--_player-classic-light); --_minimap-player-classic-dark: var(--_player-classic-dark);
-             --wall-thickness-factor: 0.1;
-         }
-         body[data-maze-style="cyber"] {
-             --_maze-classic-light: #2a004f; --_maze-classic-dark: #1a0033;
-             --_wall-classic-light: #00ffff; --_wall-classic-dark: #7fffd4;
-             --_wall-glow-classic-light: rgba(0, 255, 255, 0.4); --_wall-glow-classic-dark: rgba(127, 255, 212, 0.4);
-             --_wall-shadow-classic-light: rgba(0, 255, 255, 0.2); --_wall-shadow-classic-dark: rgba(127, 255, 212, 0.2);
-             --_player-classic-light: #ff0066; --_player-classic-dark: #ff4081;
-             --_player-glow-classic-light: rgba(255, 0, 102, 0.5); --_player-glow-classic-dark: rgba(255, 64, 129, 0.5);
-             --_player-shadow-classic-light: rgba(255, 0, 102, 0.7); --_player-shadow-classic-dark: rgba(255, 64, 129, 0.7);
-             --_start-classic-light: rgba(0, 255, 255, 0.1); --_start-classic-dark: rgba(127, 255, 212, 0.1);
-             --_end-classic-light: #ffab00; --_end-classic-dark: #ffd180;
-             --_minimap-bg-classic-light: rgba(42, 0, 79, 0.9); --_minimap-bg-classic-dark: rgba(26, 0, 51, 0.9);
-             --_minimap-border-classic-light: var(--_wall-classic-light); --_minimap-border-classic-dark: var(--_wall-classic-dark);
-             --_minimap-player-classic-light: var(--_player-classic-light); --_minimap-player-classic-dark: var(--_player-classic-dark);
-             --wall-thickness-factor: 0.08;
-         }
-        /* Now apply the selected style's variables */
-         body[data-maze-style="matrix"] { --maze-bg: var(--_maze-classic-light); --wall-color: var(--_wall-classic-light); --wall-glow: var(--_wall-glow-classic-light); --wall-shadow: var(--_wall-shadow-classic-light); --player-color: var(--_player-classic-light); --player-glow: var(--_player-glow-classic-light); --player-shadow: var(--_player-shadow-classic-light); --start-color: var(--_start-classic-light); --end-color: var(--_end-classic-light); --minimap-bg: var(--_minimap-bg-classic-light); --minimap-border: var(--_minimap-border-classic-light); --minimap-player: var(--_minimap-player-classic-light); }
-         body[data-maze-style="matrix"].dark-mode { --maze-bg: var(--_maze-classic-dark); --wall-color: var(--_wall-classic-dark); --wall-glow: var(--_wall-glow-classic-dark); --wall-shadow: var(--_wall-shadow-classic-dark); --player-color: var(--_player-classic-dark); --player-glow: var(--_player-glow-classic-dark); --player-shadow: var(--_player-shadow-classic-dark); --start-color: var(--_start-classic-dark); --end-color: var(--_end-classic-dark); --minimap-bg: var(--_minimap-bg-classic-dark); --minimap-border: var(--_minimap-border-classic-dark); --minimap-player: var(--_minimap-player-classic-dark); }
-         /* Repeat similar blocks for blueprint, neon, cyber */
-        body[data-maze-style="blueprint"] { --maze-bg: var(--_maze-classic-light); --wall-color: var(--_wall-classic-light); /* ... etc */ }
-        body[data-maze-style="blueprint"].dark-mode { --maze-bg: var(--_maze-classic-dark); --wall-color: var(--_wall-classic-dark); /* ... etc */ }
-        body[data-maze-style="neon"] { --maze-bg: var(--_maze-classic-light); --wall-color: var(--_wall-classic-light); /* ... etc */ }
-        body[data-maze-style="neon"].dark-mode { --maze-bg: var(--_maze-classic-dark); --wall-color: var(--_wall-classic-dark); /* ... etc */ }
-        body[data-maze-style="cyber"] { --maze-bg: var(--_maze-classic-light); --wall-color: var(--_wall-classic-light); /* ... etc */ }
-        body[data-maze-style="cyber"].dark-mode { --maze-bg: var(--_maze-classic-dark); --wall-color: var(--_wall-classic-dark); /* ... etc */ }
 
+        /* Blueprint Style */
+        body[data-maze-style="blueprint"] {
+            --_maze-style-light: #2962ff;                         --_maze-style-dark: #1a237e; /* Darker blue */
+            --_wall-style-light: #ffffff;                         --_wall-style-dark: #bbdefb; /* Light blue lines */
+            --_wall-glow-style-light: rgba(255, 255, 255, 0.1);   --_wall-glow-style-dark: rgba(187, 222, 251, 0.15);
+            --_wall-shadow-style-light: transparent;              --_wall-shadow-style-dark: transparent;
+            --_player-glow-style-light: rgba(255, 235, 59, 0.5);  --_player-glow-style-dark: rgba(255, 245, 157, 0.5); /* Yellow player glow */
+            --_player-shadow-style-light: transparent;            --_player-shadow-style-dark: transparent;
+            --_start-style-light: #1c50d3;                        --_start-style-dark: #101649;
+            --_end-style-light: #5c87ff;                          --_end-style-dark: #3f51b5;
+            --_minimap-bg-style-light: rgba(41, 98, 255, 0.85);   --_minimap-bg-style-dark: rgba(26, 35, 126, 0.9);
+            --_minimap-border-style-light: #ffffff;               --_minimap-border-style-dark: #bbdefb;
+            --_minimap-start-style-light: var(--_start-style-light); --_minimap-start-style-dark: var(--_start-style-dark);
+            --_minimap-end-style-light: var(--_end-style-light);     --_minimap-end-style-dark: var(--_end-style-dark);
+            --wall-thickness-factor: 0.04; /* Thinner lines */
+            --player-size-factor: 0.65;
+        }
 
-        /* --- General Layout (Mobile App First) --- */
+        /* Neon Style */
+        body[data-maze-style="neon"] {
+            --_maze-style-light: #1a1a2e;                         --_maze-style-dark: #0f0f1a;
+            --_wall-style-light: #ff00ff;                         --_wall-style-dark: #ff40ff; /* Magenta */
+            --_wall-glow-style-light: rgba(255, 0, 255, 0.4);     --_wall-glow-style-dark: rgba(255, 64, 255, 0.5);
+            --_wall-shadow-style-light: transparent;              --_wall-shadow-style-dark: transparent;
+            --_player-glow-style-light: rgba(0, 255, 255, 0.5);   --_player-glow-style-dark: rgba(100, 255, 255, 0.6); /* Cyan player glow */
+            --_player-shadow-style-light: transparent;            --_player-shadow-style-dark: transparent;
+            --_start-style-light: #330033;                        --_start-style-dark: #4d004d;
+            --_end-style-light: #800080;                          --_end-style-dark: #b300b3;
+            --_minimap-bg-style-light: rgba(26, 26, 46, 0.9);     --_minimap-bg-style-dark: rgba(15, 15, 26, 0.95);
+            --_minimap-border-style-light: #ff00ff;               --_minimap-border-style-dark: #ff40ff;
+            --_minimap-start-style-light: var(--_start-style-light); --_minimap-start-style-dark: var(--_start-style-dark);
+            --_minimap-end-style-light: var(--_end-style-light);     --_minimap-end-style-dark: var(--_end-style-dark);
+            --wall-thickness-factor: 0.1;
+            --player-size-factor: 0.6;
+        }
+
+        /* Cyber Style */
+        body[data-maze-style="cyber"] {
+            --_maze-style-light: #2a004f;                         --_maze-style-dark: #1a0033; /* Deep Purple/Indigo */
+            --_wall-style-light: #00ffff;                         --_wall-style-dark: #7fffd4; /* Cyan/Aquamarine */
+            --_wall-glow-style-light: rgba(0, 255, 255, 0.3);     --_wall-glow-style-dark: rgba(127, 255, 212, 0.35);
+            --_wall-shadow-style-light: transparent;              --_wall-shadow-style-dark: transparent;
+            --_player-glow-style-light: rgba(255, 105, 180, 0.5); --_player-glow-style-dark: rgba(255, 155, 200, 0.6); /* Hot Pink player glow */
+            --_player-shadow-style-light: transparent;            --_player-shadow-style-dark: transparent;
+            --_start-style-light: #480082;                        --_start-style-dark: #300050;
+            --_end-style-light: #8a2be2;                          --_end-style-dark: #9370db; /* Blue Violet / Medium Purple */
+            --_minimap-bg-style-light: rgba(42, 0, 79, 0.9);      --_minimap-bg-style-dark: rgba(26, 0, 51, 0.95);
+            --_minimap-border-style-light: #00ffff;               --_minimap-border-style-dark: #7fffd4;
+            --_minimap-start-style-light: var(--_start-style-light); --_minimap-start-style-dark: var(--_start-style-dark);
+            --_minimap-end-style-light: var(--_end-style-light);     --_minimap-end-style-dark: var(--_end-style-dark);
+            --wall-thickness-factor: 0.08;
+            --player-size-factor: 0.6;
+        }
+
+        /* --- General Layout & UI Elements --- */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        /* Use 100% height for robustness on mobile */
-        html, body { height: 100%; }
+        html, body { height: 100%; width: 100%; } /* Ensure body takes full width */
         body {
             font-family: var(--font-family);
             background-color: var(--bg-color);
             color: var(--text-color);
-            width: 100%; /* Use width 100% */
-            overflow: hidden;
+            width: 100%; /* Redundant but safe */
+            overflow: hidden; /* Prevent scrollbars */
             display: flex;
             flex-direction: column;
             transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
         }
-
-        /* --- Main Content Area --- */
         #main-content {
             flex-grow: 1;
-            position: relative; /* Crucial for absolute children like overlays */
-            overflow: hidden;
+            position: relative;
+            overflow: hidden; /* Container should hide overflow */
             display: flex;
             flex-direction: column;
         }
-
-        /* --- Top UI Overlay (Timer) --- */
         #game-ui-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%;
-            height: var(--top-ui-height);
-            display: flex; justify-content: center; align-items: center;
-            padding: 5px 10px;
-            z-index: 100; /* Increased z-index */
-            pointer-events: none;
+            position: absolute; top: 0; left: 0; width: 100%; height: var(--top-ui-height);
+            display: flex; justify-content: center; align-items: center; padding: 5px 10px;
+            z-index: 100; pointer-events: none; /* Allow clicks through */
         }
         .timer-display {
-            background-color: rgba(var(--panel-bg-rgb, 255, 255, 255), 0.85); /* Use RGB for opacity */
-            color: var(--primary-color); padding: 0.3rem 0.8rem; border-radius: 15px;
-            font-size: 0.9rem; font-weight: bold; box-shadow: 0 1px 3px var(--shadow);
-            pointer-events: auto; display: inline-flex; align-items: center;
+            background-color: rgba(var(--panel-bg-rgb, 255, 255, 255), 0.85);
+            color: var(--primary-color);
+            padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.9rem; font-weight: bold;
+            box-shadow: 0 1px 3px var(--shadow); pointer-events: auto; /* Timer is clickable */
+            display: inline-flex; align-items: center;
+            transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
         }
-        body { --panel-bg-rgb: 255, 255, 255; } /* Light theme fallback */
-        body.dark-mode { --panel-bg-rgb: 30, 30, 30; }
-        .timer-display .best-time { display: none; }
-
-        /* --- Maze Container --- */
         #maze-container {
             flex-grow: 1;
-            position: relative; /* Stacking context */
-            overflow: hidden;
+            position: relative; /* Needed for absolute positioning of canvas */
+            overflow: hidden; /* CRITICAL: Prevents canvas overflow */
             background-color: var(--maze-bg);
-            display: flex; justify-content: center; align-items: center;
-            touch-action: none;
-            /* Ensure it doesn't get a higher z-index unintentionally */
+            display: flex; /* Needed for centering in overview */
+            justify-content: center; /* Needed for centering in overview */
+            align-items: center; /* Needed for centering in overview */
+            touch-action: none; /* Prevent default touch actions like scrolling */
             z-index: 1;
+            transition: background-color var(--transition-speed) ease;
         }
         #mazeCanvas {
-            display: block; position: absolute;
-            image-rendering: pixelated; image-rendering: crisp-edges;
+            display: block;
+            position: absolute; /* Necessary for both overview centering and player view */
+            image-rendering: pixelated; /* For sharp pixels at low res */
+            image-rendering: crisp-edges;
             transform-origin: top left;
-            /* Give canvas explicit lower z-index if needed, but usually not required */
-             /* z-index: 0; */
+            /* Transitions removed - handled by JS drawing loop */
+            /* DO NOT set width/height via CSS here if JS is controlling it */
+            /* Style width/height are set by JS in handleResize */
         }
-
-        /* --- Bottom Navigation Bar --- */
         #bottom-nav {
-            flex-shrink: 0; height: var(--bottom-nav-height);
-            background-color: var(--panel-bg); border-top: 1px solid var(--border-color);
-            box-shadow: 0 -2px 5px var(--shadow); display: flex;
-            justify-content: space-around; align-items: center;
-            padding: 0 10px;
-            z-index: 1000; /* High z-index */
+            flex-shrink: 0; height: var(--bottom-nav-height); background-color: var(--panel-bg);
+            border-top: 1px solid var(--border-color); box-shadow: 0 -2px 5px var(--shadow);
+            display: flex; justify-content: space-around; align-items: center; padding: 0 15px; gap: 10px;
+            z-index: 1000;
+            transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
         }
-        #bottom-nav button { /* Styles unchanged, should be fine */
-            background: none; border: none; color: var(--text-muted); display: flex;
-            flex-direction: column; align-items: center; padding: 5px 10px;
-            font-size: 0.75rem; cursor: pointer; transition: color 0.2s ease;
-            border-radius: 4px; min-height: 50px; justify-content: center;
-            flex-grow: 1; max-width: 150px; text-align: center;
-        }
+        #bottom-nav button { /* ... (button styles unchanged) ... */ background: none; border: none; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; padding: 5px 10px; font-size: 0.75rem; cursor: pointer; transition: color 0.2s ease, background-color 0.2s ease; border-radius: 4px; min-height: 50px; justify-content: center; flex-grow: 1; max-width: 120px; text-align: center; }
         #bottom-nav button .icon { font-size: 1.5rem; margin-bottom: 2px; }
-        #bottom-nav button.active, #bottom-nav button:active { color: var(--primary-color); }
+        #bottom-nav button.active { color: var(--primary-color); background-color: rgba(var(--primary-color-rgb), 0.1); }
+        #bottom-nav button:hover:not(:disabled):not(.active) { background-color: rgba(var(--primary-color-rgb), 0.05); }
         #bottom-nav button:disabled { color: var(--border-color); cursor: not-allowed; opacity: 0.6; }
 
-        /* --- Settings Modal (Z-indices checked) --- */
-        #settings-modal-backdrop { /* z-index: 1100 */
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(0, 0, 0, 0.6); z-index: 1100;
-            opacity: 0; visibility: hidden; transition: opacity var(--transition-speed) ease, visibility 0s linear var(--transition-speed);
-        }
-        #settings-modal { /* z-index: 1110 */
-            position: fixed; top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(0.9); width: 90%;
-            max-width: var(--modal-max-width); max-height: 85vh;
-            background-color: var(--panel-bg); border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 1110;
-            opacity: 0; visibility: hidden; transition: opacity var(--transition-speed) ease, transform var(--transition-speed) ease, visibility 0s linear var(--transition-speed);
-            display: flex; flex-direction: column;
-        }
+        /* --- Modal, Message Overlay, Loading, Minimap --- */
+        #settings-modal-backdrop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.6); z-index: 1100; opacity: 0; visibility: hidden; transition: opacity var(--transition-speed) ease, visibility 0s linear var(--transition-speed); }
+        #settings-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); width: 90%; max-width: var(--modal-max-width); max-height: 85vh; background-color: var(--panel-bg); border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 1110; opacity: 0; visibility: hidden; transition: opacity var(--transition-speed) ease, transform var(--transition-speed) ease, visibility 0s linear var(--transition-speed), background-color var(--transition-speed) ease; display: flex; flex-direction: column; }
         #settings-modal-backdrop.visible { opacity: 1; visibility: visible; transition-delay: 0s; }
         #settings-modal.visible { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); transition-delay: 0s; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1.2rem; border-bottom: 1px solid var(--border-color); flex-shrink: 0; }
-        .modal-header h2 { margin: 0; font-size: 1.2rem; color: var(--primary-color); }
-        #closeSettingsBtn { background: none; border: none; font-size: 1.8rem; line-height: 1; color: var(--text-muted); cursor: pointer; padding: 0.2rem; }
+        .modal-header { /* ... (unchanged) ... */ display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1.2rem; border-bottom: 1px solid var(--border-color); flex-shrink: 0; transition: border-color var(--transition-speed) ease; }
+        .modal-header h2 { margin: 0; font-size: 1.2rem; color: var(--primary-color); transition: color var(--transition-speed) ease; }
+        #closeSettingsBtn { background: none; border: none; font-size: 1.8rem; line-height: 1; color: var(--text-muted); cursor: pointer; padding: 0.2rem; transition: color var(--transition-speed) ease; }
         .modal-content { padding: 1rem 1.2rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1.2rem; }
-        /* ... (Inner modal control styles unchanged) ... */
-        .control-group { background-color: var(--control-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.8rem 1rem; box-shadow: 0 1px 3px var(--shadow); }
-        .control-group h3 { margin: 0 0 0.8rem 0; font-size: 0.9rem; font-weight: 600; color: var(--primary-color); padding-bottom: 0.4rem; border-bottom: 1px solid var(--border-color); }
-        label, .label-like { display: block; margin-bottom: 0.3rem; font-weight: 500; font-size: 0.85rem; color: var(--text-muted); padding-top: 0.2rem; }
-        input[type="number"], select { width: 100%; padding: 0.6rem 0.75rem; margin-bottom: 0.75rem; min-height: 42px; border: 1px solid var(--input-border); border-radius: 4px; background-color: var(--input-bg); color: var(--text-color); font-size: 0.9rem; }
-        button.modal-button { display: block; width: 100%; padding: 0.7rem 1.2rem; background-color: var(--primary-color); color: #ffffff; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9rem; font-weight: 500; margin-top: 0.5rem; text-align: center; min-height: 42px; }
+        .control-group { background-color: var(--control-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.8rem 1rem; box-shadow: 0 1px 3px var(--shadow); transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease; }
+        .control-group h3 { margin: 0 0 0.8rem 0; font-size: 0.9rem; font-weight: 600; color: var(--primary-color); padding-bottom: 0.4rem; border-bottom: 1px solid var(--border-color); transition: color var(--transition-speed) ease, border-color var(--transition-speed) ease; }
+        label, .label-like { display: block; margin-bottom: 0.3rem; font-weight: 500; font-size: 0.85rem; color: var(--text-muted); padding-top: 0.2rem; transition: color var(--transition-speed) ease; }
+        input[type="number"], select { width: 100%; padding: 0.6rem 0.75rem; margin-bottom: 0.75rem; min-height: 42px; border: 1px solid var(--input-border); border-radius: 4px; background-color: var(--input-bg); color: var(--text-color); font-size: 0.9rem; transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease, color var(--transition-speed) ease; }
+        button.modal-button { display: block; width: 100%; padding: 0.7rem 1.2rem; background-color: var(--primary-color); color: #ffffff; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9rem; font-weight: 500; margin-top: 0.5rem; text-align: center; min-height: 42px; transition: background-color var(--transition-speed) ease; }
         button.modal-button:hover:not(:disabled) { background-color: var(--primary-hover); }
         .button-group { display: flex; gap: 0.75rem; }
         .button-group button { flex: 1; }
@@ -352,105 +299,98 @@
         .choice-group { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
         .choice-group label { margin-bottom: 0; cursor: pointer; }
         .choice-group input[type="radio"], .choice-group input[type="checkbox"] { display: none; }
-        .choice-group span { display: inline-flex; align-items: center; justify-content: center; padding: 0.5rem 0.8rem; border: 1px solid var(--border-color); border-radius: 4px; background-color: var(--input-bg); font-size: 0.85rem; text-align: center; min-width: 36px; min-height: 36px; }
+        .choice-group span { display: inline-flex; align-items: center; justify-content: center; padding: 0.5rem 0.8rem; border: 1px solid var(--border-color); border-radius: 4px; background-color: var(--input-bg); font-size: 0.85rem; text-align: center; min-width: 36px; min-height: 36px; transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease, color var(--transition-speed) ease, box-shadow var(--transition-speed) ease; }
         .choice-group span.color-preview { width: 32px; height: 32px; padding: 0; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--border-color); }
-        .choice-group input:checked + span { background-color: var(--primary-color); color: white; border-color: var(--primary-color); box-shadow: 0 0 0 2px var(--primary-color-light); }
-        body.dark-mode .choice-group input:checked + span { box-shadow: 0 0 0 2px var(--primary-color-dark); }
-
-
-        /* --- Overlays & Indicators (Z-indices checked) --- */
-        #message-overlay { /* z-index: 1200 */
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(0, 0, 0, 0.75); display: flex; justify-content: center; align-items: center;
-            z-index: 1200; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s linear 0.3s; padding: 1rem;
-        }
+        .choice-group input:checked + span { background-color: var(--primary-color); color: white; border-color: var(--primary-color); box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.4); }
+        #message-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.75); display: flex; justify-content: center; align-items: center; z-index: 1200; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s linear 0.3s; padding: 1rem; }
         #message-overlay.visible { opacity: 1; visibility: visible; transition-delay: 0s; }
-        #message-box { background-color: var(--panel-bg); color: var(--text-color); padding: 1.5rem 2rem; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.25); transform: scale(0.9); transition: transform 0.3s ease; width: 90%; max-width: 350px; }
+        #message-box { background-color: var(--panel-bg); color: var(--text-color); padding: 1.5rem 2rem; border-radius: 10px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.25); transform: scale(0.9); transition: transform 0.3s ease, background-color var(--transition-speed) ease, color var(--transition-speed) ease; width: 90%; max-width: 350px; }
         #message-overlay.visible #message-box { transform: scale(1); transition-delay: 0s;}
-        #message-box h2 { margin: 0 0 1rem 0; font-size: 1.4rem; color: var(--primary-color); }
+        #message-box h2 { margin: 0 0 1rem 0; font-size: 1.4rem; color: var(--primary-color); transition: color var(--transition-speed) ease; }
         #message-box p { margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.5; }
         #message-box button { width: auto; padding: 0.7rem 1.8rem; font-size: 0.95rem; }
         #final-time-msg { font-weight: bold; margin-top:-0.5rem; margin-bottom: 1.5rem; display: none; }
-        #final-best-time-msg { font-size: 0.85rem; color: var(--text-muted); margin-top:-1rem; margin-bottom: 1.5rem; display: none; }
-
-
-        #loading-indicator { /* z-index: 1250 */
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.8); color: white; padding: 1.2rem 1.5rem;
-            border-radius: 8px; font-size: 1rem; z-index: 1250; text-align: center;
-            opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s linear 0.3s; pointer-events: none;
-        }
+        #final-best-time-msg { font-size: 0.85rem; color: var(--text-muted); margin-top:-1rem; margin-bottom: 1.5rem; display: none; transition: color var(--transition-speed) ease; }
+        #loading-indicator { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(0, 0, 0, 0.8); color: white; padding: 1.2rem 1.5rem; border-radius: 8px; font-size: 1rem; z-index: 1250; text-align: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0s linear 0.3s; pointer-events: none; }
         #loading-indicator.visible { opacity: 1; visibility: visible; transition-delay: 0s; }
-
-        /* --- Minimap (Z-index checked) --- */
-        #minimapContainer { /* z-index: 10 */
-            position: absolute; bottom: 10px; right: 10px;
-            border: 2px solid var(--minimap-border); background-color: var(--minimap-bg);
-            box-shadow: 0 0 8px rgba(0,0,0,0.25); z-index: 10; display: none;
-            max-width: 100px; max-height: 100px;
-            transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+        #minimapContainer {
+            position: absolute;
+            bottom: calc(var(--bottom-nav-height) + 15px); /* Position above bottom nav */
+            right: 15px;
+            border: 2px solid var(--minimap-border);
+            background-color: var(--minimap-bg);
+            box-shadow: 0 0 8px rgba(0,0,0,0.25);
+            z-index: 10;
+            display: none; /* Controlled by JS */
+            max-width: 120px; /* Slightly larger max */
+            max-height: 120px;
+            transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+            border-radius: 4px; /* Optional rounded corners */
         }
-        #minimapCanvas { display: block; image-rendering: pixelated; image-rendering: crisp-edges; }
+        #minimapCanvas {
+             display: block;
+             image-rendering: pixelated; image-rendering: crisp-edges;
+             /* Width/Height set by JS */
+        }
 
-        /* --- Print Styles (Unchanged) --- */
-        /* ... (Print styles as before) ... */
-         @media print {
-             body { --transition-speed: 0s !important; }
-            #bottom-nav, #settings-modal-backdrop, #settings-modal, #game-ui-overlay, #message-overlay, #loading-indicator, #minimapContainer, #fullscreenBtn { display: none !important; }
-            #main-content { border: none; padding: 0; width: 100% !important; height: 100% !important; }
-            #maze-container { width: 100% !important; height: auto !important; max-height: 95vh !important; padding: 0 !important; margin: 0 !important; overflow: visible !important; border: 1px solid #ccc !important; background-color: #fff !important; justify-content: flex-start !important; align-items: flex-start !important; }
-             body { background-color: #fff !important; color: #000 !important; /* Force light theme vars */ --bg-color: var(--bg-color-light); --text-color: #000000; --maze-bg: #ffffff; --wall-color: #000000; --player-color: #aaaaaa; --start-color: #dddddd; --end-color: #cccccc; --wall-glow: transparent; --wall-shadow: transparent; --player-glow: transparent; --player-shadow: transparent; --wall-thickness-factor: 0.1; --player-size-factor: 0.6; --end-marker-size-factor: 0.7; }
-             #mazeCanvas { position: static !important; max-width: 100% !important; height: auto !important; box-shadow: none !important; border: none !important; background-color: transparent !important; transform: none !important; left: 0 !important; top: 0 !important; }
+        /* --- Print Styles --- */
+        @media print {
+            body { --transition-speed: 0s !important; }
+            #bottom-nav, #settings-modal-backdrop, #settings-modal, #game-ui-overlay, #message-overlay, #loading-indicator, #minimapContainer { display: none !important; }
+            #main-content { border: none; padding: 0; width: 100% !important; height: 100% !important; flex-grow: 1 !important; }
+            #maze-container { width: 100% !important; height: auto !important; max-height: 95vh !important; padding: 0 !important; margin: 0 !important; overflow: visible !important; border: 1px solid #ccc !important; background-color: #fff !important; justify-content: flex-start !important; align-items: flex-start !important; flex-grow: 1 !important; }
+            body, body.dark-mode { /* Force light theme for printing */
+                background-color: #fff !important; color: #000 !important;
+                --bg-color: #ffffff; --text-color: #000000;
+                --maze-bg: #ffffff;
+                --wall-color: #000000; --wall-glow: transparent; --wall-shadow: transparent;
+                --player-color: #aaaaaa; --player-glow: transparent; --player-shadow: transparent;
+                --start-color: #e0e0e0; --end-color: #c0c0c0;
+                --minimap-start: var(--start-color); --minimap-end: var(--end-color); /* Use print start/end */
+                 /* Reset factors potentially modified by styles */
+                --wall-thickness-factor: 0.1;
+                --player-size-factor: 0.6;
+                --end-marker-size-factor: 0.7;
+            }
+            #mazeCanvas {
+                 position: static !important; /* Allow normal flow */
+                 max-width: 100% !important; /* Fit page width */
+                 height: auto !important; /* Maintain aspect ratio */
+                 box-shadow: none !important; border: none !important;
+                 background-color: transparent !important;
+                 transform: none !important;
+                 left: 0 !important; top: 0 !important;
+            }
+            @page { size: auto; margin: 5mm; }
         }
 
     </style>
 </head>
-<body data-maze-style="classic"> <!-- Initial style -->
+<body data-maze-style="classic"> <!-- Default style -->
 
+<!-- HTML Structure (unchanged) -->
 <main id="main-content">
-    <!-- In-Game UI Overlay (Timer) -->
-    <div id="game-ui-overlay">
-         <div class="timer-display">
-            <span id="current-time">00:00</span>
-        </div>
-    </div>
-
-    <!-- Maze Area -->
+    <div id="game-ui-overlay"><div class="timer-display"><span id="current-time">00:00</span></div></div>
     <div id="maze-container">
         <canvas id="mazeCanvas"></canvas>
-        <div id="minimapContainer">
-            <canvas id="minimapCanvas"></canvas>
-        </div>
+        <div id="minimapContainer"><canvas id="minimapCanvas"></canvas></div>
     </div>
-
-     <!-- Overlays for Messages and Loading -->
     <div id="message-overlay">
         <div id="message-box">
             <h2>¡Victoria!</h2>
             <p>¡Has encontrado la salida!</p>
-             <p id="final-time-msg"></p>
-             <p id="final-best-time-msg"></p>
-            <button id="playAgainBtn">Jugar Otra Vez</button>
+            <p id="final-time-msg"></p>
+            <p id="final-best-time-msg"></p>
+            <button id="playAgainBtn" class="modal-button">Jugar Otra Vez</button>
         </div>
     </div>
     <div id="loading-indicator">Generando...</div>
-
 </main>
-
-<!-- Bottom Navigation Bar -->
 <nav id="bottom-nav">
-    <button id="newGameBtn" title="Generar Nuevo Laberinto">
-        <!-- Replace with actual SVG or font icons if desired -->
-        <span class="icon">➕</span>
-        <span>Nuevo</span>
-    </button>
-    <button id="settingsBtn" title="Abrir Ajustes">
-        <span class="icon">⚙️</span>
-        <span>Ajustes</span>
-    </button>
+    <button id="newGameBtn" title="Generar Nuevo Laberinto"><span class="icon">➕</span><span>Nuevo</span></button>
+    <button id="viewModeBtn" title="Cambiar Vista (Actual: General)" data-mode="overview"><span class="icon">👁️</span><span>Vista</span></button>
+    <button id="settingsBtn" title="Abrir Ajustes"><span class="icon">⚙️</span><span>Ajustes</span></button>
 </nav>
-
-<!-- Settings Modal -->
 <div id="settings-modal-backdrop"></div>
 <div id="settings-modal" role="dialog" aria-labelledby="settingsModalTitle" aria-modal="true">
     <div class="modal-header">
@@ -458,17 +398,15 @@
         <button id="closeSettingsBtn" aria-label="Cerrar Ajustes">×</button>
     </div>
     <div class="modal-content">
-        <!-- Generation Settings -->
         <div class="control-group">
             <h3>Generación</h3>
-            <label for="modal-width">Ancho:</label>
-            <input type="number" id="modal-width" value="15" min="5"> <!-- Max set by JS -->
-            <label for="modal-height">Alto:</label>
-            <input type="number" id="modal-height" value="15" min="5"> <!-- Max set by JS -->
-             <p id="best-time-modal" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; text-align: center;">Record (Actual): --:--</p>
+            <label for="modal-width">Ancho (5-500):</label>
+            <input type="number" id="modal-width" value="15" min="5" max="500">
+            <label for="modal-height">Alto (5-500):</label>
+            <input type="number" id="modal-height" value="15" min="5" max="500">
+            <p id="best-time-modal" style="font-size: 0.85rem; color: var(--text-muted); margin: 0.5rem 0;">Record (Actual): --:--</p>
+            <button id="modal-generateBtn" class="modal-button">Generar Nuevo</button>
         </div>
-
-        <!-- Appearance Settings -->
         <div class="control-group">
             <h3>Apariencia</h3>
             <div class="switch-container">
@@ -480,495 +418,1647 @@
             </div>
             <label for="modal-mazeStyle" class="label-like">Estilo Visual:</label>
             <div class="choice-group" id="modal-mazeStyle">
-                 <!-- JS will sync checked state -->
-                <label><input type="radio" name="modal-style" value="classic"> <span>Clásico</span></label>
+                <label><input type="radio" name="modal-style" value="classic" checked> <span>Clásico</span></label>
                 <label><input type="radio" name="modal-style" value="matrix"> <span>Matrix</span></label>
                 <label><input type="radio" name="modal-style" value="blueprint"> <span>Plano</span></label>
                 <label><input type="radio" name="modal-style" value="neon"> <span>Neón</span></label>
                 <label><input type="radio" name="modal-style" value="cyber"> <span>Cyber</span></label>
             </div>
             <label class="label-like">Personaje:</label>
-            <div class="choice-group" id="modal-playerChoice">
-                 <!-- JS will sync checked state -->
-                 <label title="Rojo"><input type="radio" name="modal-player" value="#e63946" data-light="#e63946" data-dark="#ff8a80"> <span class="color-preview" style="background-color: #e63946;"></span></label>
+             <div class="choice-group" id="modal-playerChoice">
+                 <label title="Rojo"><input type="radio" name="modal-player" value="#e63946" data-light="#e63946" data-dark="#ff8a80" checked> <span class="color-preview" style="background-color: #e63946;"></span></label>
                  <label title="Azul"><input type="radio" name="modal-player" value="#1d3557" data-light="#1d3557" data-dark="#a1c4fd"> <span class="color-preview" style="background-color: #1d3557;"></span></label>
                  <label title="Verde"><input type="radio" name="modal-player" value="#588157" data-light="#588157" data-dark="#a5d6a7"> <span class="color-preview" style="background-color: #588157;"></span></label>
                  <label title="Amarillo"><input type="radio" name="modal-player" value="#ffb703" data-light="#ffb703" data-dark="#fff176"> <span class="color-preview" style="background-color: #ffb703;"></span></label>
                  <label title="Púrpura"><input type="radio" name="modal-player" value="#6a0dad" data-light="#6a0dad" data-dark="#ce93d8"> <span class="color-preview" style="background-color: #6a0dad;"></span></label>
-            </div>
+                 <!-- Colors specific to styles -->
+                 <label title="Matrix Player" data-style-specific="matrix"><input type="radio" name="modal-player" value="#ffffff" data-light="#ffffff" data-dark="#ffffff"> <span class="color-preview" style="background-color: #ffffff;"></span></label>
+                 <label title="Blueprint Player" data-style-specific="blueprint"><input type="radio" name="modal-player" value="#ffeb3b" data-light="#ffeb3b" data-dark="#fff59d"> <span class="color-preview" style="background-color: #ffeb3b;"></span></label>
+                 <label title="Neon Player" data-style-specific="neon"><input type="radio" name="modal-player" value="#00ffff" data-light="#00ffff" data-dark="#7fffd4"> <span class="color-preview" style="background-color: #00ffff;"></span></label>
+                 <label title="Cyber Player" data-style-specific="cyber"><input type="radio" name="modal-player" value="#ff69b4" data-light="#ff69b4" data-dark="#ff85c0"> <span class="color-preview" style="background-color: #ff69b4;"></span></label>
+             </div>
             <label class="label-like">Indicador Salida:</label>
             <div class="choice-group" id="modal-exitChoice">
-                 <!-- JS will sync checked state -->
-                <label><input type="radio" name="modal-exit" value="🏁"> <span>🏁</span></label>
+                <label><input type="radio" name="modal-exit" value="🏁" checked> <span>🏁</span></label>
                 <label><input type="radio" name="modal-exit" value="★"> <span>★</span></label>
-                <label><input type="radio" name="modal-exit" value="🚪"> <span>🚪</span></label>
+                <label><input type="radio" name="modal-exit" value="◎"> <span>◎</span></label> <!-- Changed from door -->
                 <label><input type="radio" name="modal-exit" value="🎯"> <span>🎯</span></label>
                 <label><input type="radio" name="modal-exit" value="✅"> <span>✅</span></label>
             </div>
-        </div>
-
-        <!-- View Settings -->
-         <div class="control-group">
-             <h3>Vista y Otros</h3>
-             <label for="modal-viewMode" class="label-like">Modo de Vista:</label>
-             <div class="choice-group" id="modal-viewMode">
-                  <!-- JS will sync checked state -->
-                 <label><input type="radio" name="modal-view" value="overview"> <span>General</span></label>
-                 <label><input type="radio" name="modal-view" value="playerCamera"> <span>Seguir</span></label>
-             </div>
-             <div class="button-group" style="margin-top: 1rem;">
-                 <button id="modal-fullscreenBtn" class="modal-button" title="Pantalla Completa">P. Completa</button>
-                 <button id="modal-printBtn" class="modal-button" title="Imprimir">Imprimir</button>
-             </div>
+            <div class="button-group" style="margin-top: 1rem;">
+                <button id="modal-printBtn" class="modal-button" title="Imprimir Laberinto Actual">Imprimir</button>
+            </div>
         </div>
     </div>
 </div>
 
-
 <script>
     // --- Constants & Settings ---
     const MAX_MAZE_DIMENSION = 500;
-    const MOBILE_MAX_MAZE_DIMENSION = 70; // Slightly larger max mobile maybe ok
+    const MOBILE_BREAKPOINT_WIDTH = 768;
+    const MOBILE_MAX_INPUT_DIMENSION = 70; // Max maze size adjustable on mobile
     const MIN_MAZE_DIMENSION = 5;
-    const CAMERA_SMOOTHING = 0.08;
-    const PLAYER_SMOOTHING = 0.2;
-    const GENERATION_YIELD_INTERVAL = 2500;
-    const MINIMAP_MAX_SIZE = 100;
-    const MINIMAP_PLAYER_DOT_SIZE = 2.5;
-    const BASE_CELL_SIZE_PLAYER_VIEW = 40;
-    const SWIPE_THRESHOLD = 25;
+    const CAMERA_SMOOTHING = 0.08; // Lower value = smoother camera
+    const PLAYER_SMOOTHING = 0.2; // Lower value = smoother player sprite movement
+    const GENERATION_YIELD_INTERVAL = 5000; // Check for UI updates during generation
+    const MINIMAP_MAX_SIZE = 120; // Max minimap dimension in pixels
+    const MINIMAP_PLAYER_DOT_SIZE = 3; // Size of player dot on minimap
+    const MINIMAP_CELL_MARKER_SCALE = 0.7; // Size of start/end markers on minimap
+    const BASE_CELL_SIZE_PLAYER_VIEW = 45; // Base size of cells in player view
+    const SWIPE_THRESHOLD = 25; // Min pixels for swipe gesture
+    const EFFECTS_MIN_CELL_SIZE = 12; // Minimum cell size to show glow/shadow effects
 
-    // --- Polyfills ---
-    // ... (Unchanged) ...
+    // --- Polyfills --- (unchanged)
     if (!Element.prototype.requestFullscreen) Element.prototype.requestFullscreen = Element.prototype.mozRequestFullScreen || Element.prototype.webkitRequestFullscreen || Element.prototype.msRequestFullscreen;
     if (!document.exitFullscreen) document.exitFullscreen = document.mozCancelFullScreen || document.webkitExitFullscreen || document.msExitFullscreen;
     Object.defineProperty(document, 'fullscreenElement', { get: () => document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement || document._fullscreenElement });
 
-
-    // --- Helper Functions ---
-    // ... (Unchanged) ...
+    // --- Helper Functions --- (unchanged)
     const lerp = (a, b, t) => a + (b - a) * t;
     const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
     const getCssVariable = (varName) => getComputedStyle(document.body).getPropertyValue(varName).trim();
 
-
-    // --- Classes (Cell, MazeGenerator, Player, Minimap, Renderer) ---
-    // PASTE THE UNMODIFIED CLASSES HERE from the previous version
-    // (No changes needed in the core classes themselves)
+    // --- Classes (Cell, MazeGenerator, Player) --- (unchanged)
     class Cell { constructor(x, y) { this.x = x; this.y = y; this.visited = false; this.walls = { top: true, right: true, bottom: true, left: true }; } }
     class MazeGenerator {
         constructor() { this.grid = []; this.width = 0; this.height = 0; this.start = { x: 0, y: 0 }; this.end = { x: 0, y: 0 }; this.generationComplete = false; }
         async generate(width, height, yieldCallback) {
             this.width = clamp(width, MIN_MAZE_DIMENSION, MAX_MAZE_DIMENSION); this.height = clamp(height, MIN_MAZE_DIMENSION, MAX_MAZE_DIMENSION);
-            this.generationComplete = false; /* console.time(`Generation ${this.width}x${this.height}`); */
+            this.generationComplete = false; const startTime = performance.now(); console.log(`Starting generation for ${this.width}x${this.height}...`);
             this.grid = Array.from({ length: this.height }, (_, y) => Array.from({ length: this.width }, (_, x) => new Cell(x, y)));
             this.start = { x: 0, y: 0 }; this.end = { x: Math.max(0,this.width - 1), y: Math.max(0, this.height - 1) };
             const stack = []; let cellsProcessedSinceYield = 0; const totalCells = this.width * this.height; let visitedCells = 0;
             const startCell = this.grid[this.start.y][this.start.x]; startCell.visited = true; visitedCells++; stack.push(startCell);
             while (stack.length > 0) {
                 const current = stack[stack.length - 1]; const neighbors = this.getUnvisitedNeighbors(current);
-                if (neighbors.length > 0) { const next = neighbors[Math.floor(Math.random() * neighbors.length)]; this.removeWall(current, next); next.visited = true; visitedCells++; stack.push(next); } else { stack.pop(); }
+                if (neighbors.length > 0) { const next = neighbors[Math.floor(Math.random() * neighbors.length)]; this.removeWall(current, next); next.visited = true; visitedCells++; stack.push(next); }
+                else { stack.pop(); }
                 cellsProcessedSinceYield++;
                 if (yieldCallback && cellsProcessedSinceYield >= GENERATION_YIELD_INTERVAL) {
-                    await new Promise(resolve => setTimeout(resolve, 0)); const progress = visitedCells / totalCells; yieldCallback(progress); cellsProcessedSinceYield = 0;
+                    const progress = visitedCells / totalCells; yieldCallback(progress);
+                    await new Promise(resolve => setTimeout(resolve, 0)); cellsProcessedSinceYield = 0;
                 }
             }
-            if (yieldCallback) yieldCallback(1); this.generationComplete = true; /* console.timeEnd(`Generation ${this.width}x${this.height}`); */ return this;
+            if (yieldCallback) yieldCallback(1); this.generationComplete = true; const endTime = performance.now(); console.log(`Generation finished in ${(endTime - startTime).toFixed(2)} ms`); return this;
         }
         getUnvisitedNeighbors(cell) { const neighbors = []; const { x, y } = cell; const check = (nx, ny) => { if (nx >= 0 && nx < this.width && ny >= 0 && ny < this.height && !this.grid[ny][nx].visited) { neighbors.push(this.grid[ny][nx]); } }; check(x, y - 1); check(x + 1, y); check(x, y + 1); check(x - 1, y); return neighbors; }
         removeWall(a, b) { const dx = a.x - b.x; const dy = a.y - b.y; if (dx === 1) { a.walls.left = false; b.walls.right = false; } else if (dx === -1) { a.walls.right = false; b.walls.left = false; } if (dy === 1) { a.walls.top = false; b.walls.bottom = false; } else if (dy === -1) { a.walls.bottom = false; b.walls.top = false; } }
     }
-    class Player {
-        constructor(x, y, color) { this.x = x; this.y = y; this.targetX = x; this.targetY = y; this.pixelX = x; this.pixelY = y; this.color = color; this.isMoving = false; }
-        moveTo(newX, newY) { this.targetX = newX; this.targetY = newY; if (Math.abs(this.targetX - this.pixelX) > 0.01 || Math.abs(this.targetY - this.pixelY) > 0.01) { this.isMoving = true; } }
-        update(deltaTime) { if (!this.isMoving) return; this.pixelX = lerp(this.pixelX, this.targetX, PLAYER_SMOOTHING); this.pixelY = lerp(this.pixelY, this.targetY, PLAYER_SMOOTHING); if (Math.abs(this.pixelX - this.targetX) < 0.01 && Math.abs(this.pixelY - this.targetY) < 0.01) { this.pixelX = this.targetX; this.pixelY = this.targetY; this.x = this.targetX; this.y = this.targetY; this.isMoving = false; } }
-        canMove(dx, dy, maze) { if (this.isMoving) return false; const currentX = this.x; const currentY = this.y; const nextX = currentX + dx; const nextY = currentY + dy; if (nextX < 0 || nextX >= maze.width || nextY < 0 || nextY >= maze.height) return false; const currentCell = maze.grid[currentY]?.[currentX]; if (!currentCell) return false; if (dx === 1 && currentCell.walls.right) return false; if (dx === -1 && currentCell.walls.left) return false; if (dy === 1 && currentCell.walls.bottom) return false; if (dy === -1 && currentCell.walls.top) return false; return { newX: nextX, newY: nextY }; }
-        setColor(color) { this.color = color; }
-    }
+    class Player { constructor(x, y, color) { this.x = x; this.y = y; this.targetX = x; this.targetY = y; this.pixelX = x; this.pixelY = y; this.color = color; this.isMoving = false; } moveTo(newX, newY) { this.targetX = newX; this.targetY = newY; if (Math.abs(this.targetX - this.pixelX) > 0.01 || Math.abs(this.targetY - this.pixelY) > 0.01) { this.isMoving = true; } } update(deltaTime) { if (!this.isMoving) return; this.pixelX = lerp(this.pixelX, this.targetX, PLAYER_SMOOTHING); this.pixelY = lerp(this.pixelY, this.targetY, PLAYER_SMOOTHING); if (Math.abs(this.pixelX - this.targetX) < 0.01 && Math.abs(this.pixelY - this.targetY) < 0.01) { this.pixelX = this.targetX; this.pixelY = this.targetY; this.x = Math.round(this.targetX); /* Snap logical position */ this.y = Math.round(this.targetY); this.isMoving = false; } } canMove(dx, dy, maze) { if (this.isMoving) return false; const currentX = this.x; const currentY = this.y; const nextX = currentX + dx; const nextY = currentY + dy; if (nextX < 0 || nextX >= maze.width || nextY < 0 || nextY >= maze.height) return false; const currentCell = maze.grid[currentY]?.[currentX]; if (!currentCell) return false; if (dx === 1 && currentCell.walls.right) return false; if (dx === -1 && currentCell.walls.left) return false; if (dy === 1 && currentCell.walls.bottom) return false; if (dy === -1 && currentCell.walls.top) return false; return { newX: nextX, newY: nextY }; } setColor(color) { this.color = color; } }
+
+    // --- Minimap Class --- (Largely unchanged, relies on CSS variables being set correctly)
     class Minimap {
-         constructor(canvasId, containerId) { this.container = document.getElementById(containerId); this.canvas = document.getElementById(canvasId); this.ctx = this.canvas.getContext('2d', { alpha: false }); this.maze = null; this.player = null; this.size = MINIMAP_MAX_SIZE; this.cellWidth = 1; this.cellHeight = 1; this.wallColor = '#000'; this.playerColor = '#f00'; this.bgColor = 'rgba(255, 255, 255, 0.7)'; this.borderColor = '#888'; this.visible = false; this.offscreenCanvas = document.createElement('canvas'); this.offscreenCtx = this.offscreenCanvas.getContext('2d', { alpha: false }); this.needsRedraw = true; }
-         updateSource(maze, player) { this.maze = maze; this.player = player; this.needsRedraw = true; this.updateColors(); if (this.maze && this.maze.generationComplete) { this.calculateDimensions(); } }
-         updateColors() { this.wallColor = getCssVariable('--wall-color'); this.playerColor = getCssVariable('--minimap-player'); this.bgColor = getCssVariable('--minimap-bg'); this.borderColor = getCssVariable('--minimap-border'); this.container.style.backgroundColor = this.bgColor; this.container.style.borderColor = this.borderColor; this.needsRedraw = true; }
-         calculateDimensions() { if (!this.maze || !this.container) return; const aspect = this.maze.width / this.maze.height; let mapW, mapH; const maxSize = parseInt(getComputedStyle(this.container).maxWidth) || MINIMAP_MAX_SIZE; if (aspect > 1) { mapW = maxSize; mapH = Math.max(1, Math.floor(maxSize / aspect)); } else { mapH = maxSize; mapW = Math.max(1, Math.floor(maxSize * aspect)); } if (this.canvas.width !== mapW || this.canvas.height !== mapH) { this.canvas.width = mapW; this.canvas.height = mapH; this.offscreenCanvas.width = mapW; this.offscreenCanvas.height = mapH; this.cellWidth = mapW / this.maze.width; this.cellHeight = mapH / this.maze.height; this.needsRedraw = true; } this.container.style.width = `${mapW}px`; this.container.style.height = `${mapH}px`; }
-         show() { if (!this.visible) { this.container.style.display = 'block'; this.visible = true; if (this.maze && this.maze.generationComplete) { this.calculateDimensions(); this.draw(); } } }
-         hide() { if (this.visible) { this.container.style.display = 'none'; this.visible = false; } }
-         draw() { if (!this.visible || !this.maze || !this.player || !this.maze.generationComplete) { this.hide(); return; } if (this.needsRedraw) { this.drawMazeToOffscreen(); this.needsRedraw = false; } this.ctx.drawImage(this.offscreenCanvas, 0, 0); this.ctx.fillStyle = this.playerColor; const playerX = this.player.pixelX * this.cellWidth; const playerY = this.player.pixelY * this.cellHeight; this.ctx.beginPath(); this.ctx.arc(playerX + this.cellWidth / 2, playerY + this.cellHeight / 2, MINIMAP_PLAYER_DOT_SIZE, 0, Math.PI * 2); this.ctx.fill(); }
-         drawMazeToOffscreen() { if (!this.maze) return; const ctx = this.offscreenCtx; const width = this.offscreenCanvas.width; const height = this.offscreenCanvas.height; ctx.fillStyle = this.bgColor; ctx.fillRect(0, 0, width, height); ctx.strokeStyle = this.wallColor; ctx.lineWidth = Math.max(1, Math.min(this.cellWidth, this.cellHeight) * 0.1); ctx.beginPath(); for (let y = 0; y < this.maze.height; y++) { for (let x = 0; x < this.maze.width; x++) { const cell = this.maze.grid[y]?.[x]; if (!cell) continue; const cx = x * this.cellWidth; const cy = y * this.cellHeight; const cew = cx + this.cellWidth; const ceh = cy + this.cellHeight; if (cell.walls.bottom) { ctx.moveTo(cx, ceh); ctx.lineTo(cew, ceh); } if (cell.walls.right) { ctx.moveTo(cew, cy); ctx.lineTo(cew, ceh); } } } ctx.moveTo(0, 0); ctx.lineTo(width, 0); ctx.moveTo(0, 0); ctx.lineTo(0, height); ctx.stroke(); }
+        constructor(canvasId, containerId) {
+            this.container = document.getElementById(containerId);
+            this.canvas = document.getElementById(canvasId);
+            this.ctx = this.canvas.getContext('2d', { alpha: false }); // No transparency needed for base
+            this.maze = null;
+            this.player = null;
+            this.size = MINIMAP_MAX_SIZE;
+            this.cellWidth = 1;
+            this.cellHeight = 1;
+            // Colors read dynamically from CSS
+            this.wallColor = '#000';
+            this.playerColor = '#f00';
+            this.bgColor = 'rgba(255, 255, 255, 0.7)';
+            this.borderColor = '#888';
+            this.startColor = '#afa';
+            this.endColor = '#aaf';
+            this.visible = false;
+            // Offscreen canvas for static maze elements
+            this.offscreenCanvas = document.createElement('canvas');
+            this.offscreenCtx = this.offscreenCanvas.getContext('2d', { alpha: false });
+            this.needsRedraw = true; // Flag to redraw the static background
+        }
+
+        updateSource(maze, player) {
+            const mazeChanged = this.maze !== maze;
+            this.maze = maze;
+            this.player = player;
+            if (mazeChanged) {
+                 this.needsRedraw = true;
+            }
+            this.updateColors(); // Always check colors in case theme/style changed
+            if (this.maze && this.maze.generationComplete) {
+                 this.calculateDimensions(); // Recalculate size if maze exists
+            }
+        }
+
+        updateColors() {
+             // Read FINAL computed values, which depend on theme and style
+            const newWallColor = getCssVariable('--wall-color'); // Use main wall color for minimap
+            const newPlayerColor = getCssVariable('--minimap-player'); // Specific minimap player color (often same as main player)
+            const newBgColor = getCssVariable('--minimap-bg');
+            const newBorderColor = getCssVariable('--minimap-border');
+            const newStartColor = getCssVariable('--minimap-start'); // Specific minimap start
+            const newEndColor = getCssVariable('--minimap-end');     // Specific minimap end
+
+            let colorsChanged = false;
+            if (this.wallColor !== newWallColor) { this.wallColor = newWallColor; colorsChanged = true; }
+            if (this.playerColor !== newPlayerColor) { this.playerColor = newPlayerColor; colorsChanged = true; }
+            if (this.bgColor !== newBgColor) { this.bgColor = newBgColor; this.container.style.backgroundColor = this.bgColor; colorsChanged = true; }
+            if (this.borderColor !== newBorderColor) { this.borderColor = newBorderColor; this.container.style.borderColor = this.borderColor; colorsChanged = true; }
+            if (this.startColor !== newStartColor) { this.startColor = newStartColor; colorsChanged = true; }
+            if (this.endColor !== newEndColor) { this.endColor = newEndColor; colorsChanged = true; }
+
+            if (colorsChanged) {
+                this.needsRedraw = true; // Need to redraw offscreen canvas if colors changed
+            }
+        }
+
+        calculateDimensions() {
+            if (!this.maze || !this.container) return;
+            const aspect = this.maze.width / this.maze.height;
+            let mapW, mapH;
+            // Use current container max size from CSS
+            const maxSize = parseInt(getComputedStyle(this.container).maxWidth) || MINIMAP_MAX_SIZE;
+
+            if (aspect >= 1) { // Wider than tall
+                mapW = maxSize;
+                mapH = Math.max(1, Math.floor(maxSize / aspect));
+            } else { // Taller than wide
+                mapH = maxSize;
+                mapW = Math.max(1, Math.floor(maxSize * aspect));
+            }
+
+            // Only resize if necessary
+            if (this.canvas.width !== mapW || this.canvas.height !== mapH) {
+                this.canvas.width = mapW;
+                this.canvas.height = mapH;
+                this.offscreenCanvas.width = mapW;
+                this.offscreenCanvas.height = mapH;
+                this.cellWidth = mapW / this.maze.width;
+                this.cellHeight = mapH / this.maze.height;
+                this.needsRedraw = true; // Dimensions changed, redraw static parts
+            }
+            // Update container CSS size
+            this.container.style.width = `${mapW}px`;
+            this.container.style.height = `${mapH}px`;
+        }
+
+        show() {
+            if (!this.visible) {
+                 this.container.style.display = 'block';
+                 this.visible = true;
+                 if (this.maze && this.maze.generationComplete) {
+                     this.calculateDimensions(); // Ensure dimensions are correct on show
+                     this.needsRedraw = true;    // Force redraw on show
+                     this.draw();
+                 }
+            }
+        }
+
+        hide() {
+            if (this.visible) {
+                this.container.style.display = 'none';
+                this.visible = false;
+            }
+        }
+
+        draw() {
+            // Don't draw if hidden, or no maze/player data
+            if (!this.visible || !this.maze || !this.player || !this.maze.generationComplete) {
+                //this.hide(); // Optionally hide if conditions aren't met
+                return;
+            }
+
+            // Redraw static background if needed
+            if (this.needsRedraw) {
+                this.drawMazeToOffscreen();
+                this.needsRedraw = false;
+            }
+
+            // Draw the pre-rendered static maze from offscreen canvas
+            this.ctx.drawImage(this.offscreenCanvas, 0, 0);
+
+            // Draw Player dot on top
+            this.ctx.fillStyle = this.playerColor;
+            const playerX = this.player.pixelX * this.cellWidth; // Use smooth pixel position
+            const playerY = this.player.pixelY * this.cellHeight;
+            const playerDrawSize = Math.max(1.5, MINIMAP_PLAYER_DOT_SIZE); // Ensure minimum size
+
+            // Center the dot within its cell representation
+            const centerX = playerX + this.cellWidth / 2;
+            const centerY = playerY + this.cellHeight / 2;
+
+            this.ctx.beginPath();
+            this.ctx.arc(centerX, centerY, playerDrawSize / 2, 0, Math.PI * 2); // Use radius
+            this.ctx.fill();
+        }
+
+        drawMazeToOffscreen() {
+            if (!this.maze) return;
+
+            const ctx = this.offscreenCtx;
+            const width = this.offscreenCanvas.width;
+            const height = this.offscreenCanvas.height;
+
+            // Background
+            ctx.fillStyle = this.bgColor;
+            ctx.fillRect(0, 0, width, height);
+
+            // Start/End Markers (scaled squares)
+            const markerSizeW = Math.max(1, this.cellWidth * MINIMAP_CELL_MARKER_SCALE);
+            const markerSizeH = Math.max(1, this.cellHeight * MINIMAP_CELL_MARKER_SCALE);
+            const markerOffsetX = (this.cellWidth - markerSizeW) / 2;
+            const markerOffsetY = (this.cellHeight - markerSizeH) / 2;
+
+            ctx.fillStyle = this.startColor;
+            ctx.fillRect(
+                this.maze.start.x * this.cellWidth + markerOffsetX,
+                this.maze.start.y * this.cellHeight + markerOffsetY,
+                markerSizeW, markerSizeH
+            );
+            ctx.fillStyle = this.endColor;
+            ctx.fillRect(
+                this.maze.end.x * this.cellWidth + markerOffsetX,
+                this.maze.end.y * this.cellHeight + markerOffsetY,
+                markerSizeW, markerSizeH
+            );
+
+            // Walls (thin lines)
+            ctx.strokeStyle = this.wallColor;
+            ctx.lineWidth = Math.max(1, Math.min(this.cellWidth, this.cellHeight) * 0.1); // Thin lines
+            ctx.beginPath();
+            for (let y = 0; y < this.maze.height; y++) {
+                for (let x = 0; x < this.maze.width; x++) {
+                    const cell = this.maze.grid[y]?.[x];
+                    if (!cell) continue;
+                    const cx = x * this.cellWidth;
+                    const cy = y * this.cellHeight;
+                    const cew = cx + this.cellWidth; // cell end width
+                    const ceh = cy + this.cellHeight; // cell end height
+
+                    // Draw only right and bottom walls to avoid double drawing
+                    if (cell.walls.right) { // Draw right wall if present
+                        ctx.moveTo(cew, cy);
+                        ctx.lineTo(cew, ceh);
+                    }
+                    if (cell.walls.bottom) { // Draw bottom wall if present
+                        ctx.moveTo(cx, ceh);
+                        ctx.lineTo(cew, ceh);
+                    }
+                }
+            }
+             // Draw top and left borders explicitly
+             ctx.moveTo(0, 0); ctx.lineTo(width, 0); // Top border
+             ctx.moveTo(0, 0); ctx.lineTo(0, height); // Left border
+
+            ctx.stroke();
+        }
     }
+
+
+    // --- Renderer Class (REFACTORED FOR PROFESSIONAL LOOK & CAMERA) ---
     class Renderer {
-         constructor(canvasId, mazeContainerId) { this.canvas = document.getElementById(canvasId); this.container = document.getElementById(mazeContainerId); this.ctx = this.canvas.getContext('2d', { alpha: false }); this.maze = null; this.player = null; this.minimap = null; this.cellSize = 20; this.viewMode = 'overview'; this.isPrinting = false; this.cameraX = 0; this.cameraY = 0; this.targetCameraX = 0; this.targetCameraY = 0; this.wallCanvas = document.createElement('canvas'); this.wallCtx = this.wallCanvas.getContext('2d', { alpha: true }); this.needsWallRedraw = true; this.wallColor = '#000'; this.bgColor = '#fff'; this.startColor = '#afa'; this.endColor = '#aaf'; this.exitMarker = '🏁'; this.wallThicknessFactor = 0.1; this.playerSizeFactor = 0.6; this.endMarkerSizeFactor = 0.7; this.resizeTimeout = null; window.addEventListener('resize', () => { clearTimeout(this.resizeTimeout); this.resizeTimeout = setTimeout(() => this.handleResize(), 150); }); }
-         setMaze(maze) { this.maze = maze; this.needsWallRedraw = true; this.resetCamera(); this.handleResize(); }
-         setPlayer(player) { this.player = player; this.resetCamera(); }
-         setMinimap(minimap) { this.minimap = minimap; }
-         // Added forceRedraw parameter
-         updateStyleSettings(forceRedraw = false) {
-             const newWallColor = getCssVariable('--wall-color'); const newBgColor = getCssVariable('--maze-bg'); const newStartColor = getCssVariable('--start-color'); const newEndColor = getCssVariable('--end-color'); const newWallThickness = parseFloat(getCssVariable('--wall-thickness-factor')); const newPlayerSize = parseFloat(getCssVariable('--player-size-factor')); const newEndMarkerSize = parseFloat(getCssVariable('--end-marker-size-factor'));
-             // Check if any relevant visual property changed OR if forced
-             if (forceRedraw || newWallColor !== this.wallColor || newBgColor !== this.bgColor || newStartColor !== this.startColor || newEndColor !== this.endColor || newWallThickness !== this.wallThicknessFactor || newPlayerSize !== this.playerSizeFactor || newEndMarkerSize !== this.endMarkerSizeFactor) {
-                 this.wallColor = newWallColor; this.bgColor = newBgColor; this.startColor = newStartColor; this.endColor = newEndColor; this.wallThicknessFactor = newWallThickness; this.playerSizeFactor = newPlayerSize; this.endMarkerSizeFactor = newEndMarkerSize;
-                 this.canvas.style.backgroundColor = this.bgColor; // Might not be needed if canvas draws bg
-                 this.needsWallRedraw = true; // Force static redraw
+         constructor(canvasId, mazeContainerId) {
+            this.canvas = document.getElementById(canvasId);
+            this.container = document.getElementById(mazeContainerId);
+            if (!this.canvas || !this.container) {
+                throw new Error("Canvas or container element not found!");
+            }
+            this.ctx = this.canvas.getContext('2d', { alpha: false }); // Maze bg is opaque
+            this.maze = null;
+            this.player = null;
+            this.minimap = null;
+            this.cellSize = 20; // Default/Overview size, Player view uses BASE_CELL_SIZE_PLAYER_VIEW
+            this.viewMode = 'overview'; // 'overview' or 'playerCamera'
+            this.isPrinting = false;
+
+            // Camera state (world coordinates, center of the view)
+            this.cameraX = 0;
+            this.cameraY = 0;
+            this.targetCameraX = 0;
+            this.targetCameraY = 0;
+
+            // Offscreen canvas for overview/print mode static elements (walls, start/end)
+            this.wallCanvas = document.createElement('canvas');
+            this.wallCtx = this.wallCanvas.getContext('2d', { alpha: true }); // Needs alpha for potential glow
+            this.needsWallRedraw = true; // Flag to redraw the offscreen canvas
+
+            // Style properties cache
+            this.wallColor = '#000'; this.bgColor = '#fff'; this.startColor = '#afa'; this.endColor = '#aaf';
+            this.wallGlow = 'transparent'; this.wallShadow = 'transparent';
+            this.playerGlow = 'transparent'; this.playerShadow = 'transparent';
+            this.exitMarker = '🏁';
+            this.wallThicknessFactor = 0.1; this.playerSizeFactor = 0.6; this.endMarkerSizeFactor = 0.7;
+
+            this.resizeTimeout = null;
+            window.addEventListener('resize', () => {
+                 clearTimeout(this.resizeTimeout);
+                 this.resizeTimeout = setTimeout(() => this.handleResize(), 150);
+            });
+            // Initial setup
+            this.updateStyleSettings(true); // Read initial styles
+         }
+
+         setMaze(maze) {
+             this.maze = maze;
+             this.needsWallRedraw = true; // Maze changed, need to redraw offscreen canvas
+             this.handleResize(); // Adjust canvas size based on new maze dimensions/view mode
+             this.resetCamera(); // Center camera on start
+             if (this.minimap) this.minimap.updateSource(maze, this.player);
+             console.log(`Renderer: Maze set (${maze.width}x${maze.height})`);
+         }
+
+         setPlayer(player) {
+             this.player = player;
+             this.resetCamera(); // Center camera on player
+             if (this.minimap) this.minimap.updateSource(this.maze, player);
+             console.log("Renderer: Player set");
+         }
+
+         setMinimap(minimap) {
+             this.minimap = minimap;
+         }
+
+         // Reads CSS variables and updates internal cache. Returns true if styles changed.
+         updateStyleSettings(forceUpdate = false) {
+             const newWallColor = getCssVariable('--wall-color');
+             const newBgColor = getCssVariable('--maze-bg');
+             const newStartColor = getCssVariable('--start-color');
+             const newEndColor = getCssVariable('--end-color');
+             const newWallGlow = getCssVariable('--wall-glow');
+             const newWallShadow = getCssVariable('--wall-shadow');
+             const newPlayerGlow = getCssVariable('--player-glow');
+             const newPlayerShadow = getCssVariable('--player-shadow');
+             const newWallThickness = parseFloat(getCssVariable('--wall-thickness-factor'));
+             const newPlayerSize = parseFloat(getCssVariable('--player-size-factor'));
+             const newEndMarkerSize = parseFloat(getCssVariable('--end-marker-size-factor'));
+             // Player color is handled separately via player.setColor and read directly in drawPlayer
+
+             let changed = forceUpdate;
+             if (this.wallColor !== newWallColor) { this.wallColor = newWallColor; changed = true; }
+             if (this.bgColor !== newBgColor) { this.bgColor = newBgColor; changed = true; }
+             if (this.startColor !== newStartColor) { this.startColor = newStartColor; changed = true; }
+             if (this.endColor !== newEndColor) { this.endColor = newEndColor; changed = true; }
+             if (this.wallGlow !== newWallGlow) { this.wallGlow = newWallGlow; changed = true; }
+             if (this.wallShadow !== newWallShadow) { this.wallShadow = newWallShadow; changed = true; }
+             if (this.playerGlow !== newPlayerGlow) { this.playerGlow = newPlayerGlow; changed = true; }
+             if (this.playerShadow !== newPlayerShadow) { this.playerShadow = newPlayerShadow; changed = true; }
+             if (this.wallThicknessFactor !== newWallThickness) { this.wallThicknessFactor = newWallThickness; changed = true; }
+             if (this.playerSizeFactor !== newPlayerSize) { this.playerSizeFactor = newPlayerSize; changed = true; }
+             if (this.endMarkerSizeFactor !== newEndMarkerSize) { this.endMarkerSizeFactor = newEndMarkerSize; changed = true; }
+
+             if (changed) {
+                 console.log("Renderer: Styles updated.");
+                 this.needsWallRedraw = true; // If any style changed, overview/print canvas needs redraw
                  if (this.minimap) this.minimap.updateColors(); // Update minimap colors too
+                 return true;
+             }
+             return false;
+         }
+
+         setExitMarker(marker) {
+             if (this.exitMarker !== marker) {
+                 this.exitMarker = marker;
+                 this.needsWallRedraw = true; // Need to redraw marker on offscreen canvas
+                 console.log(`Renderer: Exit marker set to ${marker}`);
              }
          }
-         setExitMarker(marker) { if (this.exitMarker !== marker) { this.exitMarker = marker; this.needsWallRedraw = true; } }
+
          setViewMode(mode) {
              if (this.viewMode !== mode) {
+                 console.log(`Renderer: Switching view mode to: ${mode}`);
                  this.viewMode = mode;
-                 this.handleResize();
-                 // Mostrar/ocultar minimapa solo en modo cámara del jugador
-                 if (this.minimap) {
-                     if (mode === 'playerCamera') {
-                         this.minimap.show();
-                         this.minimap.needsRedraw = true;
-                         this.minimap.draw();
-                     } else {
-                         this.minimap.hide();
-                     }
+                 this.handleResize(); // CRUCIAL: Recalculate sizes/camera based on new mode
+                 if (this.minimap) { // Show/hide minimap
+                     if (mode === 'playerCamera') this.minimap.show();
+                     else this.minimap.hide();
                  }
+                 const viewBtn = document.getElementById('viewModeBtn');
+                 if (viewBtn) {
+                     viewBtn.title = mode === 'overview' ? 'Cambiar Vista (Actual: General)' : 'Cambiar Vista (Actual: Jugador)';
+                     viewBtn.dataset.mode = mode; // Store mode on button
+                     viewBtn.classList.toggle('active', mode === 'playerCamera');
+                 }
+                 this.needsWallRedraw = true; // Force redraw after mode switch
+                 this.drawFrame(); // Draw immediately after switch
              }
          }
-         resetCamera() { if (!this.maze || !this.player) return; const initialCamX = (this.player.x + 0.5) * this.cellSize; const initialCamY = (this.player.y + 0.5) * this.cellSize; this.cameraX = this.targetCameraX = initialCamX; this.cameraY = this.targetCameraY = initialCamY; if (this.viewMode === 'playerCamera') { this.applyCameraTransform(); } }
-         handleResize() { if (!this.maze || !this.container) return; const containerWidth = this.container.clientWidth; const containerHeight = this.container.clientHeight; if (containerWidth === 0 || containerHeight === 0) return; if (this.viewMode === 'overview') { const cellW = containerWidth / this.maze.width; const cellH = containerHeight / this.maze.height; this.cellSize = Math.max(1, Math.floor(Math.min(cellW, cellH))); const totalMazeWidth = this.maze.width * this.cellSize; const totalMazeHeight = this.maze.height * this.cellSize; this.canvas.width = totalMazeWidth; this.canvas.height = totalMazeHeight; this.canvas.style.width = `${totalMazeWidth}px`; this.canvas.style.height = `${totalMazeHeight}px`; this.canvas.style.left = `${(containerWidth - totalMazeWidth) / 2}px`; this.canvas.style.top = `${(containerHeight - totalMazeHeight) / 2}px`; this.canvas.style.transform = ''; } else { this.cellSize = Math.max(15, Math.min(60, BASE_CELL_SIZE_PLAYER_VIEW)); const totalMazeWidth = this.maze.width * this.cellSize; const totalMazeHeight = this.maze.height * this.cellSize; this.canvas.width = totalMazeWidth; this.canvas.height = totalMazeHeight; this.canvas.style.width = `${totalMazeWidth}px`; this.canvas.style.height = `${totalMazeHeight}px`; this.canvas.style.left = '0px'; this.canvas.style.top = '0px'; this.resetCamera(); this.applyCameraTransform(); } this.needsWallRedraw = true; if(this.minimap) { this.minimap.calculateDimensions(); this.minimap.needsRedraw = true; } this.drawFrame(); }
-         updateCamera(deltaTime) { if (this.viewMode !== 'playerCamera' || !this.player || !this.maze) return; this.targetCameraX = (this.player.pixelX + 0.5) * this.cellSize; this.targetCameraY = (this.player.pixelY + 0.5) * this.cellSize; this.cameraX = lerp(this.cameraX, this.targetCameraX, CAMERA_SMOOTHING); this.cameraY = lerp(this.cameraY, this.targetCameraY, CAMERA_SMOOTHING); }
-         applyCameraTransform() { if (this.viewMode !== 'playerCamera' || !this.container) return; const containerWidth = this.container.clientWidth; const containerHeight = this.container.clientHeight; const viewOffsetX = containerWidth / 2 - this.cameraX; const viewOffsetY = containerHeight / 2 - this.cameraY; this.canvas.style.transform = `translate(${viewOffsetX}px, ${viewOffsetY}px)`; }
-         drawFrame() { if (!this.maze || !this.player || !this.maze.generationComplete || this.isPrinting) return; this.updateStyleSettings(); if (this.viewMode === 'playerCamera') { this.updateCamera(); this.applyCameraTransform(); } if (this.needsWallRedraw) { this.drawWallsToOffscreen(); this.needsWallRedraw = false; } this.ctx.fillStyle = this.bgColor; this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height); this.ctx.drawImage(this.wallCanvas, 0, 0); const ctx = this.ctx; ctx.fillStyle = this.player.color; const playerSize = this.cellSize * this.playerSizeFactor; const playerRenderX = this.player.pixelX * this.cellSize; const playerRenderY = this.player.pixelY * this.cellSize; const playerCenterX = playerRenderX + this.cellSize / 2; const playerCenterY = playerRenderY + this.cellSize / 2; const playerRadius = playerSize / 2; const playerGlow = getCssVariable('--player-glow'); const playerShadow = getCssVariable('--player-shadow'); if (playerGlow && playerGlow !== 'none' && playerGlow !== 'transparent') { ctx.shadowColor = playerGlow; ctx.shadowBlur = Math.max(5, this.cellSize * 0.2); ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0; ctx.beginPath(); ctx.arc(playerCenterX, playerCenterY, playerRadius, 0, Math.PI * 2); ctx.fill(); } ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.beginPath(); ctx.arc(playerCenterX, playerCenterY, playerRadius, 0, Math.PI * 2); ctx.fill(); if (playerShadow && playerShadow !== 'none' && playerShadow !== 'transparent') { ctx.shadowColor = playerShadow; ctx.shadowBlur = Math.max(3, this.cellSize * 0.1); ctx.shadowOffsetX = -1; ctx.shadowOffsetY = -1; ctx.fill(); ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0; } if (this.viewMode === 'playerCamera' && this.minimap) { this.minimap.draw(); } }
-         drawWallsToOffscreen() { if (!this.maze || !this.canvas.width || !this.canvas.height) return; this.wallCanvas.width = this.canvas.width; this.wallCanvas.height = this.canvas.height; const ctx = this.wallCtx; ctx.clearRect(0, 0, this.wallCanvas.width, this.wallCanvas.height); ctx.fillStyle = this.startColor; ctx.fillRect(this.maze.start.x * this.cellSize, this.maze.start.y * this.cellSize, this.cellSize, this.cellSize); ctx.fillStyle = this.endColor; ctx.fillRect(this.maze.end.x * this.cellSize, this.maze.end.y * this.cellSize, this.cellSize, this.cellSize); ctx.strokeStyle = this.wallColor; ctx.lineWidth = Math.max(1, this.cellSize * this.wallThicknessFactor); ctx.lineCap = 'round'; ctx.lineJoin = 'round'; const wallGlow = getCssVariable('--wall-glow'); if (wallGlow && wallGlow !== 'none' && wallGlow !== 'transparent') { ctx.shadowColor = wallGlow; ctx.shadowBlur = Math.max(3, this.cellSize * 0.15); ctx.shadowOffsetX = 1; ctx.shadowOffsetY = 1; } ctx.beginPath(); for (let y = 0; y < this.maze.height; y++) { for (let x = 0; x < this.maze.width; x++) { const cell = this.maze.grid[y]?.[x]; if (!cell) continue; const cx = x * this.cellSize; const cy = y * this.cellSize; const cew = cx + this.cellSize; const ceh = cy + this.cellSize; if (cell.walls.top) { ctx.moveTo(cx, cy); ctx.lineTo(cew, cy); } if (cell.walls.right) { ctx.moveTo(cew, cy); ctx.lineTo(cew, ceh); } if (cell.walls.bottom) { ctx.moveTo(cew, ceh); ctx.lineTo(cx, ceh); } if (cell.walls.left) { ctx.moveTo(cx, ceh); ctx.lineTo(cx, cy); } } } ctx.stroke(); ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0; if (this.exitMarker) { const markerSize = this.cellSize * this.endMarkerSizeFactor; const markerX = this.maze.end.x * this.cellSize + this.cellSize / 2; const markerY = this.maze.end.y * this.cellSize + this.cellSize / 2; ctx.font = `${markerSize * 0.8}px ${getCssVariable('--font-family')}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = this.wallColor; ctx.fillText(this.exitMarker, markerX, markerY); } }
-         prepareForPrint() { if (!this.maze || !this.player) return null; this.isPrinting = true; const currentViewMode = this.viewMode; this.setViewMode('overview'); const PRINT_RESOLUTION_BASE = 2000; const aspect = this.maze.width / this.maze.height; let printCellSize = (aspect > 1) ? Math.max(1, Math.floor(PRINT_RESOLUTION_BASE / this.maze.width)) : Math.max(1, Math.floor(PRINT_RESOLUTION_BASE / this.maze.height)); const printCanvasWidth = this.maze.width * printCellSize; const printCanvasHeight = this.maze.height * printCellSize; const oldW = this.canvas.width; const oldH = this.canvas.height; const oldCellSize = this.cellSize; const oldStyles = { width: this.canvas.style.width, height: this.canvas.style.height, left: this.canvas.style.left, top: this.canvas.style.top, transform: this.canvas.style.transform, backgroundColor: this.canvas.style.backgroundColor }; this.canvas.width = printCanvasWidth; this.canvas.height = printCanvasHeight; this.cellSize = printCellSize; this.wallColor = '#000000'; this.bgColor = '#ffffff'; this.startColor = '#dddddd'; this.endColor = '#cccccc'; this.playerColor = '#aaaaaa'; this.wallThicknessFactor = 0.1; this.playerSizeFactor = 0.6; this.endMarkerSizeFactor = 0.7; this.wallCtx.shadowColor = 'transparent'; this.ctx.shadowColor = 'transparent'; this.drawWallsToOffscreen(); const ctx = this.ctx; ctx.fillStyle = this.bgColor; ctx.fillRect(0, 0, this.canvas.width, this.canvas.height); ctx.drawImage(this.wallCanvas, 0, 0); const playerSize = this.cellSize * this.playerSizeFactor; ctx.fillStyle = this.playerColor; ctx.beginPath(); ctx.arc(this.player.x * this.cellSize + this.cellSize / 2, this.player.y * this.cellSize + this.cellSize / 2, playerSize / 2, 0, Math.PI * 2); ctx.fill(); return { oldW, oldH, oldCellSize, oldStyles, currentViewMode }; }
-         restoreAfterPrint(savedState) { if (!savedState) return; this.canvas.width = savedState.oldW; this.canvas.height = savedState.oldH; this.cellSize = savedState.oldCellSize; this.canvas.style.width = savedState.oldStyles.width; this.canvas.style.height = savedState.oldStyles.height; this.canvas.style.left = savedState.oldStyles.left; this.canvas.style.top = savedState.oldStyles.top; this.canvas.style.transform = savedState.oldStyles.transform; this.canvas.style.backgroundColor = savedState.oldStyles.backgroundColor; this.isPrinting = false; this.updateStyleSettings(true); /* Force redraw after print */ this.setViewMode(savedState.currentViewMode); /* This redraws */ }
+
+         resetCamera() {
+             if (!this.maze || !this.player) return;
+             // Base camera target on player's *logical* position
+             // Use the cell size relevant to the *current* view mode for calculation
+             const currentCellSize = this.viewMode === 'playerCamera' ? BASE_CELL_SIZE_PLAYER_VIEW : this.cellSize;
+             this.targetCameraX = (this.player.x + 0.5) * currentCellSize;
+             this.targetCameraY = (this.player.y + 0.5) * currentCellSize;
+             // Snap camera immediately on reset/mode change
+             this.cameraX = this.targetCameraX;
+             this.cameraY = this.targetCameraY;
+             console.log(`Renderer: Camera reset/snapped to world coords (${this.cameraX.toFixed(1)}, ${this.cameraY.toFixed(1)})`);
+         }
+
+         handleResize() {
+             if (!this.container) return;
+             const containerWidth = this.container.clientWidth;
+             const containerHeight = this.container.clientHeight;
+             if (containerWidth <= 0 || containerHeight <= 0) return; // Skip if container not rendered yet
+
+             console.log(`Renderer: HandleResize called. Mode: ${this.viewMode}, Container: ${containerWidth}x${containerHeight}`);
+
+             if (this.viewMode === 'overview') {
+                 if (!this.maze) return; // Need maze dimensions for overview
+
+                 // Calculate cell size to fit maze within container
+                 const cellW = containerWidth / this.maze.width;
+                 const cellH = containerHeight / this.maze.height;
+                 this.cellSize = Math.max(1, Math.floor(Math.min(cellW, cellH))); // Use floor for crisp pixels
+
+                 const totalMazeWidth = this.maze.width * this.cellSize;
+                 const totalMazeHeight = this.maze.height * this.cellSize;
+
+                 // Resize canvas RENDERING surface
+                 this.canvas.width = totalMazeWidth;
+                 this.canvas.height = totalMazeHeight;
+                 // Resize canvas ELEMENT size and position it centered
+                 this.canvas.style.width = `${totalMazeWidth}px`;
+                 this.canvas.style.height = `${totalMazeHeight}px`;
+                 this.canvas.style.left = `${Math.round((containerWidth - totalMazeWidth) / 2)}px`;
+                 this.canvas.style.top = `${Math.round((containerHeight - totalMazeHeight) / 2)}px`;
+                 this.canvas.style.position = 'absolute'; // Ensure it's positioned
+
+                 console.log(`Renderer: Overview resize - cellSize=${this.cellSize.toFixed(2)}, canvas=${this.canvas.width}x${this.canvas.height}`);
+                 this.needsWallRedraw = true; // Need to redraw the offscreen wall canvas at new size
+             }
+             else { // 'playerCamera' mode
+                 this.cellSize = BASE_CELL_SIZE_PLAYER_VIEW; // Use fixed cell size
+
+                 // Set canvas RENDERING surface AND ELEMENT size to fill the container
+                 this.canvas.width = containerWidth;
+                 this.canvas.height = containerHeight;
+                 this.canvas.style.width = `${containerWidth}px`;
+                 this.canvas.style.height = `${containerHeight}px`;
+                 this.canvas.style.left = '0px'; // Position at top-left
+                 this.canvas.style.top = '0px';
+                 this.canvas.style.position = 'absolute'; // Ensure it's positioned
+
+                 console.log(`Renderer: PlayerCamera resize - cellSize=${this.cellSize}, canvas=${this.canvas.width}x${this.canvas.height}`);
+                 this.resetCamera(); // Recalculate camera position based on new container size / fixed cell size
+                 // No need for wall redraw flag here, player view draws directly
+             }
+
+             // Update minimap dimensions if it exists
+             if(this.minimap) {
+                 this.minimap.calculateDimensions();
+                 this.minimap.needsRedraw = true;
+             }
+             this.drawFrame(); // Redraw immediately after any resize
+         }
+
+         // Calculates target camera position and smoothly interpolates
+         updateCamera(deltaTime) {
+            if (this.viewMode !== 'playerCamera' || !this.player || !this.maze) return;
+
+            // Target position is center of player's *current smooth pixel* position in world coordinates
+            this.targetCameraX = (this.player.pixelX + 0.5) * this.cellSize;
+            this.targetCameraY = (this.player.pixelY + 0.5) * this.cellSize;
+
+            // Smoothly interpolate current camera position towards the target
+            // Use a clamp on the smoothing factor based on delta time to prevent large jumps
+            const smoothingFactor = clamp(CAMERA_SMOOTHING * (deltaTime / (1000/60)), 0.01, 0.9); // Adjust based on 60fps target
+            this.cameraX = lerp(this.cameraX, this.targetCameraX, smoothingFactor);
+            this.cameraY = lerp(this.cameraY, this.targetCameraY, smoothingFactor);
+         }
+
+
+         drawFrame(timestamp = 0) { // timestamp might be passed from requestAnimationFrame
+            if (!this.maze || !this.player || !this.maze.generationComplete || this.isPrinting) {
+                //console.log("Draw frame skipped (conditions not met)");
+                return;
+            }
+
+            const stylesPossiblyChanged = this.updateStyleSettings(); // Update style cache, check if changed
+
+            // --- Update ---
+            if (this.player.isMoving) {
+                 // Assuming deltaTime is roughly 16ms for 60fps if timestamp isn't reliable
+                const deltaTime = timestamp > 0 && this.lastDrawTime > 0 ? timestamp - this.lastDrawTime : 16.67;
+                this.player.update(deltaTime);
+            }
+            if (this.viewMode === 'playerCamera') {
+                const deltaTime = timestamp > 0 && this.lastDrawTime > 0 ? timestamp - this.lastDrawTime : 16.67;
+                this.updateCamera(deltaTime); // Smoothly move camera
+            }
+            this.lastDrawTime = timestamp; // Store timestamp for delta calculation next frame
+
+            // --- Draw ---
+            const ctx = this.ctx;
+            const canvasW = this.canvas.width;
+            const canvasH = this.canvas.height;
+
+            // Clear canvas with background color
+            ctx.fillStyle = this.bgColor;
+            ctx.fillRect(0, 0, canvasW, canvasH);
+
+            // Render based on view mode
+            if (this.viewMode === 'overview') {
+                // Redraw offscreen wall canvas if needed (maze changed, styles changed, resize)
+                if (this.needsWallRedraw || stylesPossiblyChanged) {
+                    this.drawMazeStaticToOffscreen(); // Uses this.cellSize calculated in handleResize
+                    this.needsWallRedraw = false;
+                    console.log("Renderer: Redrawing overview offscreen canvas");
+                }
+                // Draw the pre-rendered walls/start/end from offscreen canvas
+                if (this.wallCanvas.width > 0 && this.wallCanvas.height > 0) {
+                    ctx.drawImage(this.wallCanvas, 0, 0);
+                }
+                // Draw Player (only if cells are reasonably visible)
+                if (this.cellSize >= 1) { // Only draw if cells are at least 1px
+                   // Player position is relative to the top-left of the canvas (no camera offset)
+                   this.drawPlayer(ctx, this.player.pixelX * this.cellSize, this.player.pixelY * this.cellSize, 0, 0);
+                }
+            }
+            else { // 'playerCamera' - Draw visible portion directly onto main canvas
+                const camX = this.cameraX;
+                const camY = this.cameraY;
+                const halfW = canvasW / 2;
+                const halfH = canvasH / 2;
+                const currentCellSize = this.cellSize; // Should be BASE_CELL_SIZE_PLAYER_VIEW
+
+                // Calculate world-to-canvas offset (canvas coords corresponding to world coords 0,0)
+                const offsetX = -camX + halfW;
+                const offsetY = -camY + halfH;
+
+                // Calculate visible cell range (in maze grid coordinates) with a buffer
+                const minVisibleX = Math.max(0, Math.floor((camX - halfW) / currentCellSize) - 1);
+                const maxVisibleX = Math.min(this.maze.width, Math.ceil((camX + halfW) / currentCellSize) + 1);
+                const minVisibleY = Math.max(0, Math.floor((camY - halfH) / currentCellSize) - 1);
+                const maxVisibleY = Math.min(this.maze.height, Math.ceil((camY + halfH) / currentCellSize) + 1);
+
+                // --- Draw Visible Static Elements (directly to main canvas) ---
+
+                // 1. Draw Start/End Cell Backgrounds
+                ctx.fillStyle = this.startColor;
+                const startDrawX = this.maze.start.x * currentCellSize + offsetX;
+                const startDrawY = this.maze.start.y * currentCellSize + offsetY;
+                if (this.maze.start.x >= minVisibleX && this.maze.start.x < maxVisibleX && this.maze.start.y >= minVisibleY && this.maze.start.y < maxVisibleY) {
+                    ctx.fillRect(startDrawX, startDrawY, currentCellSize, currentCellSize);
+                }
+                ctx.fillStyle = this.endColor;
+                const endDrawX = this.maze.end.x * currentCellSize + offsetX;
+                const endDrawY = this.maze.end.y * currentCellSize + offsetY;
+                 if (this.maze.end.x >= minVisibleX && this.maze.end.x < maxVisibleX && this.maze.end.y >= minVisibleY && this.maze.end.y < maxVisibleY) {
+                    ctx.fillRect(endDrawX, endDrawY, currentCellSize, currentCellSize);
+                }
+
+                // 2. Draw Walls
+                ctx.strokeStyle = this.wallColor;
+                ctx.lineWidth = Math.max(1, currentCellSize * this.wallThicknessFactor);
+                ctx.lineCap = 'round'; // Smooth ends
+                ctx.lineJoin = 'round'; // Smooth joins
+
+                // Apply wall glow/shadow if cells are big enough and style defines it
+                const canShowEffects = currentCellSize > EFFECTS_MIN_CELL_SIZE;
+                let shadowApplied = false;
+                if (canShowEffects) {
+                    if (this.wallGlow && this.wallGlow !== 'transparent' && this.wallGlow !== 'none') {
+                        ctx.shadowColor = this.wallGlow;
+                        ctx.shadowBlur = Math.max(3, currentCellSize * 0.15);
+                        ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0; // Glow centered
+                        shadowApplied = true;
+                    } else if (this.wallShadow && this.wallShadow !== 'transparent' && this.wallShadow !== 'none') {
+                        ctx.shadowColor = this.wallShadow;
+                        ctx.shadowBlur = Math.max(2, currentCellSize * 0.05);
+                        ctx.shadowOffsetX = Math.max(1, currentCellSize * 0.02);
+                        ctx.shadowOffsetY = Math.max(1, currentCellSize * 0.02);
+                        shadowApplied = true;
+                    }
+                }
+
+                ctx.beginPath(); // Start path for all visible walls
+                for (let y = minVisibleY; y < maxVisibleY; y++) {
+                    for (let x = minVisibleX; x < maxVisibleX; x++) {
+                        const cell = this.maze.grid[y]?.[x];
+                        if (!cell) continue;
+
+                        // Calculate draw coordinates for this cell's top-left corner on the canvas
+                        const drawX = Math.round(x * currentCellSize + offsetX); // Use Math.round for potentially crisper lines
+                        const drawY = Math.round(y * currentCellSize + offsetY);
+
+                        // Optimization: Check if cell is roughly within canvas bounds before drawing details
+                        // (Could be more precise, but this is a quick check)
+                         if (drawX + currentCellSize < -ctx.lineWidth || drawX > canvasW + ctx.lineWidth ||
+                            drawY + currentCellSize < -ctx.lineWidth || drawY > canvasH + ctx.lineWidth) {
+                            continue;
+                        }
+
+                        // Add walls to the single path
+                        const drawX_right = Math.round(drawX + currentCellSize);
+                        const drawY_bottom = Math.round(drawY + currentCellSize);
+                        if (cell.walls.top) { ctx.moveTo(drawX, drawY); ctx.lineTo(drawX_right, drawY); }
+                        if (cell.walls.right) { ctx.moveTo(drawX_right, drawY); ctx.lineTo(drawX_right, drawY_bottom); }
+                        if (cell.walls.bottom) { ctx.moveTo(drawX_right, drawY_bottom); ctx.lineTo(drawX, drawY_bottom); }
+                        if (cell.walls.left) { ctx.moveTo(drawX, drawY_bottom); ctx.lineTo(drawX, drawY); }
+                    }
+                }
+                ctx.stroke(); // Draw all wall segments in the path at once
+
+                // Reset shadow after drawing walls
+                if (shadowApplied) {
+                    ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0;
+                    ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+                }
+
+                 // 3. Draw Exit Marker (if end cell is visible and reasonably sized)
+                if (this.exitMarker && currentCellSize > 10 &&
+                    this.maze.end.x >= minVisibleX && this.maze.end.x < maxVisibleX &&
+                    this.maze.end.y >= minVisibleY && this.maze.end.y < maxVisibleY)
+                {
+                    const markerSize = currentCellSize * this.endMarkerSizeFactor;
+                    // Center marker within the end cell visually
+                    const markerX = endDrawX + currentCellSize / 2;
+                    const markerY = endDrawY + currentCellSize / 2 + markerSize * 0.1; // Slight baseline adjustment often needed for emojis
+                    ctx.font = `${markerSize * 0.8}px ${getCssVariable('--font-family')}`; // Slightly smaller than max size
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillStyle = this.wallColor; // Use wall color for good contrast on endColor bg
+                    // Optional small shadow for marker itself
+                    // ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 2; ctx.shadowOffsetY = 1;
+                    ctx.fillText(this.exitMarker, markerX, markerY);
+                    // ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+                }
+
+                // --- Draw Player ---
+                // Player's world coordinates (using smooth pixel position)
+                const playerWorldX = this.player.pixelX * currentCellSize;
+                const playerWorldY = this.player.pixelY * currentCellSize;
+                // Draw player relative to the camera offset
+                this.drawPlayer(ctx, playerWorldX, playerWorldY, offsetX, offsetY);
+
+                // --- Draw Minimap ---
+                if (this.minimap) this.minimap.draw();
+            }
+         }
+
+         // Helper to draw the player (used by both view modes)
+         // worldX, worldY: top-left corner of player's CELL in world coordinates
+         // offsetX, offsetY: world-to-canvas offset (0 for overview, calculated for playerCamera)
+         drawPlayer(ctx, worldX, worldY, offsetX, offsetY) {
+             const currentCellSize = this.cellSize; // Cell size for the current view
+             // Calculate the center position of the player on the canvas
+             const centerX = worldX + offsetX + currentCellSize / 2;
+             const centerY = worldY + offsetY + currentCellSize / 2;
+             const playerRadius = Math.max(1, (currentCellSize * this.playerSizeFactor) / 2); // Ensure min radius
+
+             if (!this.player || !this.player.color) return; // Need player color
+
+             ctx.fillStyle = this.player.color;
+
+             // Apply effects if cells are large enough
+             const canShowEffects = currentCellSize > EFFECTS_MIN_CELL_SIZE;
+             let shadowApplied = false;
+
+             // 1. Draw Glow (if any) - Drawn first, centered
+             if (canShowEffects && this.playerGlow && this.playerGlow !== 'transparent' && this.playerGlow !== 'none') {
+                 ctx.shadowColor = this.playerGlow;
+                 ctx.shadowBlur = Math.max(5, currentCellSize * 0.25); // Larger blur for glow
+                 ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+                 ctx.beginPath(); ctx.arc(centerX, centerY, playerRadius, 0, Math.PI * 2); ctx.fill(); // Fill applies the shadow/glow
+                 shadowApplied = true; // Mark that shadow props were used
+             }
+
+             // Reset shadow before drawing main circle & potential shadow
+             if (shadowApplied) {
+                  ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0;
+                  ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+                  shadowApplied = false; // Reset flag
+             }
+
+             // 2. Draw Main Player Circle
+             ctx.beginPath(); ctx.arc(centerX, centerY, playerRadius, 0, Math.PI * 2); ctx.fill();
+
+             // 3. Draw Shadow (if any) - Drawn last, offset slightly
+             if (canShowEffects && this.playerShadow && this.playerShadow !== 'transparent' && this.playerShadow !== 'none') {
+                 ctx.shadowColor = this.playerShadow;
+                 ctx.shadowBlur = Math.max(3, currentCellSize * 0.1); // Smaller blur for shadow
+                 ctx.shadowOffsetX = Math.max(1, currentCellSize * 0.03); // Small offset
+                 ctx.shadowOffsetY = Math.max(1, currentCellSize * 0.03);
+                 // Re-fill the same path to apply the shadow properties
+                 ctx.fill();
+                 shadowApplied = true; // Mark that shadow props were used
+             }
+
+             // Reset shadow settings definitively after drawing player
+             if (shadowApplied) {
+                 ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0;
+                 ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+             }
+         }
+
+
+         // Draws static maze elements (walls, start/end, marker) to the offscreen canvas
+         // Used ONLY for overview mode rendering and print mode preparation.
+         drawMazeStaticToOffscreen() {
+            // Should only run if needed (overview/print)
+            if (this.viewMode === 'playerCamera' && !this.isPrinting) {
+                console.warn("drawMazeStaticToOffscreen called unexpectedly in playerCamera mode (non-print)");
+                return;
+            }
+            if (!this.maze || !this.canvas.width || !this.canvas.height) {
+                console.warn("drawMazeStaticToOffscreen skipped: no maze or canvas dimensions.");
+                return;
+            }
+
+            // Use the cellSize appropriate for the current mode (overview or print calculated size)
+            const currentCellSize = this.cellSize;
+
+            // Resize wall canvas to match main canvas size for this mode
+            // Use Math.ceil to avoid potential 1px gaps if canvas size isn't integer multiple
+            const canvasW = Math.ceil(this.maze.width * currentCellSize);
+            const canvasH = Math.ceil(this.maze.height * currentCellSize);
+
+            if (this.wallCanvas.width !== canvasW || this.wallCanvas.height !== canvasH) {
+                 this.wallCanvas.width = canvasW;
+                 this.wallCanvas.height = canvasH;
+                 console.log(`Renderer: Resized offscreen wallCanvas to ${canvasW}x${canvasH}`);
+            }
+
+            const ctx = this.wallCtx;
+            ctx.clearRect(0, 0, this.wallCanvas.width, this.wallCanvas.height); // Clear previous drawing
+
+            // --- Draw Static Elements ---
+
+            // 1. Draw Start/End Cell Backgrounds
+            ctx.fillStyle = this.startColor;
+            ctx.fillRect(this.maze.start.x * currentCellSize, this.maze.start.y * currentCellSize, currentCellSize, currentCellSize);
+            ctx.fillStyle = this.endColor;
+            ctx.fillRect(this.maze.end.x * currentCellSize, this.maze.end.y * currentCellSize, currentCellSize, currentCellSize);
+
+            // 2. Draw Walls
+            ctx.strokeStyle = this.wallColor;
+            ctx.lineWidth = Math.max(1, currentCellSize * this.wallThicknessFactor);
+            ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+
+            // Apply wall glow/shadow if cells are big enough and style defines it
+            const canShowEffects = currentCellSize > EFFECTS_MIN_CELL_SIZE;
+            let shadowApplied = false;
+             if (canShowEffects) {
+                 if (this.wallGlow && this.wallGlow !== 'transparent' && this.wallGlow !== 'none') {
+                     ctx.shadowColor = this.wallGlow; ctx.shadowBlur = Math.max(3, currentCellSize * 0.15);
+                     ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0; shadowApplied = true;
+                 } else if (this.wallShadow && this.wallShadow !== 'transparent' && this.wallShadow !== 'none') {
+                     ctx.shadowColor = this.wallShadow; ctx.shadowBlur = Math.max(2, currentCellSize * 0.05);
+                     ctx.shadowOffsetX = Math.max(1, currentCellSize * 0.02); ctx.shadowOffsetY = Math.max(1, currentCellSize * 0.02); shadowApplied = true;
+                 }
+             }
+
+            ctx.beginPath(); // Single path for all walls
+            for (let y = 0; y < this.maze.height; y++) {
+                for (let x = 0; x < this.maze.width; x++) {
+                    const cell = this.maze.grid[y]?.[x];
+                    if (!cell) continue;
+                    const cx = x * currentCellSize; const cy = y * currentCellSize;
+                    const cew = cx + currentCellSize; const ceh = cy + currentCellSize;
+                    // Draw only walls that exist
+                    if (cell.walls.top) { ctx.moveTo(cx, cy); ctx.lineTo(cew, cy); }
+                    if (cell.walls.right) { ctx.moveTo(cew, cy); ctx.lineTo(cew, ceh); }
+                    if (cell.walls.bottom) { ctx.moveTo(cew, ceh); ctx.lineTo(cx, ceh); }
+                    if (cell.walls.left) { ctx.moveTo(cx, ceh); ctx.lineTo(cx, cy); }
+                }
+            }
+            ctx.stroke(); // Draw all walls in the path
+
+            // Reset shadow after drawing walls
+            if (shadowApplied) {
+                 ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0;
+                 ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+            }
+
+            // 3. Draw Exit Marker (if large enough)
+            if (this.exitMarker && currentCellSize > 10) {
+                const markerSize = currentCellSize * this.endMarkerSizeFactor;
+                const markerX = this.maze.end.x * currentCellSize + currentCellSize / 2;
+                const markerY = this.maze.end.y * currentCellSize + currentCellSize / 2 + markerSize * 0.1;
+                ctx.font = `${markerSize * 0.8}px ${getCssVariable('--font-family')}`;
+                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillStyle = this.wallColor; // Use wall color for good contrast on endColor bg
+                ctx.fillText(this.exitMarker, markerX, markerY);
+            }
+         }
+
+
+         // Prepares a high-resolution version for printing
+         prepareForPrint() {
+            if (!this.maze || !this.player || !this.maze.generationComplete) return null;
+            console.log("Renderer: Preparing for print...");
+            this.isPrinting = true;
+
+            // Save current state
+            const savedState = {
+                currentViewMode: this.viewMode,
+                currentDarkMode: document.body.classList.contains('dark-mode'),
+                oldCanvasWidth: this.canvas.width,
+                oldCanvasHeight: this.canvas.height,
+                oldElementWidth: this.canvas.style.width,
+                oldElementHeight: this.canvas.style.height,
+                oldElementLeft: this.canvas.style.left,
+                oldElementTop: this.canvas.style.top,
+                oldCellSize: this.cellSize,
+                // Store original style properties that might be overridden for print
+                originalWallColor: this.wallColor, originalBgColor: this.bgColor,
+                originalStartColor: this.startColor, originalEndColor: this.endColor,
+                originalPlayerColor: this.player.color, // Store actual player color
+                originalWallGlow: this.wallGlow, originalWallShadow: this.wallShadow,
+                originalPlayerGlow: this.playerGlow, originalPlayerShadow: this.playerShadow,
+                originalWallThickness: this.wallThicknessFactor, originalPlayerSize: this.playerSizeFactor,
+                originalEndMarkerSize: this.endMarkerSizeFactor, originalExitMarker: this.exitMarker
+            };
+
+            // --- Setup Print Environment ---
+            // 1. Force light mode and overview for print rendering logic
+            if (savedState.currentDarkMode) document.body.classList.remove('dark-mode');
+            this.viewMode = 'overview'; // Use overview logic but custom size/styles
+
+            // 2. Calculate high-resolution print size
+            const PRINT_RESOLUTION_BASE = 2400; // Target longer dimension resolution
+            const aspect = this.maze.width / this.maze.height;
+            let printCellSize;
+             if (aspect >= 1) { // Wider or square
+                 printCellSize = Math.max(1, Math.floor(PRINT_RESOLUTION_BASE / this.maze.width));
+             } else { // Taller
+                 printCellSize = Math.max(1, Math.floor(PRINT_RESOLUTION_BASE / this.maze.height));
+             }
+            printCellSize = Math.max(printCellSize, 1); // Ensure minimum 1px
+            const printCanvasWidth = this.maze.width * printCellSize;
+            const printCanvasHeight = this.maze.height * printCellSize;
+
+            // 3. Temporarily set renderer state for printing (using explicit values, not CSS vars)
+            this.cellSize = printCellSize;
+            this.wallColor = '#000000'; this.bgColor = '#ffffff';
+            this.startColor = '#e0e0e0'; this.endColor = '#cccccc'; // Slightly darker end
+            this.wallGlow = 'transparent'; this.wallShadow = 'transparent'; // No effects for print clarity
+            this.playerGlow = 'transparent'; this.playerShadow = 'transparent';
+            // Use specific print player color, don't rely on selected one
+            const printPlayerColor = '#aaaaaa';
+            this.wallThicknessFactor = 0.1; // Use a standard thickness
+            this.playerSizeFactor = 0.6;
+            this.endMarkerSizeFactor = 0.7;
+            // Keep original exit marker
+            this.exitMarker = savedState.originalExitMarker;
+
+            // 4. Resize main canvas ELEMENT temporarily for print media query layout
+            // The @media print CSS will handle the actual page fitting.
+            // Setting element style ensures JS calculations use the high-res size.
+            this.canvas.style.width = `${printCanvasWidth}px`;
+            this.canvas.style.height = `${printCanvasHeight}px`;
+            this.canvas.style.left = '0px'; this.canvas.style.top = '0px';
+
+            // 5. Resize main canvas RENDERING buffer
+            this.canvas.width = printCanvasWidth;
+            this.canvas.height = printCanvasHeight;
+
+            // 6. Force redraw of the offscreen canvas with print settings & size
+            this.needsWallRedraw = true; // Should be true already, but ensure it
+            this.drawMazeStaticToOffscreen(); // This uses the temporary print cellSize and colors
+
+            // 7. Draw the final print image onto the main canvas
+            const ctx = this.ctx;
+            ctx.fillStyle = this.bgColor; // White background
+            ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            // Draw the pre-rendered walls/start/end
+            ctx.drawImage(this.wallCanvas, 0, 0);
+            // Draw the player on top (using print color)
+            if (this.cellSize >= 1) {
+                const playerDrawX = this.player.x * this.cellSize; // Use logical position for print
+                const playerDrawY = this.player.y * this.cellSize;
+                 // Temporarily set player color for this draw call
+                const originalDrawColor = this.player.color;
+                this.player.color = printPlayerColor;
+                this.drawPlayer(ctx, playerDrawX, playerDrawY, 0, 0);
+                this.player.color = originalDrawColor; // Restore original color object ref
+            }
+
+            console.log(`Renderer: Prepared print canvas ${printCanvasWidth}x${printCanvasHeight}, cellSize=${printCellSize}`);
+            return savedState; // Return state to be restored later
+         }
+
+         // Restores state after printing is done or cancelled
+         restoreAfterPrint(savedState) {
+             if (!savedState) return;
+             console.log("Renderer: Restoring after print...");
+
+             // Restore style properties
+             this.wallColor = savedState.originalWallColor; this.bgColor = savedState.originalBgColor;
+             this.startColor = savedState.originalStartColor; this.endColor = savedState.originalEndColor;
+             this.wallGlow = savedState.originalWallGlow; this.wallShadow = savedState.originalWallShadow;
+             this.playerGlow = savedState.originalPlayerGlow; this.playerShadow = savedState.originalPlayerShadow;
+             this.wallThicknessFactor = savedState.originalWallThickness; this.playerSizeFactor = savedState.originalPlayerSize;
+             this.endMarkerSizeFactor = savedState.originalEndMarkerSize; this.exitMarker = savedState.originalExitMarker;
+             if (this.player) this.player.color = savedState.originalPlayerColor; // Restore player color object
+
+             // Restore canvas rendering buffer size
+             this.canvas.width = savedState.oldCanvasWidth;
+             this.canvas.height = savedState.oldCanvasHeight;
+             // Restore canvas element style (size and position)
+             this.canvas.style.width = savedState.oldElementWidth;
+             this.canvas.style.height = savedState.oldElementHeight;
+             this.canvas.style.left = savedState.oldElementLeft;
+             this.canvas.style.top = savedState.oldElementTop;
+
+             // Restore other state
+             this.cellSize = savedState.oldCellSize;
+             if (savedState.currentDarkMode) document.body.classList.add('dark-mode');
+             if (this.minimap) this.minimap.updateColors(); // Update minimap based on restored styles
+
+             this.isPrinting = false;
+             // IMPORTANT: Restore view mode *last* as it triggers handleResize and redraw
+             this.setViewMode(savedState.currentViewMode);
+
+             // Ensure offscreen canvas is redrawn with correct styles next time overview is used
+             this.needsWallRedraw = true;
+             // Perform an immediate redraw with restored settings
+             requestAnimationFrame(() => this.drawFrame());
+             console.log("Renderer: Restored state after printing.");
+         }
     }
 
 
     // --- Game Controller Logic ---
+    // (Mostly unchanged, relies on Renderer fixes and style application via CSS/Renderer)
     class Game {
         constructor() {
-             // ... (Initialization como antes) ...
              this.mazeGenerator = new MazeGenerator();
              this.renderer = new Renderer('mazeCanvas', 'maze-container');
              this.minimap = new Minimap('minimapCanvas', 'minimapContainer');
-             this.renderer.setMinimap(this.minimap);
+             this.renderer.setMinimap(this.minimap); // Link minimap to renderer
              this.player = null;
-             this.gameActive = false; this.lastTimestamp = 0; this.animationFrameId = null; this.isLoading = false;
-             this.gameStartTime = 0; this.gameTimer = null; this.currentTime = 0; this.timerStarted = false;
+             this.gameActive = false;
+             this.lastTimestamp = 0; // For game loop delta time
+             this.animationFrameId = null;
+             this.isLoading = false;
+             // Timer state
+             this.gameStartTime = 0;
+             this.gameTimer = null;
+             this.currentTime = 0;
+             this.timerStarted = false;
+             // Best times storage
              this.bestTimes = JSON.parse(localStorage.getItem('mazeBestTimes') || '{}');
-             this.touchStartX = 0; this.touchStartY = 0; this.touchEndX = 0; this.touchEndY = 0;
-
-             // References to modal controls
+             // Touch state
+             this.touchStartX = 0; this.touchStartY = 0;
+             this.touchEndX = 0; this.touchEndY = 0;
+             // UI Element Refs
              this.widthInput = document.getElementById('modal-width');
              this.heightInput = document.getElementById('modal-height');
              this.darkModeToggle = document.getElementById('modal-darkModeToggle');
              this.mazeStyleGroup = document.getElementById('modal-mazeStyle');
              this.playerChoiceGroup = document.getElementById('modal-playerChoice');
              this.exitChoiceGroup = document.getElementById('modal-exitChoice');
-             this.viewModeGroup = document.getElementById('modal-viewMode');
-
+             this.viewModeBtn = document.getElementById('viewModeBtn');
+             // Initial setup
              this.bindUI();
              this.applyInitialSettings();
-             this.startNewGame();
+             // Delay first game start slightly to allow layout calculation
+             requestAnimationFrame(() => {
+                 this.startNewGame();
+             });
         }
 
          bindUI() {
-             // ... (Bindings como antes, asegurándose de que los listeners de modal estén correctos) ...
+             // Bottom Nav
              document.getElementById('newGameBtn').addEventListener('click', () => this.startNewGame());
+             this.viewModeBtn.addEventListener('click', () => this.toggleViewMode());
              document.getElementById('settingsBtn').addEventListener('click', () => this.openSettingsModal());
+
+             // Settings Modal
              document.getElementById('closeSettingsBtn').addEventListener('click', () => this.closeSettingsModal());
              document.getElementById('settings-modal-backdrop').addEventListener('click', () => this.closeSettingsModal());
-             this.widthInput.addEventListener('input', this.validateDimensions);
-             this.heightInput.addEventListener('input', this.validateDimensions);
+             this.widthInput.addEventListener('input', () => this.validateDimensionsAndUpdateBestTime());
+             this.heightInput.addEventListener('input', () => this.validateDimensionsAndUpdateBestTime());
+             document.getElementById('modal-generateBtn').addEventListener('click', () => {
+                 this.closeSettingsModal();
+                 // Brief delay to allow modal to close before intensive generation starts
+                 setTimeout(() => this.startNewGame(), 50);
+             });
              this.darkModeToggle.addEventListener('change', (e) => this.setDarkMode(e.target.checked));
-             this.mazeStyleGroup.addEventListener('change', (e) => this.setMazeStyle(e.target.value));
-             this.playerChoiceGroup.addEventListener('change', (e) => this.updatePlayerColor(e.target));
-             this.exitChoiceGroup.addEventListener('change', (e) => this.renderer.setExitMarker(e.target.value));
-             this.viewModeGroup.addEventListener('change', (e) => this.renderer.setViewMode(e.target.value));
-             document.getElementById('modal-fullscreenBtn').addEventListener('click', this.toggleFullscreen);
+             this.mazeStyleGroup.addEventListener('change', (e) => {
+                 if (e.target.checked) this.setMazeStyle(e.target.value);
+             });
+             this.playerChoiceGroup.addEventListener('change', (e) => {
+                 if (e.target.checked) this.updatePlayerColor(e.target);
+             });
+             this.exitChoiceGroup.addEventListener('change', (e) => {
+                 if (e.target.checked) {
+                     this.renderer.setExitMarker(e.target.value);
+                     // Redraw immediately if game is running or maze exists
+                     if (this.gameActive || this.renderer.maze) this.renderer.drawFrame();
+                 }
+             });
              document.getElementById('modal-printBtn').addEventListener('click', () => this.handlePrint());
-             document.getElementById('playAgainBtn').addEventListener('click', () => { this.hideMessage(); this.startNewGame(); });
+
+             // Message Overlay
+             document.getElementById('playAgainBtn').addEventListener('click', () => {
+                 this.hideMessage();
+                 this.startNewGame();
+             });
+
+             // Input Handlers
              document.addEventListener('keydown', (e) => this.handleKeyDown(e));
              const mazeContainer = document.getElementById('maze-container');
              mazeContainer.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: false });
-             mazeContainer.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false });
+             mazeContainer.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false }); // Prevent scroll during swipe
              mazeContainer.addEventListener('touchend', (e) => this.handleTouchEnd(e));
-             mazeContainer.addEventListener('touchcancel', (e) => this.handleTouchEnd(e));
-             document.addEventListener('fullscreenchange', this.handleFullscreenChange.bind(this));
-             document.addEventListener('webkitfullscreenchange', this.handleFullscreenChange.bind(this));
-             document.addEventListener('mozfullscreenchange', this.handleFullscreenChange.bind(this));
-             document.addEventListener('MSFullscreenChange', this.handleFullscreenChange.bind(this));
+             mazeContainer.addEventListener('touchcancel', (e) => this.handleTouchEnd(e)); // Treat cancel like end
+        }
+
+         toggleViewMode() {
+             const currentMode = this.renderer.viewMode;
+             const nextMode = currentMode === 'overview' ? 'playerCamera' : 'overview';
+             this.renderer.setViewMode(nextMode); // Renderer handles button update and redraw
          }
 
-         openSettingsModal() { /* ... (Unchanged) ... */
-            this.syncModalControls();
-            document.getElementById('settings-modal-backdrop').classList.add('visible');
-            document.getElementById('settings-modal').classList.add('visible');
-            document.getElementById('settingsBtn').classList.add('active');
+         openSettingsModal() {
+             this.syncModalControls(); // Ensure modal reflects current state
+             document.getElementById('settings-modal-backdrop').classList.add('visible');
+             document.getElementById('settings-modal').classList.add('visible');
+             document.getElementById('settingsBtn').classList.add('active');
          }
-         closeSettingsModal() { /* ... (Unchanged) ... */
-            document.getElementById('settings-modal-backdrop').classList.remove('visible');
-            document.getElementById('settings-modal').classList.remove('visible');
-            document.getElementById('settingsBtn').classList.remove('active');
+
+         closeSettingsModal() {
+             document.getElementById('settings-modal-backdrop').classList.remove('visible');
+             document.getElementById('settings-modal').classList.remove('visible');
+             document.getElementById('settingsBtn').classList.remove('active');
          }
-         syncModalControls() { /* ... (Unchanged - syncs controls with current state) ... */
-             this.widthInput.value = this.mazeGenerator?.width || this.widthInput.value;
-             this.heightInput.value = this.mazeGenerator?.height || this.heightInput.value;
-             this.validateDimensions();
-             this.darkModeToggle.checked = document.body.classList.contains('dark-mode');
-             const currentStyle = document.body.dataset.mazeStyle || 'classic';
-             const styleRadio = document.querySelector(`#modal-mazeStyle input[value="${currentStyle}"]`);
-             if (styleRadio) styleRadio.checked = true;
-             else document.querySelector('#modal-mazeStyle input').checked = true; // Default
 
-             const currentPlayerColorVal = this.getCurrentPlayerColor(true); // Get base value
-             const playerRadio = document.querySelector(`#modal-playerChoice input[value="${currentPlayerColorVal}"]`);
-             if (playerRadio) playerRadio.checked = true;
-             else document.querySelector('#modal-playerChoice input').checked = true; // Default
+         // Sync modal controls TO the current game/renderer state
+         syncModalControls() {
+            const maxInputDim = parseInt(this.widthInput.max); // Use the current max value
+            // Clamp values to the allowed range
+            this.widthInput.value = clamp(this.mazeGenerator?.width || parseInt(this.widthInput.value), MIN_MAZE_DIMENSION, maxInputDim);
+            this.heightInput.value = clamp(this.mazeGenerator?.height || parseInt(this.heightInput.value), MIN_MAZE_DIMENSION, maxInputDim);
 
+            this.darkModeToggle.checked = document.body.classList.contains('dark-mode');
+
+            // Sync Maze Style Radio
+            const currentStyle = document.body.dataset.mazeStyle || 'classic';
+            const styleRadio = document.querySelector(`#modal-mazeStyle input[value="${currentStyle}"]`);
+            if (styleRadio) styleRadio.checked = true;
+            else document.querySelector('#modal-mazeStyle input[value="classic"]').checked = true; // Fallback
+
+            // Sync Player Color Radio
+            this.filterPlayerChoicesByStyle(currentStyle); // Show/hide style-specific choices
+            const currentPlayerBaseColor = this.getCurrentPlayerColor(true); // Get the base value="xxx" color
+            const playerRadio = document.querySelector(`#modal-playerChoice input[value="${currentPlayerBaseColor}"]`);
+            if (playerRadio && !playerRadio.parentElement.hidden) { // Check if visible
+                 playerRadio.checked = true;
+             } else { // Find first visible generic choice as fallback
+                 const firstGenericChoice = document.querySelector('#modal-playerChoice input[name="modal-player"]:not([data-style-specific])');
+                 if (firstGenericChoice) firstGenericChoice.checked = true;
+                 else document.querySelector('#modal-playerChoice input[name="modal-player"]').checked = true; // Absolute fallback
+             }
+             this.updatePlayerColorVisuals(this.darkModeToggle.checked); // Update previews
+
+             // Sync Exit Marker Radio
              const currentExit = this.renderer.exitMarker || '🏁';
              const exitRadio = document.querySelector(`#modal-exitChoice input[value="${currentExit}"]`);
              if (exitRadio) exitRadio.checked = true;
-             else document.querySelector('#modal-exitChoice input').checked = true; // Default
+             else document.querySelector('#modal-exitChoice input[value="🏁"]').checked = true; // Fallback
 
-             const currentView = this.renderer.viewMode || 'overview';
-             const viewRadio = document.querySelector(`#modal-viewMode input[value="${currentView}"]`);
-             if (viewRadio) viewRadio.checked = true;
-             else document.querySelector('#modal-viewMode input').checked = true; // Default
-
-             this.updateBestTimeDisplay(this.mazeGenerator.width && this.mazeGenerator.height ? `${this.mazeGenerator.width}x${this.mazeGenerator.height}` : '0x0', true);
+             // Update Best Time Display for current size
+             this.updateBestTimeDisplay(`${this.widthInput.value}x${this.heightInput.value}`, true);
          }
 
-         applyInitialSettings() { /* ... (Unchanged - sets initial state based on modal) ... */
-             const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-             this.setDarkMode(prefersDark); // Apply initial theme first
-             this.widthInput.max = MOBILE_MAX_MAZE_DIMENSION;
-             this.heightInput.max = MOBILE_MAX_MAZE_DIMENSION;
-             this.widthInput.value = clamp(parseInt(this.widthInput.value || 15), MIN_MAZE_DIMENSION, MOBILE_MAX_MAZE_DIMENSION);
-             this.heightInput.value = clamp(parseInt(this.heightInput.value || 15), MIN_MAZE_DIMENSION, MOBILE_MAX_MAZE_DIMENSION);
-             this.syncModalControls(); // Sync modal to defaults/prefs
-             this.applySettingsFromModal(); // Apply these synced settings to the game
+         // Apply settings on initial load
+         applyInitialSettings() {
+            // Set max dimensions based on screen size
+            const isLikelyMobile = window.innerWidth < MOBILE_BREAKPOINT_WIDTH;
+            const maxInputDim = isLikelyMobile ? MOBILE_MAX_INPUT_DIMENSION : MAX_MAZE_DIMENSION;
+            this.widthInput.max = maxInputDim;
+            this.heightInput.max = maxInputDim;
+            // Update labels dynamically (using previousElementSibling assuming label is before input)
+             if (this.widthInput.previousElementSibling?.tagName === 'LABEL') {
+                this.widthInput.previousElementSibling.textContent = `Ancho (${MIN_MAZE_DIMENSION}-${maxInputDim}):`;
+             }
+             if (this.heightInput.previousElementSibling?.tagName === 'LABEL') {
+                 this.heightInput.previousElementSibling.textContent = `Alto (${MIN_MAZE_DIMENSION}-${maxInputDim}):`;
+             }
+            // Clamp initial values just in case
+            this.widthInput.value = clamp(parseInt(this.widthInput.value || 15), MIN_MAZE_DIMENSION, maxInputDim);
+            this.heightInput.value = clamp(parseInt(this.heightInput.value || 15), MIN_MAZE_DIMENSION, maxInputDim);
+
+            // Dark mode preference
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            this.setDarkMode(prefersDark); // Apply initial dark mode
+            this.darkModeToggle.checked = prefersDark; // Sync toggle
+
+            // Apply default selected style, player, exit marker
+            this.setMazeStyle(document.querySelector('#modal-mazeStyle input:checked')?.value || 'classic');
+            this.updatePlayerColor(document.querySelector('#modal-playerChoice input:checked')); // Apply initial player color
+            this.renderer.setExitMarker(document.querySelector('#modal-exitChoice input:checked')?.value || '🏁'); // Apply initial exit marker
+
+             // Set initial view mode button text based on default renderer state
+             this.viewModeBtn.title = this.renderer.viewMode === 'overview' ? 'Cambiar Vista (Actual: General)' : 'Cambiar Vista (Actual: Jugador)';
+         }
+
+         validateDimensions() {
+             const maxDim = parseInt(this.widthInput.max);
+             this.widthInput.value = clamp(parseInt(this.widthInput.value || MIN_MAZE_DIMENSION, 10), MIN_MAZE_DIMENSION, maxDim);
+             this.heightInput.value = clamp(parseInt(this.heightInput.value || MIN_MAZE_DIMENSION, 10), MIN_MAZE_DIMENSION, maxDim);
+         }
+
+         validateDimensionsAndUpdateBestTime() {
              this.validateDimensions();
+             this.updateBestTimeDisplay(`${this.widthInput.value}x${this.heightInput.value}`, true);
          }
 
-         validateDimensions() { /* ... (Unchanged) ... */
-            const maxDim = MOBILE_MAX_MAZE_DIMENSION; this.widthInput.max = maxDim; this.heightInput.max = maxDim;
-            this.widthInput.value = clamp(parseInt(this.widthInput.value || MIN_MAZE_DIMENSION, 10), MIN_MAZE_DIMENSION, maxDim);
-            this.heightInput.value = clamp(parseInt(this.heightInput.value || MIN_MAZE_DIMENSION, 10), MIN_MAZE_DIMENSION, maxDim);
-            this.updateBestTimeDisplay(`${this.widthInput.value}x${this.heightInput.value}`, true);
+         startTimer() {
+             if (this.timerStarted) return;
+             this.timerStarted = true;
+             this.gameStartTime = Date.now();
+             this.currentTime = 0;
+             this.updateTimerDisplay(); // Show 00:00 immediately
+             clearInterval(this.gameTimer); // Clear any previous timer
+             this.gameTimer = setInterval(() => {
+                 this.currentTime = Math.floor((Date.now() - this.gameStartTime) / 1000);
+                 this.updateTimerDisplay();
+             }, 1000); // Update every second
+             console.log("Timer started");
          }
 
-         // --- Timer Methods ---
-         startTimer() { /* ... (Unchanged) ... */
-             if (this.timerStarted) return; this.timerStarted = true; this.gameStartTime = Date.now(); this.currentTime = 0;
-             this.updateTimerDisplay(); clearInterval(this.gameTimer);
-             this.gameTimer = setInterval(() => { this.currentTime = Math.floor((Date.now() - this.gameStartTime) / 1000); this.updateTimerDisplay(); }, 100);
+         resetTimer() {
+             clearInterval(this.gameTimer);
+             this.gameTimer = null;
+             this.timerStarted = false;
+             this.currentTime = 0;
+             this.updateTimerDisplay();
+             console.log("Timer reset");
          }
-         resetTimer() { /* ... (Unchanged) ... */
-             clearInterval(this.gameTimer); this.gameTimer = null; this.timerStarted = false; this.currentTime = 0; this.updateTimerDisplay();
-         }
-         stopTimer() { /* ... (Unchanged) ... */
-             clearInterval(this.gameTimer); const finalTime = this.currentTime;
-             const mazeSize = `${this.mazeGenerator.width}x${this.mazeGenerator.height}`; let isNewBest = false;
-             if (!this.bestTimes[mazeSize] || finalTime < this.bestTimes[mazeSize]) { this.bestTimes[mazeSize] = finalTime; localStorage.setItem('mazeBestTimes', JSON.stringify(this.bestTimes)); isNewBest = true; this.updateBestTimeDisplay(mazeSize, true); }
+
+         stopTimer() {
+             clearInterval(this.gameTimer);
+             const finalTime = this.currentTime; // Use the last updated time
+             const mazeSize = `${this.mazeGenerator.width}x${this.mazeGenerator.height}`;
+             let isNewBest = false;
+
+             if (!this.bestTimes[mazeSize] || finalTime < this.bestTimes[mazeSize]) {
+                 this.bestTimes[mazeSize] = finalTime;
+                 localStorage.setItem('mazeBestTimes', JSON.stringify(this.bestTimes));
+                 isNewBest = true;
+                 console.log(`New best time for ${mazeSize}: ${finalTime}s`);
+                 // Update display in modal if it's open
+                 this.updateBestTimeDisplay(mazeSize, true);
+             }
+             console.log(`Timer stopped. Final time: ${finalTime}s`);
              return { time: finalTime, isNewBest: isNewBest };
          }
-         updateTimerDisplay() { /* ... (Unchanged) ... */
-             const minutes = Math.floor(this.currentTime / 60); const seconds = this.currentTime % 60; document.getElementById('current-time').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-         }
-         updateBestTimeDisplay(mazeSize, targetModal = false) { /* ... (Unchanged) ... */
-             const bestTime = this.bestTimes[mazeSize]; let timeStr = '--:--'; if (bestTime !== undefined) { const minutes = Math.floor(bestTime / 60); const seconds = bestTime % 60; timeStr = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`; }
-             if (targetModal) { const bestTimeEl = document.getElementById('best-time-modal'); if (bestTimeEl) { bestTimeEl.textContent = `Record (${mazeSize === '0x0' ? 'Actual' : mazeSize}): ${timeStr}`; } }
+
+         formatTime(totalSeconds) {
+             const minutes = Math.floor(totalSeconds / 60);
+             const seconds = totalSeconds % 60;
+             return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
          }
 
-         async startNewGame() { /* ... (Unchanged logic, just ensures settings applied) ... */
-             this.closeSettingsModal(); if (this.isLoading) return; this.isLoading = true; this.gameActive = false; document.getElementById('newGameBtn').disabled = true;
-             if (this.animationFrameId) { cancelAnimationFrame(this.animationFrameId); this.animationFrameId = null; }
-             this.showLoading(true, 'Generando...'); this.hideMessage(); this.validateDimensions();
-             const width = parseInt(this.widthInput.value); const height = parseInt(this.heightInput.value);
-             try {
-                 const maze = await this.mazeGenerator.generate(width, height, (progress) => { this.showLoading(true, `Generando... ${Math.round(progress * 100)}%`); });
-                 if (!maze || !maze.grid) throw new Error("Maze generation failed.");
-                 this.renderer.setMaze(maze);
-                 const playerColor = this.getCurrentPlayerColor(); // Get color based on modal selection & theme
-                 this.player = new Player(maze.start.x, maze.start.y, playerColor);
-                 this.renderer.setPlayer(this.player);
-                 this.minimap.updateSource(maze, this.player);
-                 this.applySettingsFromModal(); // Apply style/view settings from modal *before* first draw
-                 this.renderer.resetCamera();
-                 this.renderer.needsWallRedraw = true; this.renderer.drawFrame();
-                 this.gameActive = true; this.lastTimestamp = performance.now(); this.resetTimer();
-                 const currentMazeSize = `${maze.width}x${maze.height}`; this.updateBestTimeDisplay(currentMazeSize, true);
-                 this.gameLoop();
-             } catch (error) { console.error("Error:", error); this.showMessage("Error", "Error al generar: " + error.message); this.gameActive = false; }
-             finally { this.showLoading(false); this.isLoading = false; document.getElementById('newGameBtn').disabled = false; }
+         updateTimerDisplay() {
+             document.getElementById('current-time').textContent = this.formatTime(this.currentTime);
          }
 
-         applySettingsFromModal() { /* ... (Unchanged) ... */
-            this.setDarkMode(this.darkModeToggle.checked);
-            this.setMazeStyle(document.querySelector('#modal-mazeStyle input:checked').value);
-            this.updatePlayerColor(document.querySelector('#modal-playerChoice input:checked'));
-            this.renderer.setExitMarker(document.querySelector('#modal-exitChoice input:checked').value);
-            this.renderer.setViewMode(document.querySelector('#modal-viewMode input:checked').value);
+         updateBestTimeDisplay(mazeSize, targetModal = false) {
+             const bestTime = this.bestTimes[mazeSize];
+             let timeStr = '--:--';
+             if (bestTime !== undefined && bestTime !== null) { // Check for null too
+                 timeStr = this.formatTime(bestTime);
+             }
+             const label = `Record (${mazeSize === '0x0' ? 'N/A' : mazeSize}): ${timeStr}`;
+
+             if (targetModal) {
+                 const bestTimeEl = document.getElementById('best-time-modal');
+                 if (bestTimeEl) bestTimeEl.textContent = label;
+             }
+             // Could potentially update another display outside the modal here too
          }
 
-         gameLoop(timestamp = 0) { /* ... (Unchanged) ... */
-             if (!this.gameActive && !this.player?.isMoving && !this.isLoading) { this.animationFrameId = null; return; } const deltaTime = timestamp - this.lastTimestamp; this.lastTimestamp = timestamp; if (this.gameActive || this.player?.isMoving) { this.player?.update(deltaTime); } this.renderer.drawFrame(); this.animationFrameId = requestAnimationFrame((ts) => this.gameLoop(ts));
+        async startNewGame() {
+            if (document.getElementById('settings-modal').classList.contains('visible')) {
+                 console.warn("Attempted to start new game while settings modal is open. Closing modal first.");
+                 this.closeSettingsModal();
+                 // Add a small delay to allow modal closing animation before potentially heavy generation
+                 await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            if (this.isLoading) {
+                console.warn("Attempted to start new game while already loading.");
+                return;
+            }
+
+            this.isLoading = true;
+            this.gameActive = false; // Stop game logic during generation
+            this.stopGameLoop(); // Ensure previous loop is stopped
+            this.showLoading(true, 'Generando...');
+            this.hideMessage();
+            this.resetTimer();
+            document.getElementById('newGameBtn').disabled = true;
+            this.viewModeBtn.disabled = true;
+            document.getElementById('settingsBtn').disabled = true;
+
+            try {
+                this.validateDimensions(); // Ensure dimensions are valid before generating
+                const width = parseInt(this.widthInput.value);
+                const height = parseInt(this.heightInput.value);
+
+                // Apply visual settings BEFORE generation/rendering
+                this.setDarkMode(this.darkModeToggle.checked);
+                const currentStyle = document.querySelector('#modal-mazeStyle input:checked')?.value || 'classic';
+                this.setMazeStyle(currentStyle, true); // Force style update
+                const initialPlayerColor = this.getCurrentPlayerColor(); // Get color based on current settings
+                const initialExitMarker = document.querySelector('#modal-exitChoice input:checked')?.value || '🏁';
+                this.renderer.setExitMarker(initialExitMarker);
+
+                // Generate Maze (potentially async)
+                const maze = await this.mazeGenerator.generate(width, height, (progress) => {
+                    this.showLoading(true, `Generando... ${Math.round(progress * 100)}%`);
+                });
+
+                if (!maze || !maze.grid) throw new Error("Maze generation failed unexpectedly.");
+
+                // Setup Renderer and Player
+                this.player = new Player(maze.start.x, maze.start.y, initialPlayerColor);
+                this.renderer.setMaze(maze); // Must be called before setPlayer if resetCamera depends on maze
+                this.renderer.setPlayer(this.player);
+                // Set view mode AFTER maze/player are set, renderer handles resize/camera internally
+                this.renderer.setViewMode(this.viewModeBtn.dataset.mode || 'overview');
+
+                // Update best time display for the generated size
+                const currentMazeSize = `${maze.width}x${maze.height}`;
+                this.updateBestTimeDisplay(currentMazeSize, true); // Update modal display
+                this.updateBestTimeDisplay(currentMazeSize); // Update any other display if needed
+
+                // Start Game
+                this.gameActive = true;
+                this.lastTimestamp = performance.now(); // Reset timestamp for game loop
+                this.startGameLoop(); // Start the rendering/update loop
+                console.log("New game started successfully.");
+
+            } catch (error) {
+                console.error("Error starting new game:", error);
+                this.showMessage("Error", `No se pudo generar el laberinto.\n(${error.message})`);
+                this.gameActive = false; // Ensure game is inactive on error
+            } finally {
+                this.showLoading(false); // Hide loading indicator
+                this.isLoading = false; // Reset loading flag
+                // Re-enable buttons
+                document.getElementById('newGameBtn').disabled = false;
+                this.viewModeBtn.disabled = false;
+                document.getElementById('settingsBtn').disabled = false;
+            }
+        }
+
+
+         // Centralized game loop start function
+         startGameLoop() {
+             if (this.animationFrameId) {
+                 //console.log("Game loop already running.");
+                 return;
+             }
+             console.log("Starting game loop...");
+             const loop = (timestamp) => {
+                 if (!this.gameActive && !this.player?.isMoving && this.renderer.viewMode !== 'playerCamera') {
+                      // Optimization: Stop loop if game inactive, player not moving, and not in player view (which needs camera updates)
+                     console.log("Game loop stopping (inactive).");
+                     this.animationFrameId = null;
+                     return;
+                 }
+                 // Pass timestamp for accurate delta time calculations in renderer/player update
+                 this.renderer.drawFrame(timestamp);
+                 this.animationFrameId = requestAnimationFrame(loop); // Continue loop
+             };
+             this.lastTimestamp = performance.now(); // Initialize timestamp for first frame delta
+             this.animationFrameId = requestAnimationFrame(loop);
          }
+
+         // Centralized game loop stop function
+         stopGameLoop() {
+             if (this.animationFrameId) {
+                 cancelAnimationFrame(this.animationFrameId);
+                 this.animationFrameId = null;
+                 console.log("Game loop stopped.");
+             }
+         }
+
 
          handleMoveAttempt(dx, dy) {
-            if (!this.gameActive || !this.player || this.isLoading || this.player.isMoving) return;
-            const moveResult = this.player.canMove(dx, dy, this.mazeGenerator);
-            if (moveResult) {
-                if (!this.timerStarted) { this.startTimer(); }
-                this.player.moveTo(moveResult.newX, moveResult.newY);
-                
-                if (!this.animationFrameId && !this.isLoading) {
-                    this.lastTimestamp = performance.now();
-                    this.gameLoop();
-                }
-                
-                // Check for maze completion
-                if (moveResult.newX === this.mazeGenerator.end.x && moveResult.newY === this.mazeGenerator.end.y) {
-                    this.gameActive = false;
-                    const finalTimeResult = this.stopTimer();
-                    
-                    // Wait for player movement animation to complete
-                    setTimeout(() => {
-                        if (this.player && this.player.x === this.mazeGenerator.end.x && this.player.y === this.mazeGenerator.end.y) {
-                            const minutes = Math.floor(finalTimeResult.time / 60);
-                            const seconds = finalTimeResult.time % 60;
-                            const timeStr = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                            const mazeSize = `${this.mazeGenerator.width}x${this.mazeGenerator.height}`;
-                            
-                            // Show different messages for new records vs normal completion
-                            if (finalTimeResult.isNewBest) {
-                                this.showMessage(
-                                    "¡Nuevo Récord! 🏆",
-                                    "¡Increíble! Has superado el récord anterior.",
-                                    timeStr,
-                                    `Nuevo récord (${mazeSize}): ${timeStr}`
-                                );
-                            } else {
-                                const bestTime = this.bestTimes[mazeSize];
-                                const bestTimeStr = bestTime !== undefined ? 
-                                    `${Math.floor(bestTime / 60)}:${(bestTime % 60).toString().padStart(2, '0')}` : 
-                                    '--:--';
-                                
-                                this.showMessage(
-                                    "¡Completado! 🎉",
-                                    "Has encontrado la salida del laberinto.",
-                                    timeStr,
-                                    `Mejor tiempo (${mazeSize}): ${bestTimeStr}`
-                                );
-                            }
-                        }
-                    }, PLAYER_SMOOTHING * 500 + 50); // Wait for movement animation
+             if (!this.gameActive || !this.player || this.isLoading || this.player.isMoving) {
+                // console.log("Move attempt ignored (inactive, loading, or already moving)");
+                 return;
+             }
+
+             const moveResult = this.player.canMove(dx, dy, this.mazeGenerator);
+             if (moveResult) {
+                 // Start timer on first successful move
+                 if (!this.timerStarted) {
+                     this.startTimer();
+                 }
+                 this.player.moveTo(moveResult.newX, moveResult.newY);
+
+                 // Ensure the game loop is running if player starts moving
+                 if (!this.animationFrameId) {
+                     this.startGameLoop();
+                 }
+
+                 // Check for win condition (player *reached* the target cell)
+                 if (moveResult.newX === this.mazeGenerator.end.x && moveResult.newY === this.mazeGenerator.end.y) {
+                     this.gameActive = false; // Stop further moves immediately
+                     const finalTimeResult = this.stopTimer(); // Stop timer and check best time
+
+                     // Delay showing the message slightly to allow player animation to (almost) finish
+                     setTimeout(() => {
+                         // Double-check player is near the end (in case of quick restarts/issues)
+                         if (this.player && Math.round(this.player.pixelX) === this.mazeGenerator.end.x && Math.round(this.player.pixelY) === this.mazeGenerator.end.y) {
+                             const finalTimeStr = this.formatTime(finalTimeResult.time);
+                             const mazeSize = `${this.mazeGenerator.width}x${this.mazeGenerator.height}`;
+                             if (finalTimeResult.isNewBest) {
+                                 this.showMessage("¡Nuevo Récord! 🏆", "¡Increíble! Has establecido un nuevo récord.", finalTimeStr, `Nuevo récord (${mazeSize}): ${finalTimeStr}`);
+                             } else {
+                                 const bestTime = this.bestTimes[mazeSize];
+                                 const bestTimeStr = bestTime !== undefined ? this.formatTime(bestTime) : '--:--';
+                                 this.showMessage("¡Completado! 🎉", "Has encontrado la salida del laberinto.", finalTimeStr, `Mejor tiempo (${mazeSize}): ${bestTimeStr}`);
+                             }
+                         } else {
+                             console.warn("Win condition met, but player not at end coordinates after delay. Showing generic win message.");
+                              this.showMessage("¡Completado! 🎉", "Has encontrado la salida del laberinto."); // Fallback message
+                         }
+                         // Optionally stop the game loop here if not already stopped by inactivity check
+                          // this.stopGameLoop();
+                     }, PLAYER_SMOOTHING * 800); // Wait slightly longer than player smooth time
+                 }
+             }
+         }
+
+         handleKeyDown(e) {
+             // Ignore input if modal is open, game not active, or loading
+             if (document.getElementById('settings-modal').classList.contains('visible') || !this.gameActive || this.isLoading) return;
+
+             let dx = 0; let dy = 0;
+             switch (e.key) {
+                 case 'ArrowUp': case 'w': case 'W': dy = -1; break;
+                 case 'ArrowDown': case 's': case 'S': dy = 1; break;
+                 case 'ArrowLeft': case 'a': case 'A': dx = -1; break;
+                 case 'ArrowRight': case 'd': case 'D': dx = 1; break;
+                 default: return; // Ignore other keys
+             }
+             e.preventDefault(); // Prevent page scrolling with arrow keys
+             this.handleMoveAttempt(dx, dy);
+         }
+
+        // --- Touch Controls ---
+         handleTouchStart(e) {
+             if (document.getElementById('settings-modal').classList.contains('visible') || !this.gameActive || this.isLoading || e.touches.length !== 1) return;
+             // Capture starting coordinates
+             this.touchStartX = e.touches[0].clientX;
+             this.touchStartY = e.touches[0].clientY;
+             this.touchEndX = this.touchStartX; // Initialize end coords
+             this.touchEndY = this.touchStartY;
+             // e.preventDefault(); // Prevent default only if movement is detected in touchmove
+         }
+
+         handleTouchMove(e) {
+             if (document.getElementById('settings-modal').classList.contains('visible') || !this.gameActive || this.isLoading || e.touches.length !== 1) return;
+             // Update end coordinates
+             this.touchEndX = e.touches[0].clientX;
+             this.touchEndY = e.touches[0].clientY;
+             // Prevent scrolling *while* dragging on the maze
+             e.preventDefault();
+         }
+
+         handleTouchEnd(e) {
+            if (document.getElementById('settings-modal').classList.contains('visible') || !this.gameActive || this.isLoading) return;
+             // If touchstart wasn't captured properly, exit
+             if (this.touchStartX === 0 && this.touchStartY === 0) return;
+
+             const deltaX = this.touchEndX - this.touchStartX;
+             const deltaY = this.touchEndY - this.touchStartY;
+             const absDeltaX = Math.abs(deltaX);
+             const absDeltaY = Math.abs(deltaY);
+
+             let dx = 0; let dy = 0;
+             // Check if the swipe distance exceeds the threshold
+             if (Math.max(absDeltaX, absDeltaY) > SWIPE_THRESHOLD) {
+                 // Determine primary direction (horizontal or vertical)
+                 if (absDeltaX > absDeltaY) {
+                     dx = deltaX > 0 ? 1 : -1; // Right or Left
+                 } else {
+                     dy = deltaY > 0 ? 1 : -1; // Down or Up
+                 }
+                 this.handleMoveAttempt(dx, dy);
+             }
+             // Reset touch coordinates
+             this.touchStartX = 0; this.touchStartY = 0;
+             this.touchEndX = 0; this.touchEndY = 0;
+         }
+
+         // --- Visual Settings ---
+         setDarkMode(isDark) {
+             const changed = document.body.classList.toggle('dark-mode', isDark);
+             // Always update visuals even if class didn't toggle (e.g., initial load)
+             this.updatePlayerColorVisuals(isDark); // Update modal previews
+             this.updatePlayerColor(document.querySelector('#modal-playerChoice input:checked')); // Update actual player color
+
+             if (this.renderer) {
+                  // Force renderer to re-read CSS variables and redraw
+                 this.renderer.updateStyleSettings(true);
+                 if (this.gameActive || this.renderer.maze) this.renderer.drawFrame();
+             }
+             console.log(`Dark mode ${isDark ? 'enabled' : 'disabled'}`);
+         }
+
+         setMazeStyle(styleName, forceUpdate = false) {
+             const currentStyle = document.body.dataset.mazeStyle;
+             if (!forceUpdate && currentStyle === styleName) return; // No change needed
+
+             document.body.dataset.mazeStyle = styleName;
+             console.log(`Maze style set to: ${styleName}`);
+
+             // Update player color choices based on the new style
+             this.filterPlayerChoicesByStyle(styleName);
+             // Reselect player color - prefer current if still visible, else default for style, else generic default
+             const currentSelectedPlayerRadio = document.querySelector('#modal-playerChoice input:checked');
+             if (!currentSelectedPlayerRadio || currentSelectedPlayerRadio.parentElement.hidden) {
+                 const firstVisibleChoice = document.querySelector(`#modal-playerChoice label:not([hidden]) input`);
+                 if (firstVisibleChoice) firstVisibleChoice.checked = true;
+             }
+             this.updatePlayerColor(document.querySelector('#modal-playerChoice input:checked')); // Apply the (potentially new) selection
+
+             if (this.renderer) {
+                  // Force renderer to re-read CSS variables (including factors) and redraw
+                 this.renderer.updateStyleSettings(true);
+                 this.renderer.setExitMarker(document.querySelector('#modal-exitChoice input:checked')?.value || '🏁'); // Re-apply marker (style might affect appearance)
+                 if (this.gameActive || this.renderer.maze) this.renderer.drawFrame();
+             }
+         }
+
+        // Show/hide player color choices based on current maze style
+         filterPlayerChoicesByStyle(styleName) {
+             const playerLabels = document.querySelectorAll('#modal-playerChoice label');
+             playerLabels.forEach(label => {
+                 const input = label.querySelector('input');
+                 const specificStyle = input.dataset.styleSpecific;
+                 if (specificStyle && specificStyle !== styleName) {
+                     label.hidden = true; // Hide choices specific to other styles
+                 } else {
+                     label.hidden = false; // Show generic choices and choices for the current style
+                 }
+             });
+              this.updatePlayerColorVisuals(document.body.classList.contains('dark-mode')); // Refresh previews
+         }
+
+
+         // Update the actual player color based on the selected radio button
+         updatePlayerColor(radioElement) {
+             if (!radioElement || !radioElement.checked) {
+                  // Attempt to find the currently checked one if none provided
+                 radioElement = document.querySelector('#modal-playerChoice input:checked');
+                 if (!radioElement) return; // Exit if still nothing selected
+             }
+             const newColor = this.calculatePlayerColor(radioElement); // Use helper to get color based on theme
+             if (this.player) {
+                 this.player.setColor(newColor);
+                 console.log(`Player color updated to: ${newColor}`);
+                 // Redraw if game active or maze exists
+                 if(this.renderer && (this.gameActive || this.renderer.maze)) {
+                     this.renderer.drawFrame(); // Immediate redraw to show new color
+                 }
+             }
+             // Also update minimap color setting (Minimap reads --minimap-player which should reflect current player color)
+             if (this.minimap) {
+                this.minimap.updateColors(); // Tell minimap to re-read CSS vars
+             }
+         }
+
+         // Update the visual appearance of the color preview swatches in the modal
+         updatePlayerColorVisuals(isDark) {
+             const playerRadios = document.querySelectorAll('#modal-playerChoice input[type="radio"]');
+             playerRadios.forEach(radio => {
+                 const colorToShow = this.calculatePlayerColor(radio, isDark); // Use helper
+                 const previewSpan = radio.nextElementSibling;
+                 if (previewSpan && previewSpan.classList.contains('color-preview')) {
+                     previewSpan.style.backgroundColor = colorToShow;
+                 }
+             });
+         }
+
+         // Helper to get the correct player color string based on theme (light/dark)
+         calculatePlayerColor(radioElement, isDark = document.body.classList.contains('dark-mode')) {
+              if (!radioElement) return getCssVariable('--player-color'); // Fallback
+              const lightColor = radioElement.dataset.light;
+              const darkColor = radioElement.dataset.dark;
+              const baseColor = radioElement.value; // The value attribute often serves as fallback or light color
+              return isDark ? (darkColor || baseColor) : (lightColor || baseColor);
+         }
+
+         // Get the CURRENTLY applied player color (respecting theme)
+         // Pass getBaseValue = true to get the value="" attribute instead.
+         getCurrentPlayerColor(getBaseValue = false) {
+             const selectedRadio = document.querySelector('#modal-playerChoice input:checked');
+             if (!selectedRadio) {
+                 console.warn("No player color selected, returning default CSS var.");
+                 return getCssVariable('--player-color'); // Fallback to default CSS variable
+             }
+             if (getBaseValue) {
+                 return selectedRadio.value; // Return the base value attribute
+             }
+             return this.calculatePlayerColor(selectedRadio); // Calculate based on current theme
+         }
+
+         // --- Utility Methods ---
+         showMessage(title, text, finalTimeStr = '', bestTimeMsg = '') {
+            const overlay = document.getElementById('message-overlay');
+            overlay.querySelector('h2').textContent = title;
+            // Safely set text, replacing newline chars with <br>
+            const textParagraph = overlay.querySelector('p:not([id])'); // Target the main text paragraph
+            if (textParagraph) textParagraph.innerHTML = text.replace(/\n/g, '<br>');
+
+            const finalTimeEl = document.getElementById('final-time-msg');
+            const bestTimeEl = document.getElementById('final-best-time-msg');
+
+            finalTimeEl.textContent = finalTimeStr ? `Tu Tiempo: ${finalTimeStr}` : '';
+            bestTimeEl.textContent = bestTimeMsg;
+            finalTimeEl.style.display = finalTimeStr ? 'block' : 'none';
+            bestTimeEl.style.display = bestTimeMsg ? 'block' : 'none';
+
+            overlay.classList.add('visible');
+            this.gameActive = false; // Ensure game stops
+            this.stopGameLoop(); // Stop rendering loop
+            console.log(`Message shown: ${title}`);
+         }
+
+         hideMessage() {
+             document.getElementById('message-overlay').classList.remove('visible');
+         }
+
+         showLoading(show, text = 'Generando...') {
+            const indicator = document.getElementById('loading-indicator');
+            const newGameBtn = document.getElementById('newGameBtn');
+            const viewModeBtn = this.viewModeBtn; // Use stored ref
+            const settingsBtn = document.getElementById('settingsBtn');
+
+            if (show) {
+                indicator.textContent = text;
+                indicator.classList.add('visible');
+                if(newGameBtn) newGameBtn.disabled = true;
+                if(viewModeBtn) viewModeBtn.disabled = true;
+                if(settingsBtn) settingsBtn.disabled = true;
+            } else {
+                indicator.classList.remove('visible');
+                // Only enable buttons if not currently loading another maze
+                if (!this.isLoading) {
+                     if(newGameBtn) newGameBtn.disabled = false;
+                     if(viewModeBtn) viewModeBtn.disabled = false;
+                     if(settingsBtn) settingsBtn.disabled = false;
                 }
             }
          }
 
-         // --- Input Handling ---
-         handleKeyDown(e) { /* ... (Unchanged) ... */
-              if (document.getElementById('settings-modal').classList.contains('visible')) return; let dx = 0; let dy = 0; switch (e.key) { case 'ArrowUp': case 'w': case 'W': dy = -1; break; case 'ArrowDown': case 's': case 'S': dy = 1; break; case 'ArrowLeft': case 'a': case 'A': dx = -1; break; case 'ArrowRight': case 'd': case 'D': dx = 1; break; default: return; } e.preventDefault(); this.handleMoveAttempt(dx, dy);
-         }
-         handleTouchStart(e) { /* ... (Unchanged) ... */
-             if (document.getElementById('settings-modal').classList.contains('visible')) return; if (e.touches.length !== 1) return; e.preventDefault(); this.touchStartX = e.touches[0].clientX; this.touchStartY = e.touches[0].clientY; this.touchEndX = this.touchStartX; this.touchEndY = this.touchStartY;
-         }
-         handleTouchMove(e) { /* ... (Unchanged) ... */
-              if (document.getElementById('settings-modal').classList.contains('visible')) return; if (e.touches.length !== 1) return; e.preventDefault(); this.touchEndX = e.touches[0].clientX; this.touchEndY = e.touches[0].clientY;
-         }
-         handleTouchEnd(e) { /* ... (Unchanged) ... */
-             if (document.getElementById('settings-modal').classList.contains('visible')) return; const deltaX = this.touchEndX - this.touchStartX; const deltaY = this.touchEndY - this.touchStartY; const absDeltaX = Math.abs(deltaX); const absDeltaY = Math.abs(deltaY); let dx = 0; let dy = 0; if (Math.max(absDeltaX, absDeltaY) > SWIPE_THRESHOLD) { if (absDeltaX > absDeltaY) { dx = deltaX > 0 ? 1 : -1; } else { dy = deltaY > 0 ? 1 : -1; } this.handleMoveAttempt(dx, dy); } this.touchStartX = 0; this.touchStartY = 0; this.touchEndX = 0; this.touchEndY = 0;
-         }
+         handlePrint() {
+             if (!this.mazeGenerator?.generationComplete || !this.renderer || !this.player) {
+                 alert('Genera un laberinto completo antes de imprimir.');
+                 return;
+             }
+             if (this.isLoading || this.isPrinting) {
+                 alert('Espera a que termine la acción actual antes de imprimir.');
+                 return;
+             }
 
-          // --- UI Update Methods ---
-          setDarkMode(isDark) { /* ... (Unchanged - targets body class) ... */
-              document.body.classList.toggle('dark-mode', isDark);
-              this.updatePlayerColorVisuals(isDark); // Update previews in modal
-              if (this.renderer && this.mazeGenerator.generationComplete) {
-                 this.renderer.updateStyleSettings(true); // Force redraw on theme change
-                 this.renderer.drawFrame();
-              }
-          }
-           // Updated setMazeStyle to force renderer update
-           setMazeStyle(styleName, forceUpdate = false) {
-                const currentStyle = document.body.dataset.mazeStyle;
-                if (!forceUpdate && currentStyle === styleName) return;
-                console.log("Setting maze style:", styleName); // Debug log
-                document.body.dataset.mazeStyle = styleName;
-                this.updatePlayerColorVisuals(document.body.classList.contains('dark-mode'));
-                if (this.renderer) {
-                    this.renderer.updateStyleSettings(true); // Force redraw of static elements
-                    // Re-apply marker just in case its color depends on style
-                    this.renderer.setExitMarker(document.querySelector('#modal-exitChoice input:checked').value);
-                    if (this.mazeGenerator.generationComplete) {
-                        this.renderer.drawFrame(); // Trigger immediate visual update
-                    } else {
-                         console.log("Draw skipped, maze not generated yet."); // Debug log
-                    }
-                }
-           }
-          updatePlayerColor(radioElement) { /* ... (Unchanged) ... */
-             if (!radioElement || !radioElement.checked) return; const newColor = this.getCurrentPlayerColor(); if (this.player) { this.player.setColor(newColor); } if(this.renderer) { this.renderer.updateStyleSettings(true); /* Update + force redraw */ if (this.mazeGenerator.generationComplete) this.renderer.drawFrame(); }
-          }
-          updatePlayerColorVisuals(isDark) { /* ... (Unchanged - targets modal) ... */
-              const playerRadios = document.querySelectorAll('#modal-playerChoice input[type="radio"]'); playerRadios.forEach(radio => { const lightColor = radio.dataset.light; const darkColor = radio.dataset.dark; const colorToShow = isDark ? darkColor : lightColor; if (radio.nextElementSibling) { radio.nextElementSibling.style.backgroundColor = colorToShow || radio.value; } }); this.updatePlayerColor(document.querySelector('#modal-playerChoice input:checked'));
-          }
-          getCurrentPlayerColor(getBaseValue = false) { /* ... (Unchanged - reads modal) ... */
-              const selectedRadio = document.querySelector('#modal-playerChoice input:checked'); if (!selectedRadio) return getCssVariable('--player-color'); if (getBaseValue) return selectedRadio.value; const isDark = document.body.classList.contains('dark-mode'); const lightColor = selectedRadio.dataset.light; const darkColor = selectedRadio.dataset.dark; return isDark ? (darkColor || lightColor || selectedRadio.value) : (lightColor || selectedRadio.value);
-          }
-          showMessage(title, text, finalTimeStr = '', bestTimeMsg = '') { /* ... (Unchanged) ... */
-              const overlay = document.getElementById('message-overlay'); overlay.querySelector('h2').textContent = title; overlay.querySelector('p').innerHTML = text.replace('\n', '<br>'); const finalTimeEl = document.getElementById('final-time-msg'); const bestTimeEl = document.getElementById('final-best-time-msg'); finalTimeEl.textContent = finalTimeStr ? `Tu Tiempo: ${finalTimeStr}` : ''; bestTimeEl.textContent = bestTimeMsg; finalTimeEl.style.display = finalTimeStr ? 'block' : 'none'; bestTimeEl.style.display = bestTimeMsg ? 'block' : 'none'; overlay.classList.add('visible'); this.gameActive = false;
-          }
-          hideMessage() { /* ... (Unchanged) ... */
-              document.getElementById('message-overlay').classList.remove('visible');
-          }
-          showLoading(show, text = 'Generando...') { /* ... (Unchanged) ... */
-              const indicator = document.getElementById('loading-indicator'); const newGameBtn = document.getElementById('newGameBtn'); if (show) { indicator.textContent = text; indicator.classList.add('visible'); if(newGameBtn) newGameBtn.disabled = true; } else { indicator.classList.remove('visible'); if(newGameBtn) newGameBtn.disabled = false; }
-          }
+             console.log("Initiating print...");
+             const savedState = this.renderer.prepareForPrint();
+             if (!savedState) {
+                 console.error("Failed to prepare renderer for printing.");
+                 alert("Error al preparar la impresión.");
+                 this.renderer.isPrinting = false; // Ensure flag is reset on error
+                 return;
+             }
 
-          // --- System Integration ---
-          toggleFullscreen() { /* ... (Unchanged) ... */ }
-          handleFullscreenChange() { /* ... (Unchanged - updates modal button) ... */
-               const btn = document.getElementById('modal-fullscreenBtn'); const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement); if (btn) { btn.textContent = isFullscreen ? 'Salir P. Comp.' : 'P. Completa'; btn.title = isFullscreen ? 'Salir Pantalla Completa' : 'Activar Pantalla Completa'; } setTimeout(() => this.renderer.handleResize(), 100);
-           }
-          handlePrint() {
-              if (!this.mazeGenerator?.generationComplete || !this.renderer) {
-                  alert('Genera un laberinto primero');
-                  return;
-              }
-
-              // Guardamos el estado actual
-              const currentViewMode = this.renderer.viewMode;
-              const currentDarkMode = document.body.classList.contains('dark-mode');
-              
-              // Optimizamos para impresión
-              this.renderer.setViewMode('overview');
-              document.body.classList.remove('dark-mode');
-              
-              // Esperamos a que se actualice el DOM
-              requestAnimationFrame(() => {
-                  // Forzamos actualización del renderer
-                  this.renderer.handleResize();
-                  this.renderer.updateStyleSettings(true);
-                  this.renderer.drawFrame();
-                  
-                  // Imprimimos
-                  window.print();
-                  
-                  // Restauramos el estado original
-                  requestAnimationFrame(() => {
-                      if (currentDarkMode) {
-                          document.body.classList.add('dark-mode');
-                      }
-                      this.renderer.setViewMode(currentViewMode);
-                      this.renderer.handleResize();
-                      this.renderer.updateStyleSettings(true);
-                      this.renderer.drawFrame();
-                  });
-              });
-          }
+             // Use setTimeout to allow the browser to redraw with print styles/canvas
+             setTimeout(() => {
+                 try {
+                     window.print(); // Trigger browser print dialog
+                     console.log("Print dialog should be open.");
+                     // Restore happens *after* print dialog is closed or cancelled
+                     // Using a timeout for restore is less reliable than `onafterprint` but more compatible
+                      setTimeout(() => {
+                         this.renderer.restoreAfterPrint(savedState);
+                     }, 200); // Delay restore slightly
+                 } catch (e) {
+                     console.error("Error during window.print():", e);
+                     alert("Ocurrió un error al intentar imprimir.");
+                     // Ensure restoration even if print fails
+                     this.renderer.restoreAfterPrint(savedState);
+                 }
+             }, 100); // Delay before calling print()
+         }
     }
 
     // --- Initialization ---
     document.addEventListener('DOMContentLoaded', () => {
-        requestAnimationFrame(() => { window.mazeGame = new Game(); });
+        // Use requestAnimationFrame to ensure layout is complete before initializing
+        requestAnimationFrame(() => {
+            try {
+                 window.mazeGame = new Game();
+                 console.log("Maze Game Initialized.");
+            } catch (error) {
+                 console.error("Failed to initialize Maze Game:", error);
+                 // Display a user-friendly error message on the page?
+                 document.body.innerHTML = `<div style="padding: 20px; text-align: center; color: red;">Error crítico al iniciar la aplicación: ${error.message}</div>`;
+            }
+        });
     });
 
 </script>
