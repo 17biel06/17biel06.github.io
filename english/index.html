@@ -2,107 +2,257 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verbos Irregulares en Inglés</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#3498db"> <!-- Color para barra de estado móvil (aún útil) -->
+    <title>VerbMaster - Inglés Irregular (Todo en Uno)</title>
+    <!-- Iconos (Font Awesome CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <style>
-        /* Reset y variables */
+        /* --- Reset Básico y Variables --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent; /* Evita flash azul en móviles */
         }
-        
+
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --bg-color: #ecf0f1;
+            --primary-color: #3498db; /* Azul brillante */
+            --secondary-color: #2c3e50; /* Azul oscuro/gris */
+            --accent-color: #f1c40f; /* Amarillo para acentos */
+            --bg-color: #f4f6f9; /* Fondo gris claro */
             --card-bg: #ffffff;
             --text-color: #333;
-            --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            --transition: all 0.3s ease;
+            --light-text-color: #fff;
+            --border-color: #e0e0e0;
+            --success-color: #2ecc71;
+            --error-color: #e74c3c;
+            --shadow-light: 0 2px 5px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
+            --border-radius-sm: 4px;
+            --border-radius-md: 8px;
+            --transition-fast: all 0.2s ease-in-out;
+            --transition-medium: all 0.3s ease;
+
+            /* Safe area para móviles con notch */
+            --safe-area-inset-top: env(safe-area-inset-top, 0px);
+            --safe-area-inset-right: env(safe-area-inset-right, 0px);
+            --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-area-inset-left: env(safe-area-inset-left, 0px);
         }
-        
+
+        html {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
+            font-size: 16px;
+            line-height: 1.6;
+            overflow-x: hidden; /* Evita scroll horizontal */
             min-height: 100vh;
-            padding: 15px;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        h1 {
-            color: var(--primary-color);
-            margin-bottom: 10px;
-            font-size: 1.8rem;
-        }
-        
-        .instructions {
-            margin-bottom: 15px;
-            line-height: 1.4;
-            font-size: 0.9rem;
-        }
-        
-        .controls {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column;
+        }
+
+        /* --- Estructura de la App --- */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-top: var(--safe-area-inset-top);
+            padding-left: var(--safe-area-inset-left);
+            padding-right: var(--safe-area-inset-right);
+            /* Dejamos padding-bottom para la barra de navegación */
+        }
+
+        .app-header {
+            background-color: var(--primary-color);
+            color: var(--light-text-color);
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            position: sticky; /* Opcional: mantenerlo fijo arriba */
+            top: 0;
+            z-index: 100;
+        }
+
+        .app-header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .app-main {
+            flex-grow: 1; /* Ocupa el espacio restante */
+            padding: 20px 15px;
+            padding-bottom: calc(70px + var(--safe-area-inset-bottom)); /* Espacio para la nav bar */
+            overflow-y: auto; /* Permite scroll si el contenido es largo */
+        }
+
+        /* --- Vistas (Sections) --- */
+        .app-view {
+            display: none; /* Oculto por defecto */
+            animation: fadeIn 0.4s ease; /* Animación al cambiar de vista */
+        }
+
+        .app-view.active-view {
+            display: block; /* Mostrar vista activa */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .app-view h2 {
+            color: var(--secondary-color);
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+
+        .app-view h2 i {
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+
+        /* --- Controles Comunes --- */
+        button, select, input[type="text"], input[type="number"] {
+            padding: 10px 15px;
+            border-radius: var(--border-radius-md);
+            border: 1px solid var(--border-color);
+            font-size: 0.95rem;
+            transition: var(--transition-fast);
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        button {
+            cursor: pointer;
+            background-color: var(--primary-color);
+            color: var(--light-text-color);
+            border: none;
+            font-weight: 500;
+        }
+
+        button:hover:not(:disabled) {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        button:active:not(:disabled) {
+            transform: translateY(0px);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        select {
+            appearance: none; /* Quitar estilo nativo */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%233498db'%3E%3Cpath d='M8 11.5a.5.5 0 0 1-.354-.146l-3-3a.5.5 0 0 1 .708-.708L8 10.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3A.5.5 0 0 1 8 11.5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+            padding-right: 35px; /* Espacio para la flecha */
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--light-text-color);
+        }
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--light-text-color);
+        }
+        .btn-tertiary {
+            background-color: var(--bg-color);
+            color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+        }
+
+        /* --- Indicador de Progreso --- */
+        .progress-indicator {
+            text-align: center;
+            margin: 15px auto 20px;
+            font-size: 0.9rem;
+            color: #666;
+            max-width: 350px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%; /* Se actualiza con JS */
+            background-color: var(--success-color);
+            border-radius: 4px;
+            transition: width 0.4s ease;
+        }
+
+        /* === Vista Estudio (Flashcards) === */
+        .study-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             gap: 10px;
             margin-bottom: 20px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        
-        button, select {
-            padding: 8px 15px;
-            background-color: var(--secondary-color);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            font-size: 0.9rem;
+        .study-controls button {
+            padding: 10px; /* Más pequeños */
+            line-height: 1; /* Alinear icono verticalmente */
         }
-        
-        button:hover {
-            background-color: #2980b9;
+        .study-controls select {
+            flex-grow: 1;
+            min-width: 120px;
         }
-        
-        select {
-            background-color: white;
-            color: var(--primary-color);
-            border: 1px solid var(--secondary-color);
-        }
-        
-        .progress {
-            text-align: center;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        
-        /* Tarjeta principal */
+
         .card-container {
             perspective: 1000px;
-            width: 280px;
-            height: 180px;
+            width: 90%;
+            max-width: 320px; /* Ajusta según prefieras */
+            height: 200px;
             margin: 0 auto 30px;
         }
-        
+
         .card {
             position: relative;
             width: 100%;
             height: 100%;
             transform-style: preserve-3d;
-            transition: transform 0.6s;
+            transition: transform 0.7s cubic-bezier(0.4, 0.0, 0.2, 1); /* Transición suave */
             cursor: pointer;
         }
-        
+
         .card.flipped {
             transform: rotateY(180deg);
         }
-        
+
         .card-face {
             position: absolute;
             width: 100%;
@@ -112,374 +262,1155 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            border-radius: 10px;
-            box-shadow: var(--card-shadow);
-            padding: 15px;
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-medium);
+            padding: 20px;
+            text-align: center;
         }
-        
+
         .card-front {
             background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
         }
-        
+
         .card-back {
             background-color: var(--secondary-color);
-            color: white;
+            color: var(--light-text-color);
             transform: rotateY(180deg);
         }
-        
+
         .verb-base {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 10px;
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 15px;
         }
-        
-        .verb-past {
-            font-size: 1.4rem;
-            margin: 5px 0;
+
+        .verb-forms p {
+            font-size: 1.2rem;
+            margin: 8px 0;
         }
-        
+        .form-label {
+            font-weight: 300;
+            opacity: 0.8;
+        }
+
         .hint {
             font-size: 0.8rem;
             opacity: 0.7;
             margin-top: 15px;
+            font-style: italic;
         }
-        
-        /* Lista de verbos */
-        .verb-list {
+        .card-back .hint {
+            opacity: 0.8;
+        }
+
+        .verb-status {
+            margin-top: 15px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .learned-toggle-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--light-text-color);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            border-radius: var(--border-radius-sm);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .learned-toggle-btn i {
+            font-size: 1rem;
+        }
+        .learned-toggle-btn.learned {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+        .learned-toggle-btn.learned i {
+            font-weight: 900; /* Icono relleno (fa-solid) */
+        }
+
+        /* === Vista Práctica (Quiz) === */
+        .quiz-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-light);
+        }
+
+        .quiz-setup {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+        .quiz-setup select, .quiz-setup input[type="number"] {
+            max-width: 250px;
+        }
+        .quiz-setup label {
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .quiz-question-area {
+            animation: fadeIn 0.4s ease;
+        }
+
+        .quiz-instruction {
+            text-align: center;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .quiz-verb-base {
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            background-color: var(--bg-color);
+            padding: 10px;
+            border-radius: var(--border-radius-sm);
+        }
+
+        .quiz-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+        .input-group input {
+            border: 1px solid var(--border-color);
+        }
+        .input-group input.correct {
+            border-color: var(--success-color);
+            background-color: #e8f9f1; /* Fondo verde claro */
+        }
+        .input-group input.incorrect {
+            border-color: var(--error-color);
+            background-color: #fdedec; /* Fondo rojo claro */
+        }
+
+        .quiz-feedback {
+            min-height: 25px; /* Espacio para mensajes */
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+        .feedback-correct {
+            color: var(--success-color);
+        }
+        .feedback-incorrect {
+            color: var(--error-color);
+        }
+        .correct-answer-display {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .quiz-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: center;
+        }
+        .quiz-actions .btn-primary { flex-grow: 1; } /* Botón principal ocupa más espacio */
+
+        .quiz-summary {
+            text-align: center;
+            animation: fadeIn 0.4s ease;
+            margin-top: 20px;
+        }
+        .quiz-summary h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        .quiz-summary p {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        .quiz-summary p strong {
+            color: var(--secondary-color);
+        }
+        .summary-actions {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        /* === Vista Lista de Verbos === */
+        .list-controls {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
-            max-width: 800px;
-            margin: 0 auto;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center;
         }
-        
-        .mini-card {
-            padding: 8px;
+        #search-input {
+            flex-grow: 1;
+            min-width: 150px;
+        }
+        #list-filter-select {
+            min-width: 130px;
+        }
+        #list-count-info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-left: auto; /* Empuja a la derecha */
+        }
+
+        .verb-list-container {
+            max-height: calc(100vh - 280px); /* Ajusta según necesites */
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
             background-color: var(--card-bg);
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        #verb-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .verb-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.15s ease;
             cursor: pointer;
-            transition: transform 0.2s;
-            font-size: 0.8rem;
-            text-align: center;
-            width: 90px;
         }
-        
-        .mini-card:hover {
-            transform: translateY(-3px);
+        .verb-list-item:last-child {
+            border-bottom: none;
         }
-        
-        .mini-card.learned {
-            background-color: #27ae60;
-            color: white;
+        .verb-list-item:hover {
+            background-color: #f0f0f0;
         }
-        
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 0.8rem;
-            color: #7f8c8d;
-            padding: 10px;
+
+        .verb-list-item .verb-name {
+            font-weight: 500;
+            color: var(--secondary-color);
         }
-        
-        /* Responsive */
-        @media (max-width: 480px) {
-            .card-container {
-                width: 260px;
-                height: 170px;
+        .verb-list-item .verb-details {
+            font-size: 0.85rem;
+            color: #666;
+            display: none; /* Oculto por defecto, se muestra en pantallas más grandes */
+        }
+        .verb-list-item .verb-status-icon {
+            font-size: 1.1rem;
+            margin-left: 10px;
+        }
+        .verb-list-item .learned-icon {
+            color: var(--success-color);
+        }
+        .verb-list-item .not-learned-icon {
+            color: #ccc; /* Gris claro para no aprendido */
+        }
+        .verb-list-item.learned {
+             /* Estilo opcional para elementos aprendidos en la lista */
+            /* background-color: #e8f9f1; */
+        }
+
+
+        /* --- Barra de Navegación --- */
+        .app-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center; /* Centrado vertical */
+            background-color: var(--card-bg);
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            height: 60px; /* Altura fija */
+            padding-bottom: var(--safe-area-inset-bottom); /* Respetar área segura */
+            z-index: 100;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: #888; /* Color inactivo */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            height: 100%;
+            font-size: 0.75rem; /* Texto más pequeño */
+            padding: 5px 0;
+            transition: color 0.2s ease;
+        }
+
+        .nav-item i {
+            font-size: 1.4rem; /* Icono más grande */
+            margin-bottom: 3px;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color); /* Color activo */
+        }
+
+        .nav-item:hover:not(.active) {
+            color: #555;
+        }
+
+        /* --- Adaptaciones para Escritorio --- */
+        @media (min-width: 768px) {
+            body { font-size: 17px; }
+
+            .app-main {
+                 /* No necesitamos tanto padding abajo en escritorio */
+                 padding-bottom: 30px;
+                 padding-left: 30px;
+                 padding-right: 30px;
             }
-            
-            .verb-base {
-                font-size: 1.8rem;
+
+            .app-nav {
+                /* Mantenerla arriba bajo el header */
+                position: static; /* O sticky bajo el header */
+                height: auto;
+                box-shadow: none;
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 0;
+                background-color: #fdfdfd;
+                justify-content: center; /* Centrar items si hay espacio */
+                gap: 30px;
             }
-            
-            .verb-past {
-                font-size: 1.2rem;
+
+            .nav-item {
+                flex-direction: row; /* Icono y texto en línea */
+                gap: 8px;
+                font-size: 1rem;
+                padding: 15px 20px;
+                flex-grow: 0; /* No expandir */
+                height: auto;
             }
-            
-            .mini-card {
-                width: 80px;
-                font-size: 0.75rem;
+            .nav-item i { font-size: 1.2rem; margin-bottom: 0; }
+
+            .card-container { max-width: 380px; height: 220px; }
+            .verb-base { font-size: 2.5rem; }
+            .verb-forms p { font-size: 1.3rem; }
+
+            .verb-list-item .verb-details {
+                display: inline; /* Mostrar detalles en escritorio */
+                margin-left: 15px;
             }
+
+            .quiz-container { max-width: 600px; }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Verbos Irregulares en Inglés</h1>
-        <p class="instructions">Toca la tarjeta para ver las formas del pasado. Haz doble clic en los verbos de la lista para marcarlos como aprendidos.</p>
-    </header>
-    
-    <div class="controls">
-        <button id="prev-btn">Anterior</button>
-        <button id="next-btn">Siguiente</button>
-        <button id="shuffle-btn">Mezclar</button>
-        <select id="difficulty">
-            <option value="all">Todos los verbos</option>
-            <option value="easy">Básicos</option>
-            <option value="medium">Intermedios</option>
-            <option value="hard">Avanzados</option>
-        </select>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>VerbMaster <i class="fas fa-bolt"></i></h1>
+        </header>
+
+        <main class="app-main">
+
+            <!-- === Vista Estudio (Flashcards) === -->
+            <section id="study-view" class="app-view active-view">
+                <h2><i class="fas fa-book-open"></i> Modo Estudio</h2>
+
+                <div class="controls study-controls">
+                    <button id="prev-btn"><i class="fas fa-chevron-left"></i></button>
+                    <select id="difficulty-select">
+                        <option value="all">Todos</option>
+                        <option value="easy">Básicos</option>
+                        <option value="medium">Intermedios</option>
+                        <option value="hard">Avanzados</option>
+                        <option value="learned">Aprendidos</option>
+                        <option value="not-learned">Por Aprender</option>
+                    </select>
+                    <button id="shuffle-btn"><i class="fas fa-random"></i></button>
+                    <button id="next-btn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+
+                <div class="progress-indicator">
+                    <span id="current-index-study">1</span> / <span id="total-cards-study">...</span>
+                    <div class="progress-bar-container">
+                        <div id="study-progress-bar" class="progress-bar"></div>
+                    </div>
+                </div>
+
+                <div class="card-container">
+                    <div class="card" id="flashcard">
+                        <div class="card-face card-front">
+                            <div class="verb-base" id="flashcard-base">Be</div>
+                            <div class="hint"><i class="fas fa-hand-pointer"></i> Toca para ver la respuesta</div>
+                        </div>
+                        <div class="card-face card-back">
+                            <div class="verb-forms">
+                                <p><span class="form-label">Pasado:</span> <span id="flashcard-past">was/were</span></p>
+                                <p><span class="form-label">Participio:</span> <span id="flashcard-participle">been</span></p>
+                            </div>
+                             <div class="verb-status">
+                                 <button id="mark-learned-btn" class="learned-toggle-btn" title="Marcar como aprendido/no aprendido">
+                                     <i class="far fa-check-circle"></i> <span>Marcar Aprendido</span>
+                                  </button>
+                             </div>
+                            <div class="hint"><i class="fas fa-hand-pointer"></i> Toca para volver</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- === Vista Práctica (Quiz) === -->
+            <section id="practice-view" class="app-view">
+                <h2><i class="fas fa-pencil-alt"></i> Modo Práctica</h2>
+                <div class="quiz-container">
+                   <div id="quiz-setup" class="quiz-setup">
+                       <p>Elige qué verbos quieres practicar:</p>
+                       <select id="quiz-difficulty-select">
+                           <option value="all">Todos</option>
+                           <option value="easy">Básicos</option>
+                           <option value="medium">Intermedios</option>
+                           <option value="hard">Avanzados</option>
+                           <option value="not-learned">Sólo no aprendidos</option>
+                       </select>
+                       <label for="quiz-limit">Número de preguntas:</label>
+                       <input type="number" id="quiz-limit" value="10" min="5" max="50" step="5">
+                       <button id="start-quiz-btn" class="btn-primary">¡Empezar Práctica!</button>
+                   </div>
+
+                   <div id="quiz-question-area" class="quiz-question-area" style="display: none;">
+                       <div class="progress-indicator">
+                            <span id="current-index-quiz">1</span> / <span id="total-cards-quiz">...</span>
+                            <div class="progress-bar-container">
+                                <div id="quiz-progress-bar" class="progress-bar"></div>
+                            </div>
+                       </div>
+                        <p class="quiz-instruction">Escribe las formas del verbo:</p>
+                        <p class="quiz-verb-base" id="quiz-verb-base">...</p>
+                        <div class="quiz-inputs">
+                            <div class="input-group">
+                                <label for="past-simple-input">Pasado Simple:</label>
+                                <input type="text" id="past-simple-input" placeholder="Escribe aquí..." autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+                            </div>
+                            <div class="input-group">
+                                <label for="past-participle-input">Participio Pasado:</label>
+                                <input type="text" id="past-participle-input" placeholder="Escribe aquí..." autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+                            </div>
+                        </div>
+                        <div id="quiz-feedback" class="quiz-feedback"></div> <!-- Area para mensajes correcto/incorrecto -->
+                        <div class="quiz-actions">
+                           <button id="check-answer-btn" class="btn-primary">Comprobar</button>
+                           <button id="next-question-btn" class="btn-secondary" style="display: none;">Siguiente <i class="fas fa-arrow-right"></i></button>
+                            <button id="skip-question-btn" class="btn-tertiary">Saltar</button>
+                        </div>
+                   </div>
+
+                   <div id="quiz-summary" class="quiz-summary" style="display: none;">
+                        <h3><i class="fas fa-trophy"></i> ¡Práctica Completada!</h3>
+                        <p>Correctas: <span id="quiz-correct-count">0</span></p>
+                        <p>Incorrectas: <span id="quiz-incorrect-count">0</span></p>
+                        <p>Saltadas: <span id="quiz-skipped-count">0</span></p>
+                        <p><strong>Puntuación: <span id="quiz-score">0</span>%</strong></p>
+                        <div class="summary-actions">
+                           <button id="restart-quiz-btn" class="btn-primary">Volver a Practicar</button>
+                           <button id="review-mistakes-btn" class="btn-secondary">Revisar Errores</button> <!-- Opcional -->
+                       </div>
+                   </div>
+                </div>
+            </section>
+
+            <!-- === Vista Lista de Verbos === -->
+            <section id="list-view" class="app-view">
+                <h2><i class="fas fa-list-ul"></i> Lista de Verbos</h2>
+                <div class="list-controls">
+                    <input type="text" id="search-input" placeholder="Buscar verbo...">
+                    <select id="list-filter-select">
+                        <option value="all">Todos</option>
+                        <option value="easy">Básicos</option>
+                        <option value="medium">Intermedios</option>
+                        <option value="hard">Avanzados</option>
+                        <option value="learned">Aprendidos</option>
+                        <option value="not-learned">Por Aprender</option>
+                    </select>
+                    <span id="list-count-info">(...)</span>
+                </div>
+                <div class="verb-list-container">
+                    <ul id="verb-list">
+                        <!-- La lista se genera con JS -->
+                        <li class="verb-list-item">
+                             <span>Cargando...</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- === Barra de Navegación Inferior (Móvil) / Superior (Desktop) === -->
+        <nav class="app-nav">
+            <button class="nav-item active" data-view="study-view" title="Modo Estudio">
+                <i class="fas fa-book-open fa-fw"></i>
+                <span class="nav-text">Estudio</span>
+            </button>
+            <button class="nav-item" data-view="practice-view" title="Modo Práctica">
+                <i class="fas fa-pencil-alt fa-fw"></i>
+                <span class="nav-text">Práctica</span>
+            </button>
+            <button class="nav-item" data-view="list-view" title="Lista de Verbos">
+                <i class="fas fa-list-ul fa-fw"></i>
+                <span class="nav-text">Lista</span>
+            </button>
+        </nav>
     </div>
-    
-    <div class="progress">
-        <span id="current-index">1</span>/<span id="total-cards">87</span>
-    </div>
-    
-    <div class="card-container">
-        <div class="card" id="card">
-            <div class="card-face card-front">
-                <div class="verb-base" id="base-form">be</div>
-                <div class="hint">Toca para ver la respuesta</div>
-            </div>
-            <div class="card-face card-back">
-                <div class="verb-past" id="past-simple">Pasado: was/were</div>
-                <div class="verb-past" id="past-participle">Participio: been</div>
-                <div class="hint">Toca para volver</div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="verb-list" id="verb-list">
-        <!-- Se llenará con JavaScript -->
-    </div>
-    
-    <footer>
-        <p>Desarrollado por 17biel06 - 2025</p>
-    </footer>
 
     <script>
-        // Datos de los verbos irregulares
-        const verbs = [
-            {base: "be", pastSimple: "was/were", pastParticiple: "been", difficulty: "easy"},
-            {base: "become", pastSimple: "became", pastParticiple: "become", difficulty: "medium"},
-            {base: "begin", pastSimple: "began", pastParticiple: "begun", difficulty: "easy"},
-            {base: "bend", pastSimple: "bent", pastParticiple: "bent", difficulty: "medium"},
-            {base: "bite", pastSimple: "bit", pastParticiple: "bitten", difficulty: "medium"},
-            {base: "blow", pastSimple: "blew", pastParticiple: "blown", difficulty: "medium"},
-            {base: "break", pastSimple: "broke", pastParticiple: "broken", difficulty: "easy"},
-            {base: "bring", pastSimple: "brought", pastParticiple: "brought", difficulty: "easy"},
-            {base: "build", pastSimple: "built", pastParticiple: "built", difficulty: "easy"},
-            {base: "burn", pastSimple: "burned/burnt", pastParticiple: "burned/burnt", difficulty: "medium"},
-            {base: "buy", pastSimple: "bought", pastParticiple: "bought", difficulty: "easy"},
-            {base: "can", pastSimple: "could", pastParticiple: "been able to", difficulty: "easy"},
-            {base: "catch", pastSimple: "caught", pastParticiple: "caught", difficulty: "easy"},
-            {base: "choose", pastSimple: "chose", pastParticiple: "chosen", difficulty: "medium"},
-            {base: "come", pastSimple: "came", pastParticiple: "come", difficulty: "easy"},
-            {base: "cost", pastSimple: "cost", pastParticiple: "cost", difficulty: "easy"},
-            {base: "cut", pastSimple: "cut", pastParticiple: "cut", difficulty: "easy"},
-            {base: "do", pastSimple: "did", pastParticiple: "done", difficulty: "easy"},
-            {base: "draw", pastSimple: "drew", pastParticiple: "drawn", difficulty: "medium"},
-            {base: "drink", pastSimple: "drank", pastParticiple: "drunk", difficulty: "easy"},
-            {base: "drive", pastSimple: "drove", pastParticiple: "driven", difficulty: "easy"},
-            {base: "eat", pastSimple: "ate", pastParticiple: "eaten", difficulty: "easy"},
-            {base: "fall", pastSimple: "fell", pastParticiple: "fallen", difficulty: "easy"},
-            {base: "feel", pastSimple: "felt", pastParticiple: "felt", difficulty: "easy"},
-            {base: "fight", pastSimple: "fought", pastParticiple: "fought", difficulty: "medium"},
-            {base: "find", pastSimple: "found", pastParticiple: "found", difficulty: "easy"},
-            {base: "fly", pastSimple: "flew", pastParticiple: "flown", difficulty: "easy"},
-            {base: "forget", pastSimple: "forgot", pastParticiple: "forgotten", difficulty: "easy"},
-            {base: "get", pastSimple: "got", pastParticiple: "got", difficulty: "easy"},
-            {base: "give", pastSimple: "gave", pastParticiple: "given", difficulty: "easy"},
-            {base: "go", pastSimple: "went", pastParticiple: "gone", difficulty: "easy"},
-            {base: "grow", pastSimple: "grew", pastParticiple: "grown", difficulty: "medium"},
-            {base: "hang", pastSimple: "hung", pastParticiple: "hung", difficulty: "medium"},
-            {base: "have", pastSimple: "had", pastParticiple: "had", difficulty: "easy"},
-            {base: "hear", pastSimple: "heard", pastParticiple: "heard", difficulty: "easy"},
-            {base: "hide", pastSimple: "hid", pastParticiple: "hidden", difficulty: "medium"},
-            {base: "hit", pastSimple: "hit", pastParticiple: "hit", difficulty: "easy"},
-            {base: "keep", pastSimple: "kept", pastParticiple: "kept", difficulty: "easy"},
-            {base: "know", pastSimple: "knew", pastParticiple: "known", difficulty: "easy"},
-            {base: "lay", pastSimple: "laid", pastParticiple: "laid", difficulty: "hard"},
-            {base: "lead", pastSimple: "led", pastParticiple: "led", difficulty: "medium"},
-            {base: "learn", pastSimple: "learned/learnt", pastParticiple: "learned/learnt", difficulty: "easy"},
-            {base: "leave", pastSimple: "left", pastParticiple: "left", difficulty: "easy"},
-            {base: "lend", pastSimple: "lent", pastParticiple: "lent", difficulty: "medium"},
-            {base: "lose", pastSimple: "lost", pastParticiple: "lost", difficulty: "easy"},
-            {base: "make", pastSimple: "made", pastParticiple: "made", difficulty: "easy"},
-            {base: "mean", pastSimple: "meant", pastParticiple: "meant", difficulty: "medium"},
-            {base: "meet", pastSimple: "met", pastParticiple: "met", difficulty: "easy"},
-            {base: "overcome", pastSimple: "overcame", pastParticiple: "overcome", difficulty: "hard"},
-            {base: "pay", pastSimple: "paid", pastParticiple: "paid", difficulty: "easy"},
-            {base: "put", pastSimple: "put", pastParticiple: "put", difficulty: "easy"},
-            {base: "read", pastSimple: "read", pastParticiple: "read", difficulty: "easy"},
-            {base: "ride", pastSimple: "rode", pastParticiple: "ridden", difficulty: "medium"},
-            {base: "ring", pastSimple: "rang", pastParticiple: "rung", difficulty: "medium"},
-            {base: "run", pastSimple: "ran", pastParticiple: "run", difficulty: "easy"},
-            {base: "say", pastSimple: "said", pastParticiple: "said", difficulty: "easy"},
-            {base: "see", pastSimple: "saw", pastParticiple: "seen", difficulty: "easy"},
-            {base: "sell", pastSimple: "sold", pastParticiple: "sold", difficulty: "easy"},
-            {base: "send", pastSimple: "sent", pastParticiple: "sent", difficulty: "easy"},
-            {base: "set", pastSimple: "set", pastParticiple: "set", difficulty: "easy"},
-            {base: "shake", pastSimple: "shook", pastParticiple: "shaken", difficulty: "medium"},
-            {base: "shine", pastSimple: "shone", pastParticiple: "shone", difficulty: "medium"},
-            {base: "shoot", pastSimple: "shot", pastParticiple: "shot", difficulty: "medium"},
-            {base: "show", pastSimple: "showed", pastParticiple: "showed/shown", difficulty: "easy"},
-            {base: "shut", pastSimple: "shut", pastParticiple: "shut", difficulty: "easy"},
-            {base: "sing", pastSimple: "sang", pastParticiple: "sung", difficulty: "medium"},
-            {base: "sink", pastSimple: "sank", pastParticiple: "sunk", difficulty: "hard"},
-            {base: "sit", pastSimple: "sat", pastParticiple: "sat", difficulty: "easy"},
-            {base: "sleep", pastSimple: "slept", pastParticiple: "slept", difficulty: "easy"},
-            {base: "smell", pastSimple: "smelled/smelt", pastParticiple: "smelled/smelt", difficulty: "medium"},
-            {base: "speak", pastSimple: "spoke", pastParticiple: "spoken", difficulty: "easy"},
-            {base: "spell", pastSimple: "spelled/spelt", pastParticiple: "spelled/spelt", difficulty: "medium"},
-            {base: "spend", pastSimple: "spent", pastParticiple: "spent", difficulty: "easy"},
-            {base: "spill", pastSimple: "spilled/spilt", pastParticiple: "spilled/spilt", difficulty: "medium"},
-            {base: "stand", pastSimple: "stood", pastParticiple: "stood", difficulty: "easy"},
-            {base: "steal", pastSimple: "stole", pastParticiple: "stolen", difficulty: "medium"},
-            {base: "swim", pastSimple: "swam", pastParticiple: "swum", difficulty: "medium"},
-            {base: "take", pastSimple: "took", pastParticiple: "taken", difficulty: "easy"},
-            {base: "teach", pastSimple: "taught", pastParticiple: "taught", difficulty: "easy"},
-            {base: "tell", pastSimple: "told", pastParticiple: "told", difficulty: "easy"},
-            {base: "think", pastSimple: "thought", pastParticiple: "thought", difficulty: "easy"},
-            {base: "throw", pastSimple: "threw", pastParticiple: "thrown", difficulty: "medium"},
-            {base: "understand", pastSimple: "understood", pastParticiple: "understood", difficulty: "easy"},
-            {base: "wake", pastSimple: "woke", pastParticiple: "woken", difficulty: "medium"},
-            {base: "wear", pastSimple: "wore", pastParticiple: "worn", difficulty: "medium"},
-            {base: "win", pastSimple: "won", pastParticiple: "won", difficulty: "easy"},
-            {base: "write", pastSimple: "wrote", pastParticiple: "written", difficulty: "easy"}
+        // ===========================================================
+        // START: VERB DATA (Equivalente a verbs.js)
+        // ===========================================================
+        const allVerbsData = [
+            {base: "be", pastSimple: "was/were", pastParticiple: "been", difficulty: "easy", learned: false},
+            {base: "become", pastSimple: "became", pastParticiple: "become", difficulty: "medium", learned: false},
+            {base: "begin", pastSimple: "began", pastParticiple: "begun", difficulty: "easy", learned: false},
+            {base: "bend", pastSimple: "bent", pastParticiple: "bent", difficulty: "medium", learned: false},
+            {base: "bite", pastSimple: "bit", pastParticiple: "bitten", difficulty: "medium", learned: false},
+            {base: "blow", pastSimple: "blew", pastParticiple: "blown", difficulty: "medium", learned: false},
+            {base: "break", pastSimple: "broke", pastParticiple: "broken", difficulty: "easy", learned: false},
+            {base: "bring", pastSimple: "brought", pastParticiple: "brought", difficulty: "easy", learned: false},
+            {base: "build", pastSimple: "built", pastParticiple: "built", difficulty: "easy", learned: false},
+            {base: "burn", pastSimple: "burned/burnt", pastParticiple: "burned/burnt", difficulty: "medium", learned: false},
+            {base: "buy", pastSimple: "bought", pastParticiple: "bought", difficulty: "easy", learned: false},
+            // {base: "can", pastSimple: "could", pastParticiple: "been able to", difficulty: "easy", learned: false}, // 'can' es modal, su participio es complejo. Puede ser mejor omitirlo o tratarlo diferente.
+            {base: "catch", pastSimple: "caught", pastParticiple: "caught", difficulty: "easy", learned: false},
+            {base: "choose", pastSimple: "chose", pastParticiple: "chosen", difficulty: "medium", learned: false},
+            {base: "come", pastSimple: "came", pastParticiple: "come", difficulty: "easy", learned: false},
+            {base: "cost", pastSimple: "cost", pastParticiple: "cost", difficulty: "easy", learned: false},
+            {base: "cut", pastSimple: "cut", pastParticiple: "cut", difficulty: "easy", learned: false},
+            {base: "do", pastSimple: "did", pastParticiple: "done", difficulty: "easy", learned: false},
+            {base: "draw", pastSimple: "drew", pastParticiple: "drawn", difficulty: "medium", learned: false},
+            {base: "drink", pastSimple: "drank", pastParticiple: "drunk", difficulty: "easy", learned: false},
+            {base: "drive", pastSimple: "drove", pastParticiple: "driven", difficulty: "easy", learned: false},
+            {base: "eat", pastSimple: "ate", pastParticiple: "eaten", difficulty: "easy", learned: false},
+            {base: "fall", pastSimple: "fell", pastParticiple: "fallen", difficulty: "easy", learned: false},
+            {base: "feel", pastSimple: "felt", pastParticiple: "felt", difficulty: "easy", learned: false},
+            {base: "fight", pastSimple: "fought", pastParticiple: "fought", difficulty: "medium", learned: false},
+            {base: "find", pastSimple: "found", pastParticiple: "found", difficulty: "easy", learned: false},
+            {base: "fly", pastSimple: "flew", pastParticiple: "flown", difficulty: "easy", learned: false},
+            {base: "forget", pastSimple: "forgot", pastParticiple: "forgotten", difficulty: "easy", learned: false},
+            {base: "get", pastSimple: "got", pastParticiple: "got/gotten", difficulty: "easy", learned: false}, // Añadir gotten
+            {base: "give", pastSimple: "gave", pastParticiple: "given", difficulty: "easy", learned: false},
+            {base: "go", pastSimple: "went", pastParticiple: "gone", difficulty: "easy", learned: false},
+            {base: "grow", pastSimple: "grew", pastParticiple: "grown", difficulty: "medium", learned: false},
+            {base: "hang", pastSimple: "hung", pastParticiple: "hung", difficulty: "medium", learned: false}, // Para ropa, etc. hang/hanged/hanged para ejecución
+            {base: "have", pastSimple: "had", pastParticiple: "had", difficulty: "easy", learned: false},
+            {base: "hear", pastSimple: "heard", pastParticiple: "heard", difficulty: "easy", learned: false},
+            {base: "hide", pastSimple: "hid", pastParticiple: "hidden", difficulty: "medium", learned: false},
+            {base: "hit", pastSimple: "hit", pastParticiple: "hit", difficulty: "easy", learned: false},
+            {base: "hold", pastSimple: "held", pastParticiple: "held", difficulty: "medium", learned: false}, // Añadido
+            {base: "hurt", pastSimple: "hurt", pastParticiple: "hurt", difficulty: "easy", learned: false}, // Añadido
+            {base: "keep", pastSimple: "kept", pastParticiple: "kept", difficulty: "easy", learned: false},
+            {base: "know", pastSimple: "knew", pastParticiple: "known", difficulty: "easy", learned: false},
+            {base: "lay", pastSimple: "laid", pastParticiple: "laid", difficulty: "hard", learned: false},
+            {base: "lead", pastSimple: "led", pastParticiple: "led", difficulty: "medium", learned: false},
+            {base: "learn", pastSimple: "learned/learnt", pastParticiple: "learned/learnt", difficulty: "easy", learned: false},
+            {base: "leave", pastSimple: "left", pastParticiple: "left", difficulty: "easy", learned: false},
+            {base: "lend", pastSimple: "lent", pastParticiple: "lent", difficulty: "medium", learned: false},
+            {base: "let", pastSimple: "let", pastParticiple: "let", difficulty: "easy", learned: false}, // Añadido
+            {base: "lie", pastSimple: "lay", pastParticiple: "lain", difficulty: "hard", learned: false}, // Acostarse (lie/lied/lied = mentir)
+            {base: "lose", pastSimple: "lost", pastParticiple: "lost", difficulty: "easy", learned: false},
+            {base: "make", pastSimple: "made", pastParticiple: "made", difficulty: "easy", learned: false},
+            {base: "mean", pastSimple: "meant", pastParticiple: "meant", difficulty: "medium", learned: false},
+            {base: "meet", pastSimple: "met", pastParticiple: "met", difficulty: "easy", learned: false},
+            {base: "pay", pastSimple: "paid", pastParticiple: "paid", difficulty: "easy", learned: false},
+            {base: "put", pastSimple: "put", pastParticiple: "put", difficulty: "easy", learned: false},
+            {base: "read", pastSimple: "read", pastParticiple: "read", difficulty: "easy", learned: false}, // Pronunciación diferente
+            {base: "ride", pastSimple: "rode", pastParticiple: "ridden", difficulty: "medium", learned: false},
+            {base: "ring", pastSimple: "rang", pastParticiple: "rung", difficulty: "medium", learned: false},
+            {base: "rise", pastSimple: "rose", pastParticiple: "risen", difficulty: "medium", learned: false}, // Añadido
+            {base: "run", pastSimple: "ran", pastParticiple: "run", difficulty: "easy", learned: false},
+            {base: "say", pastSimple: "said", pastParticiple: "said", difficulty: "easy", learned: false},
+            {base: "see", pastSimple: "saw", pastParticiple: "seen", difficulty: "easy", learned: false},
+            {base: "sell", pastSimple: "sold", pastParticiple: "sold", difficulty: "easy", learned: false},
+            {base: "send", pastSimple: "sent", pastParticiple: "sent", difficulty: "easy", learned: false},
+            {base: "set", pastSimple: "set", pastParticiple: "set", difficulty: "easy", learned: false},
+            {base: "shake", pastSimple: "shook", pastParticiple: "shaken", difficulty: "medium", learned: false},
+            {base: "shine", pastSimple: "shone", pastParticiple: "shone", difficulty: "medium", learned: false},
+            {base: "shoot", pastSimple: "shot", pastParticiple: "shot", difficulty: "medium", learned: false},
+            {base: "show", pastSimple: "showed", pastParticiple: "shown/showed", difficulty: "easy", learned: false},
+            {base: "shut", pastSimple: "shut", pastParticiple: "shut", difficulty: "easy", learned: false},
+            {base: "sing", pastSimple: "sang", pastParticiple: "sung", difficulty: "medium", learned: false},
+            {base: "sink", pastSimple: "sank", pastParticiple: "sunk", difficulty: "hard", learned: false},
+            {base: "sit", pastSimple: "sat", pastParticiple: "sat", difficulty: "easy", learned: false},
+            {base: "sleep", pastSimple: "slept", pastParticiple: "slept", difficulty: "easy", learned: false},
+            {base: "speak", pastSimple: "spoke", pastParticiple: "spoken", difficulty: "easy", learned: false},
+            {base: "spend", pastSimple: "spent", pastParticiple: "spent", difficulty: "easy", learned: false},
+            {base: "stand", pastSimple: "stood", pastParticiple: "stood", difficulty: "easy", learned: false},
+            {base: "steal", pastSimple: "stole", pastParticiple: "stolen", difficulty: "medium", learned: false},
+            {base: "swim", pastSimple: "swam", pastParticiple: "swum", difficulty: "medium", learned: false},
+            {base: "take", pastSimple: "took", pastParticiple: "taken", difficulty: "easy", learned: false},
+            {base: "teach", pastSimple: "taught", pastParticiple: "taught", difficulty: "easy", learned: false},
+            {base: "tell", pastSimple: "told", pastParticiple: "told", difficulty: "easy", learned: false},
+            {base: "think", pastSimple: "thought", pastParticiple: "thought", difficulty: "easy", learned: false},
+            {base: "throw", pastSimple: "threw", pastParticiple: "thrown", difficulty: "medium", learned: false},
+            {base: "understand", pastSimple: "understood", pastParticiple: "understood", difficulty: "easy", learned: false},
+            {base: "wake", pastSimple: "woke", pastParticiple: "woken", difficulty: "medium", learned: false},
+            {base: "wear", pastSimple: "wore", pastParticiple: "worn", difficulty: "medium", learned: false},
+            {base: "win", pastSimple: "won", pastParticiple: "won", difficulty: "easy", learned: false},
+            {base: "write", pastSimple: "wrote", pastParticiple: "written", difficulty: "easy", learned: false}
         ];
-        
-        // Variables globales
-        let currentVerbs = [...verbs];
-        let currentIndex = 0;
-        let learnedVerbs = [];
-        
-        // Elementos del DOM
-        const card = document.getElementById('card');
-        const baseForm = document.getElementById('base-form');
-        const pastSimple = document.getElementById('past-simple');
-        const pastParticiple = document.getElementById('past-participle');
-        const currentIndexEl = document.getElementById('current-index');
-        const totalCardsEl = document.getElementById('total-cards');
-        const verbList = document.getElementById('verb-list');
-        
-        // Inicializar juego
-        function init() {
-            // Cargar verbos aprendidos del localStorage si existen
-            const savedLearned = localStorage.getItem('learnedVerbs');
-            if (savedLearned) {
-                learnedVerbs = JSON.parse(savedLearned);
+        // ===========================================================
+        // END: VERB DATA
+        // ===========================================================
+
+
+        // ===========================================================
+        // START: APPLICATION LOGIC (Equivalente a script.js)
+        // ===========================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- State Variables ---
+            let verbs = []; // Será llenada desde allVerbsData y actualizada con estado 'learned'
+            let currentStudyIndex = 0;
+            let currentQuizIndex = 0;
+            let currentQuizVerbs = [];
+            let quizScore = { correct: 0, incorrect: 0, skipped: 0 };
+            let filteredStudyVerbs = [];
+            let filteredListVerbs = [];
+            let currentView = 'study-view'; // Vista inicial
+
+            // --- DOM Elements ---
+            // Views
+            const studyView = document.getElementById('study-view');
+            const practiceView = document.getElementById('practice-view');
+            const listView = document.getElementById('list-view');
+            const allViews = [studyView, practiceView, listView];
+
+            // Navigation
+            const navItems = document.querySelectorAll('.nav-item');
+
+            // Study View Elements
+            const flashcard = document.getElementById('flashcard');
+            let flashcardBase = document.getElementById('flashcard-base'); // Usar let porque puede ser reasignado
+            const flashcardPast = document.getElementById('flashcard-past');
+            const flashcardParticiple = document.getElementById('flashcard-participle');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const shuffleBtn = document.getElementById('shuffle-btn');
+            const difficultySelect = document.getElementById('difficulty-select');
+            const currentIndexStudyEl = document.getElementById('current-index-study');
+            const totalCardsStudyEl = document.getElementById('total-cards-study');
+            const studyProgressBar = document.getElementById('study-progress-bar');
+            const markLearnedBtn = document.getElementById('mark-learned-btn');
+            const markLearnedBtnIcon = markLearnedBtn.querySelector('i');
+            const markLearnedBtnText = markLearnedBtn.querySelector('span');
+
+            // Practice View Elements
+            const quizSetupDiv = document.getElementById('quiz-setup');
+            const quizQuestionAreaDiv = document.getElementById('quiz-question-area');
+            const quizSummaryDiv = document.getElementById('quiz-summary');
+            const quizDifficultySelect = document.getElementById('quiz-difficulty-select');
+            const quizLimitInput = document.getElementById('quiz-limit');
+            const startQuizBtn = document.getElementById('start-quiz-btn');
+            const quizVerbBaseEl = document.getElementById('quiz-verb-base');
+            const pastSimpleInput = document.getElementById('past-simple-input');
+            const pastParticipleInput = document.getElementById('past-participle-input');
+            const checkAnswerBtn = document.getElementById('check-answer-btn');
+            const nextQuestionBtn = document.getElementById('next-question-btn');
+            const skipQuestionBtn = document.getElementById('skip-question-btn');
+            const quizFeedbackEl = document.getElementById('quiz-feedback');
+            const currentIndexQuizEl = document.getElementById('current-index-quiz');
+            const totalCardsQuizEl = document.getElementById('total-cards-quiz');
+            const quizProgressBar = document.getElementById('quiz-progress-bar');
+            const quizCorrectCountEl = document.getElementById('quiz-correct-count');
+            const quizIncorrectCountEl = document.getElementById('quiz-incorrect-count');
+            const quizSkippedCountEl = document.getElementById('quiz-skipped-count');
+            const quizScoreEl = document.getElementById('quiz-score');
+            const restartQuizBtn = document.getElementById('restart-quiz-btn');
+
+            // List View Elements
+            const searchInput = document.getElementById('search-input');
+            const listFilterSelect = document.getElementById('list-filter-select');
+            const listCountInfoEl = document.getElementById('list-count-info');
+            const verbListUl = document.getElementById('verb-list');
+
+            // --- Initialization ---
+            function init() {
+                loadVerbs();
+                applyFilters('study'); // Aplicar filtro inicial para estudio
+                updateStudyCard();
+                applyFilters('list'); // Aplicar filtro inicial para la lista
+                renderVerbList();
+                setupEventListeners();
+                switchView('study-view'); // Asegura que la vista inicial sea la correcta
             }
-            
-            updateCard();
-            renderVerbList();
-            
-            // Event listeners
-            card.addEventListener('click', flipCard);
-            document.getElementById('prev-btn').addEventListener('click', prevCard);
-            document.getElementById('next-btn').addEventListener('click', nextCard);
-            document.getElementById('shuffle-btn').addEventListener('click', shuffleCards);
-            document.getElementById('difficulty').addEventListener('change', filterByDifficulty);
-        }
-        
-        // Mostrar la tarjeta actual
-        function updateCard() {
-            const verb = currentVerbs[currentIndex];
-            baseForm.textContent = verb.base;
-            pastSimple.textContent = `Pasado: ${verb.pastSimple}`;
-            pastParticiple.textContent = `Participio: ${verb.pastParticiple}`;
-            currentIndexEl.textContent = currentIndex + 1;
-            totalCardsEl.textContent = currentVerbs.length;
-            
-            // Asegurar que la tarjeta muestre el frente
-            card.classList.remove('flipped');
-        }
-        
-        // Girar la tarjeta
-        function flipCard() {
-            card.classList.toggle('flipped');
-        }
-        
-        // Tarjeta anterior
-        function prevCard() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                updateCard();
+
+            // --- Data Handling ---
+            function loadVerbs() {
+                const learnedVerbsSet = new Set(JSON.parse(localStorage.getItem('learnedVerbs') || '[]'));
+                // Clonamos para no modificar el original y añadimos/actualizamos el estado 'learned'
+                verbs = allVerbsData.map(verb => ({
+                    ...verb,
+                    learned: learnedVerbsSet.has(verb.base)
+                }));
             }
-        }
-        
-        // Tarjeta siguiente
-        function nextCard() {
-            if (currentIndex < currentVerbs.length - 1) {
-                currentIndex++;
-                updateCard();
+
+            function saveLearnedStatus() {
+                const learnedBases = verbs.filter(v => v.learned).map(v => v.base);
+                localStorage.setItem('learnedVerbs', JSON.stringify(learnedBases));
             }
-        }
-        
-        // Mezclar tarjetas
-        function shuffleCards() {
-            currentVerbs = [...currentVerbs].sort(() => Math.random() - 0.5);
-            currentIndex = 0;
-            updateCard();
-            renderVerbList();
-        }
-        
-        // Filtrar por dificultad
-        function filterByDifficulty() {
-            const difficulty = document.getElementById('difficulty').value;
-            
-            if (difficulty === 'all') {
-                currentVerbs = [...verbs];
-            } else {
-                currentVerbs = verbs.filter(verb => verb.difficulty === difficulty);
-            }
-            
-            currentIndex = 0;
-            updateCard();
-            renderVerbList();
-        }
-        
-        // Renderizar lista de verbos
-        function renderVerbList() {
-            verbList.innerHTML = '';
-            
-            currentVerbs.forEach((verb, index) => {
-                const miniCard = document.createElement('div');
-                miniCard.className = 'mini-card';
-                miniCard.textContent = verb.base;
-                
-                // Marcar como aprendido si está en la lista
-                if (learnedVerbs.includes(verb.base)) {
-                    miniCard.classList.add('learned');
+
+            function updateVerbLearnedStatus(baseVerb, isLearned) {
+                const verbIndex = verbs.findIndex(v => v.base === baseVerb);
+                if (verbIndex !== -1) {
+                    verbs[verbIndex].learned = isLearned;
+                    saveLearnedStatus();
+                    // Refrescar vistas si es necesario (p.ej., si el filtro activo depende de 'learned')
+                    applyFilters('study'); // Re-aplica filtro de estudio
+                    applyFilters('list');  // Re-aplica filtro de lista
+
+                    // Actualizar botón en la tarjeta si es el verbo actual y la vista es estudio
+                     if (currentView === 'study-view' && filteredStudyVerbs[currentStudyIndex]?.base === baseVerb) {
+                         updateMarkLearnedButton(isLearned);
+                     }
+                    // renderVerbList se llamará dentro de applyFilters('list')
                 }
-                
-                // Al hacer clic, mostrar ese verbo
-                miniCard.addEventListener('click', () => {
-                    currentIndex = index;
-                    updateCard();
-                });
-                
-                // Al hacer doble clic, marcar como aprendido
-                miniCard.addEventListener('dblclick', () => {
-                    toggleLearned(verb.base, miniCard);
-                });
-                
-                verbList.appendChild(miniCard);
-            });
-        }
-        
-        // Alternar estado de aprendido
-        function toggleLearned(verbBase, element) {
-            const index = learnedVerbs.indexOf(verbBase);
-            
-            if (index === -1) {
-                // Marcar como aprendido
-                learnedVerbs.push(verbBase);
-                element.classList.add('learned');
-            } else {
-                // Desmarcar
-                learnedVerbs.splice(index, 1);
-                element.classList.remove('learned');
             }
-            
-            // Guardar en localStorage
-            localStorage.setItem('learnedVerbs', JSON.stringify(learnedVerbs));
-        }
-        
-        // Iniciar cuando se cargue la página
-        document.addEventListener('DOMContentLoaded', init);
+
+
+            // --- View Switching ---
+            function switchView(viewId) {
+                currentView = viewId;
+                allViews.forEach(view => {
+                    view.style.display = view.id === viewId ? 'block' : 'none';
+                    view.classList.toggle('active-view', view.id === viewId);
+                });
+                navItems.forEach(item => {
+                    item.classList.toggle('active', item.dataset.view === viewId);
+                });
+
+                // Acciones específicas al cambiar de vista
+                if (viewId === 'list-view') {
+                    applyFilters('list'); // Asegura que la lista esté actualizada
+                    // renderVerbList() ya es llamado por applyFilters('list')
+                } else if (viewId === 'study-view') {
+                     applyFilters('study'); // Asegura que los filtros estén aplicados
+                     updateStudyCard(); // Asegura que la tarjeta esté actualizada
+                } else if (viewId === 'practice-view') {
+                     resetQuizUI(); // Vuelve a la pantalla de setup del quiz
+                }
+            }
+
+            // --- Filtering Logic ---
+            function applyFilters(mode) { // mode: 'study', 'list', 'quiz'
+                let difficulty, learnedStatus, searchTerm;
+                let sourceArray = [...verbs]; // Usar la lista completa como base
+
+                if (mode === 'study') {
+                    difficulty = difficultySelect.value;
+                    learnedStatus = difficulty === 'learned' || difficulty === 'not-learned';
+                    filteredStudyVerbs = sourceArray.filter(verb => {
+                        const difficultyMatch = difficulty === 'all' || learnedStatus || verb.difficulty === difficulty;
+                        const learnedMatch = !learnedStatus || (difficulty === 'learned' && verb.learned) || (difficulty === 'not-learned' && !verb.learned);
+                        return difficultyMatch && learnedMatch;
+                    });
+                     // Si el índice actual es inválido para la nueva lista filtrada, resetealo
+                    if (currentStudyIndex >= filteredStudyVerbs.length) {
+                       currentStudyIndex = 0;
+                    }
+                    // Actualiza la tarjeta si la vista actual es estudio
+                    if (currentView === 'study-view') {
+                        updateStudyCard();
+                    }
+                } else if (mode === 'list') {
+                    difficulty = listFilterSelect.value;
+                    learnedStatus = difficulty === 'learned' || difficulty === 'not-learned';
+                    searchTerm = searchInput.value.toLowerCase().trim();
+
+                    filteredListVerbs = sourceArray.filter(verb => {
+                        const difficultyMatch = difficulty === 'all' || learnedStatus || verb.difficulty === difficulty;
+                        const learnedMatch = !learnedStatus || (difficulty === 'learned' && verb.learned) || (difficulty === 'not-learned' && !verb.learned);
+                        const searchMatch = !searchTerm || verb.base.toLowerCase().includes(searchTerm) || verb.pastSimple.toLowerCase().includes(searchTerm) || verb.pastParticiple.toLowerCase().includes(searchTerm);
+                        return difficultyMatch && learnedMatch && searchMatch;
+                    });
+                    renderVerbList(); // Actualiza la lista
+                } else if (mode === 'quiz') {
+                    difficulty = quizDifficultySelect.value;
+                    learnedStatus = difficulty === 'not-learned'; // Solo usamos este caso especial
+                    const limit = parseInt(quizLimitInput.value, 10) || 10;
+
+                     let potentialQuizVerbs = sourceArray.filter(verb => {
+                         if (difficulty === 'not-learned') {
+                             return !verb.learned; // Sólo no aprendidos
+                         } else {
+                              // Filtro por dificultad o todos
+                              return difficulty === 'all' || verb.difficulty === difficulty;
+                         }
+                     });
+
+                    // Shuffle y limita
+                    currentQuizVerbs = shuffleArray(potentialQuizVerbs).slice(0, limit);
+                }
+            }
+
+
+            // --- Study Mode (Flashcards) ---
+            function updateStudyCard() {
+                 flashcard.classList.remove('flipped'); // Asegura que se muestre el frente
+                 const cardFront = flashcard.querySelector('.card-front'); // Selecciona el div frontal
+
+                if (!filteredStudyVerbs || filteredStudyVerbs.length === 0) {
+                    // Mostrar mensaje de "No hay verbos" en lugar de la tarjeta
+                    cardFront.innerHTML = '<p style="padding: 20px; color: #777; text-align: center;">No hay verbos que coincidan con el filtro seleccionado.</p>';
+                    // Actualizar elementos relacionados
+                    flashcardPast.textContent = '---';
+                    flashcardParticiple.textContent = '---';
+                    currentIndexStudyEl.textContent = 0;
+                    totalCardsStudyEl.textContent = 0;
+                    updateStudyProgress(0, 0);
+                    markLearnedBtn.disabled = true;
+                    updateMarkLearnedButton(false); // Asegurar estado visual correcto del botón
+                    return; // Salir porque no hay verbo que mostrar
+                } else {
+                     // Restaurar contenido original de la tarjeta si estaba el mensaje
+                     // Comprueba si el contenido actual NO es el estándar (buscando el hint)
+                     if (!cardFront.querySelector('.hint')) {
+                          cardFront.innerHTML = `
+                               <div class="verb-base" id="flashcard-base"></div>
+                               <div class="hint"><i class="fas fa-hand-pointer"></i> Toca para ver la respuesta</div>`;
+                          // Re-seleccionar flashcardBase porque el innerHTML lo eliminó
+                          flashcardBase = document.getElementById('flashcard-base'); // ¡Importante!
+                     }
+                }
+
+                 // Si llegamos aquí, hay verbos para mostrar
+                 markLearnedBtn.disabled = false;
+                const verb = filteredStudyVerbs[currentStudyIndex];
+                 if(flashcardBase) { // Verificar que flashcardBase existe antes de usarlo
+                    flashcardBase.textContent = verb.base;
+                 }
+                 flashcardPast.textContent = verb.pastSimple;
+                flashcardParticiple.textContent = verb.pastParticiple;
+
+                currentIndexStudyEl.textContent = currentStudyIndex + 1;
+                totalCardsStudyEl.textContent = filteredStudyVerbs.length;
+                updateStudyProgress(currentStudyIndex + 1, filteredStudyVerbs.length);
+                updateMarkLearnedButton(verb.learned);
+            }
+
+
+            function flipCard() {
+                if (filteredStudyVerbs.length > 0) { // Solo gira si hay verbos
+                     flashcard.classList.toggle('flipped');
+                }
+            }
+
+            function nextStudyCard() {
+                if (filteredStudyVerbs.length > 0) {
+                    currentStudyIndex = (currentStudyIndex + 1) % filteredStudyVerbs.length;
+                    updateStudyCard();
+                }
+            }
+
+            function prevStudyCard() {
+                if (filteredStudyVerbs.length > 0) {
+                    currentStudyIndex = (currentStudyIndex - 1 + filteredStudyVerbs.length) % filteredStudyVerbs.length;
+                    updateStudyCard();
+                }
+            }
+
+            function shuffleStudyCards() {
+                filteredStudyVerbs = shuffleArray(filteredStudyVerbs);
+                currentStudyIndex = 0;
+                updateStudyCard();
+            }
+
+            function updateStudyProgress(current, total) {
+                const percentage = total === 0 ? 0 : (current / total) * 100;
+                studyProgressBar.style.width = `${percentage}%`;
+            }
+
+            function toggleLearnedCurrentStudyVerb() {
+                 if (filteredStudyVerbs.length > 0) {
+                     const currentVerb = filteredStudyVerbs[currentStudyIndex];
+                     const newLearnedStatus = !currentVerb.learned;
+                     updateVerbLearnedStatus(currentVerb.base, newLearnedStatus);
+                     // applyFilters y updateStudyCard ya se llaman dentro de updateVerbLearnedStatus
+                     // Solo actualizamos el botón directamente aquí para respuesta inmediata
+                     updateMarkLearnedButton(newLearnedStatus);
+                 }
+            }
+
+             function updateMarkLearnedButton(isLearned) {
+                  markLearnedBtn.classList.toggle('learned', isLearned);
+                  markLearnedBtnIcon.className = isLearned ? 'fas fa-check-circle' : 'far fa-check-circle'; // Cambia entre relleno y vacío
+                  markLearnedBtnText.textContent = isLearned ? 'Aprendido' : 'Marcar Aprendido';
+             }
+
+
+            // --- Practice Mode (Quiz) ---
+
+            function resetQuizUI() {
+                 quizSetupDiv.style.display = 'flex'; // Mostrar setup
+                 quizQuestionAreaDiv.style.display = 'none';
+                 quizSummaryDiv.style.display = 'none';
+                 quizFeedbackEl.textContent = '';
+                 quizFeedbackEl.className = 'quiz-feedback'; // Resetear clases de color
+                 pastSimpleInput.value = '';
+                 pastSimpleInput.className = ''; // Resetear clases correct/incorrect
+                 pastParticipleInput.value = '';
+                 pastParticipleInput.className = '';
+                 checkAnswerBtn.style.display = 'inline-block';
+                 nextQuestionBtn.style.display = 'none';
+                 skipQuestionBtn.style.display = 'inline-block';
+                 checkAnswerBtn.disabled = false;
+                 skipQuestionBtn.disabled = false;
+                 pastSimpleInput.disabled = false;
+                 pastParticipleInput.disabled = false;
+            }
+
+            function startQuiz() {
+                applyFilters('quiz'); // Genera currentQuizVerbs
+
+                if (currentQuizVerbs.length === 0) {
+                    alert("No hay verbos que coincidan con los criterios para iniciar la práctica.");
+                    return;
+                }
+
+                currentQuizIndex = 0;
+                quizScore = { correct: 0, incorrect: 0, skipped: 0 };
+
+                quizSetupDiv.style.display = 'none';
+                quizSummaryDiv.style.display = 'none';
+                quizQuestionAreaDiv.style.display = 'block';
+
+                displayQuizQuestion();
+            }
+
+            function displayQuizQuestion() {
+                if (currentQuizIndex >= currentQuizVerbs.length) {
+                    showQuizSummary();
+                    return;
+                }
+
+                const verb = currentQuizVerbs[currentQuizIndex];
+                quizVerbBaseEl.textContent = verb.base;
+                currentIndexQuizEl.textContent = currentQuizIndex + 1;
+                totalCardsQuizEl.textContent = currentQuizVerbs.length;
+                updateQuizProgress(currentQuizIndex + 1, currentQuizVerbs.length);
+
+                // Resetear para la nueva pregunta
+                pastSimpleInput.value = '';
+                pastParticipleInput.value = '';
+                pastSimpleInput.disabled = false;
+                pastParticipleInput.disabled = false;
+                pastSimpleInput.className = '';
+                pastParticipleInput.className = '';
+                pastSimpleInput.focus(); // Enfocar el primer campo
+                quizFeedbackEl.textContent = '';
+                quizFeedbackEl.className = 'quiz-feedback';
+                checkAnswerBtn.style.display = 'inline-block';
+                nextQuestionBtn.style.display = 'none';
+                skipQuestionBtn.style.display = 'inline-block';
+                checkAnswerBtn.disabled = false;
+                skipQuestionBtn.disabled = false;
+            }
+
+             function checkAnswer() {
+                 const verb = currentQuizVerbs[currentQuizIndex];
+                 const simpleAnswer = pastSimpleInput.value.trim().toLowerCase();
+                 const participleAnswer = pastParticipleInput.value.trim().toLowerCase();
+
+                 // Manejar respuestas múltiples (ej: burned/burnt)
+                 const correctSimpleForms = verb.pastSimple.toLowerCase().split('/');
+                 const correctParticipleForms = verb.pastParticiple.toLowerCase().split('/');
+
+                 const isSimpleCorrect = correctSimpleForms.includes(simpleAnswer);
+                 const isParticipleCorrect = correctParticipleForms.includes(participleAnswer);
+
+                 pastSimpleInput.classList.toggle('correct', isSimpleCorrect);
+                 pastSimpleInput.classList.toggle('incorrect', !isSimpleCorrect);
+                 pastParticipleInput.classList.toggle('correct', isParticipleCorrect);
+                 pastParticipleInput.classList.toggle('incorrect', !isParticipleCorrect);
+
+                 pastSimpleInput.disabled = true;
+                 pastParticipleInput.disabled = true;
+                 checkAnswerBtn.style.display = 'none'; // Ocultar Comprobar
+                 nextQuestionBtn.style.display = 'inline-block'; // Mostrar Siguiente
+                 skipQuestionBtn.style.display = 'none'; // Ocultar Saltar
+
+                 if (isSimpleCorrect && isParticipleCorrect) {
+                     quizFeedbackEl.textContent = '¡Correcto! 🎉';
+                     quizFeedbackEl.className = 'quiz-feedback feedback-correct';
+                     quizScore.correct++;
+                     // Opcional: Marcar como aprendido automáticamente al acertar
+                     if (!verb.learned) {
+                         updateVerbLearnedStatus(verb.base, true);
+                     }
+                 } else {
+                     quizFeedbackEl.innerHTML = `Incorrecto. <i class="far fa-frown"></i><br><span class="correct-answer-display">Respuestas: ${verb.pastSimple} / ${verb.pastParticiple}</span>`;
+                     quizFeedbackEl.className = 'quiz-feedback feedback-incorrect';
+                     quizScore.incorrect++;
+                 }
+             }
+
+            function skipQuestion() {
+                quizScore.skipped++;
+                nextQuizQuestion(); // Simplemente pasar a la siguiente
+            }
+
+            function nextQuizQuestion() {
+                currentQuizIndex++;
+                displayQuizQuestion(); // Esto manejará si es la última pregunta
+            }
+
+            function updateQuizProgress(current, total) {
+                const percentage = total === 0 ? 0 : (current / total) * 100;
+                quizProgressBar.style.width = `${percentage}%`;
+            }
+
+            function showQuizSummary() {
+                quizQuestionAreaDiv.style.display = 'none';
+                quizSummaryDiv.style.display = 'block';
+
+                const totalQuestions = currentQuizVerbs.length;
+                const scorePercentage = totalQuestions === 0 ? 0 : Math.round((quizScore.correct / totalQuestions) * 100);
+
+                quizCorrectCountEl.textContent = quizScore.correct;
+                quizIncorrectCountEl.textContent = quizScore.incorrect;
+                quizSkippedCountEl.textContent = quizScore.skipped;
+                quizScoreEl.textContent = `${scorePercentage}`;
+            }
+
+            // --- List View ---
+            function renderVerbList() {
+                verbListUl.innerHTML = ''; // Limpiar lista anterior
+
+                if (filteredListVerbs.length === 0) {
+                     listCountInfoEl.textContent = '(0 Verbos)';
+                     const li = document.createElement('li');
+                     li.textContent = 'No hay verbos que coincidan con los filtros.';
+                     li.style.textAlign = 'center';
+                     li.style.padding = '20px';
+                     li.style.color = '#777';
+                     verbListUl.appendChild(li);
+                     return;
+                 }
+
+
+                listCountInfoEl.textContent = `(${filteredListVerbs.length} Verbos)`;
+
+                const fragment = document.createDocumentFragment();
+                filteredListVerbs.forEach((verb, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'verb-list-item';
+                    li.classList.toggle('learned', verb.learned); // Añadir clase si está aprendido
+                    li.dataset.verbBase = verb.base; // Guardar base para referencia
+
+                    // Contenido del item
+                    li.innerHTML = `
+                        <div>
+                            <span class="verb-name">${verb.base}</span>
+                            <span class="verb-details">(${verb.pastSimple} / ${verb.pastParticiple})</span>
+                        </div>
+                        <span class="verb-status-icon">
+                            ${verb.learned
+                                ? '<i class="fas fa-check-circle learned-icon" title="Aprendido"></i>'
+                                : '<i class="far fa-circle not-learned-icon" title="Marcar como aprendido"></i>'
+                            }
+                        </span>
+                    `;
+
+                    // Event listener para manejar clics en el item
+                    li.addEventListener('click', (e) => {
+                        const base = li.dataset.verbBase;
+                        const targetIsIcon = e.target.closest('.verb-status-icon');
+
+                        if (targetIsIcon) {
+                             // Clic en el icono: Cambiar estado de aprendizaje
+                             const currentVerb = verbs.find(v => v.base === base);
+                             if(currentVerb) {
+                                  updateVerbLearnedStatus(base, !currentVerb.learned);
+                                  // La lista se re-renderiza automáticamente debido a applyFilters('list')
+                             }
+                        } else {
+                             // Clic en el resto del item: Ir a la tarjeta en modo Estudio
+                            difficultySelect.value = 'all'; // Asegurarse que el filtro de estudio incluya todos
+                            applyFilters('study'); // Aplicar el filtro a la lista de estudio
+                            const studyIndex = filteredStudyVerbs.findIndex(v => v.base === base);
+
+                             if (studyIndex !== -1) {
+                                 currentStudyIndex = studyIndex;
+                                 switchView('study-view'); // Cambia a la vista de estudio y actualiza la tarjeta
+                             } else {
+                                 console.error("Verbo no encontrado en modo estudio:", base);
+                                 // Opcionalmente, mostrar un mensaje al usuario
+                             }
+                        }
+                    });
+
+
+                    fragment.appendChild(li);
+                });
+                verbListUl.appendChild(fragment);
+            }
+
+            // --- Utility Functions ---
+            function shuffleArray(array) {
+                let newArray = [...array]; // Clonar para no modificar el original
+                for (let i = newArray.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [newArray[i], newArray[j]] = [newArray[j], newArray[i]]; // Intercambio
+                }
+                return newArray;
+            }
+
+            // --- Event Listeners Setup ---
+            function setupEventListeners() {
+                // Navegación
+                navItems.forEach(item => {
+                    item.addEventListener('click', () => switchView(item.dataset.view));
+                });
+
+                // Estudio
+                flashcard.addEventListener('click', flipCard);
+                prevBtn.addEventListener('click', prevStudyCard);
+                nextBtn.addEventListener('click', nextStudyCard);
+                shuffleBtn.addEventListener('click', shuffleStudyCards);
+                difficultySelect.addEventListener('change', () => applyFilters('study'));
+                markLearnedBtn.addEventListener('click', toggleLearnedCurrentStudyVerb);
+
+                // Práctica
+                startQuizBtn.addEventListener('click', startQuiz);
+                checkAnswerBtn.addEventListener('click', checkAnswer);
+                nextQuestionBtn.addEventListener('click', nextQuizQuestion);
+                skipQuestionBtn.addEventListener('click', skipQuestion);
+                restartQuizBtn.addEventListener('click', resetQuizUI);
+                 // Permitir Enter en los inputs del quiz
+                 pastSimpleInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') pastParticipleInput.focus(); });
+                 pastParticipleInput.addEventListener('keypress', (e) => { if (e.key === 'Enter' && !checkAnswerBtn.disabled) checkAnswer(); });
+
+
+                // Lista
+                searchInput.addEventListener('input', () => applyFilters('list'));
+                listFilterSelect.addEventListener('change', () => applyFilters('list'));
+            }
+
+            // --- Start the App ---
+            init();
+        });
+        // ===========================================================
+        // END: APPLICATION LOGIC
+        // ===========================================================
     </script>
 </body>
 </html>
