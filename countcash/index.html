@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CountCash</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --font-family: 'Inter', sans-serif;
+            --transition-speed: 0.3s;
+            --transition-curve: cubic-bezier(0.25, 0.8, 0.25, 1);
+            --d-bg: #0D1117;
+            --d-card-bg: rgba(22, 27, 34, 0.75);
+            --d-card-border: rgba(139, 148, 158, 0.2);
+            --d-text-primary: #C9D1D9;
+            --d-text-secondary: #8B949E;
+            --d-accent: #39D3BB;
+            --d-accent-secondary: #58A6FF;
+            --d-danger: #F85149;
+            --d-success: #3FB950;
+            --d-warning: #E3B341;
+            --d-input-bg: rgba(13, 17, 23, 0.5);
+            --d-shadow: rgba(0,0,0,0.4);
+
+            --l-bg: #F6F8FA;
+            --l-card-bg: rgba(255, 255, 255, 0.8);
+            --l-card-border: rgba(0, 0, 0, 0.1);
+            --l-text-primary: #1F2328;
+            --l-text-secondary: #57606A;
+            --l-accent: #0969DA;
+            --l-accent-secondary: #FF7043;
+            --l-danger: #CF222E;
+            --l-success: #1A7F37;
+            --l-warning: #BF8700;
+            --l-input-bg: rgba(255, 255, 255, 0.7);
+            --l-shadow: rgba(0,0,0,0.1);
+
+            --m-d-bg: #0A0F14;
+            --m-d-card-bg: rgba(20, 25, 33, 0.75);
+            --m-d-card-border: rgba(139, 148, 158, 0.15);
+            --m-d-text-primary: #E1E8F0;
+            --m-d-text-secondary: #7D8997;
+            --m-d-accent: #28C7B4;
+            --m-d-accent-secondary: #4DA6FF;
+            --m-d-input-bg: rgba(10, 15, 20, 0.6);
+            --m-d-shadow: rgba(0,0,0,0.3);
+
+            --m-l-bg: #F7F9FC;
+            --m-l-card-bg: rgba(255, 255, 255, 0.85);
+            --m-l-card-border: rgba(0, 0, 0, 0.08);
+            --m-l-text-primary: #1A1F26;
+            --m-l-text-secondary: #525C67;
+            --m-l-accent: #0062CC;
+            --m-l-accent-secondary: #FF6633;
+            --m-l-input-bg: rgba(240, 242, 245, 0.7);
+            --m-l-shadow: rgba(0,0,0,0.08);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html { font-size: 16px; }
+
+        body {
+            font-family: var(--font-family);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: var(--d-bg);
+            color: var(--d-text-primary);
+            transition: background-color var(--transition-speed) var(--transition-curve), 
+                      color var(--transition-speed) var(--transition-curve);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding: 1rem;
+        }
+
+        body.light-mode {
+            background: var(--l-bg);
+            color: var(--l-text-primary);
+        }
+
+        .theme-switcher {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            cursor: pointer;
+            font-size: 1.6rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.1);
+            color: var(--d-accent);
+            transition: all var(--transition-speed) var(--transition-curve);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .container {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--d-card-bg);
+            border: 1px solid var(--d-card-border);
+            border-radius: 1rem;
+            box-shadow: 0 1rem 2rem var(--d-shadow);
+            width: 92%;
+            max-width: 450px;
+            transition: all var(--transition-speed) var(--transition-curve);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 1.75rem;
+            margin: 0 0 1.25rem;
+            color: var(--d-accent);
+            animation: popIn 0.6s var(--transition-curve) forwards;
+        }
+
+        .section {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.5s var(--transition-curve);
+            width: 100%;
+            visibility: visible;
+        }
+
+        .section.hidden {
+            opacity: 0;
+            transform: translateY(1.5rem);
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            padding: inherit;
+            padding-top: 4rem;
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .input-field, .select-field {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--d-card-border);
+            background-color: var(--d-input-bg);
+            color: var(--d-text-primary);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-family: var(--font-family);
+            transition: all var(--transition-speed) var(--transition-curve);
+        }
+
+        .button-primary {
+            padding: 0.875rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--d-accent), var(--d-accent-secondary));
+            color: #fff;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) var(--transition-curve);
+            display: block;
+            width: 100%;
+            box-shadow: 0 0.25rem 1rem rgba(0,0,0,0.2);
+        }
+
+        .money-display {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--d-accent);
+            line-height: 1.1;
+            margin: 1rem 0;
+        }
+
+        .time-display {
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--d-text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 0.5rem;
+            background-color: rgba(57, 211, 187, 0.1);
+            border-radius: 0.25rem;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--d-accent), var(--d-accent-secondary));
+            width: 0%;
+            border-radius: 0.25rem;
+            transition: width 0.6s var(--transition-curve);
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 599px) {
+            html { font-size: 15px; }
+            
+            body { padding: 0.5rem; }
+
+            .container {
+                padding: 1.25rem;
+                width: 94%;
+                border-radius: 1.25rem;
+            }
+
+            .money-display { font-size: 2.25rem; }
+            
+            .time-display { font-size: 1.1rem; }
+            
+            .button-primary {
+                padding: 0.75rem 1.25rem;
+                font-size: 0.95rem;
+            }
+            
+            .input-field, .select-field {
+                padding: 0.7rem 1rem;
+                font-size: 0.95rem;
+            }
+            
+            .theme-switcher {
+                width: 2.5rem;
+                height: 2.5rem;
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (min-width: 600px) {
+            .controls { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.8) translateY(-10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .display-section {
+            margin-bottom: 1.25rem;
+            animation: fadeInScaleUp 0.7s 0.1s var(--transition-curve) both;
+        }
+         @keyframes fadeInScaleUp {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .particle-emitter { position: absolute; top: 40%; left: 50%; width: 1px; height: 1px; z-index: 10; pointer-events:none; }
+        .particle {
+            position: absolute; width: 5px; height: 5px;
+            background: var(--d-accent); border-radius: 50%; opacity: 0;
+            animation: burst 0.8s ease-out forwards;
+        }
+        body.light-mode .particle { background: var(--l-accent); }
+        @keyframes burst {
+            0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+
+        /* =============================================== */
+        /* ========== MOBILE OPTIMIZED STYLES ========== */
+        /* =============================================== */
+        @media (max-width: 599px) {
+            html {
+                font-size: 15px; /* Ligeramente más pequeño para móvil */
+            }
+            body {
+                padding: 10px 0; /* Menos padding general */
+                -webkit-tap-highlight-color: transparent;
+            }
+            /* Sobrescribir variables de color para móvil si es necesario */
+            body:not(.light-mode) {
+                --d-bg: var(--m-d-bg);
+                --d-card-bg: var(--m-d-card-bg);
+                --d-card-border: var(--m-d-card-border);
+                --d-text-primary: var(--m-d-text-primary);
+                --d-text-secondary: var(--m-d-text-secondary);
+                --d-accent: var(--m-d-accent);
+                --d-accent-secondary: var(--m-d-accent-secondary);
+                --d-input-bg: var(--m-d-input-bg);
+                --d-shadow: var(--m-d-shadow);
+            }
+            body.light-mode {
+                --l-bg: var(--m-l-bg);
+                --l-card-bg: var(--m-l-card-bg);
+                --l-card-border: var(--m-l-card-border);
+                --l-text-primary: var(--m-l-text-primary);
+                --l-text-secondary: var(--m-l-text-secondary);
+                --l-accent: var(--m-l-accent);
+                --l-accent-secondary: var(--m-l-accent-secondary);
+                --l-input-bg: var(--m-l-input-bg);
+                --l-shadow: var(--m-l-shadow);
+            }
+
+            .theme-switcher {
+                position: fixed;
+                top: 10px; right: 10px;
+                font-size: 1.4rem; width: 38px; height: 38px;
+                background-color: color-mix(in srgb, var(--d-card-bg) 80%, transparent); /* Usará variables móviles */
+                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            }
+            body.light-mode .theme-switcher {
+                background-color: color-mix(in srgb, var(--l-card-bg) 80%, transparent); /* Usará variables móviles */
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            }
+
+            .container {
+                padding: 18px; width: 93%;
+                border-radius: 16px; /* Mobile PRO X2 style */
+                box-shadow: 0 8px 25px var(--d-shadow); /* Usará --m-d-shadow */
+                backdrop-filter: blur(15px) saturate(180%); /* Mobile PRO X2 style */
+            }
+             body.light-mode .container {
+                box-shadow: 0 6px 20px var(--l-shadow); /* Usará --m-l-shadow */
+            }
+
+
+            h1 { font-size: 1.6rem; margin-bottom: 18px; }
+            .section.hidden { padding-top: 60px; }
+
+
+            .form-group { margin-bottom: 14px; }
+            .form-group label { font-size: 0.8rem; margin-bottom: 5px; }
+            .input-field, .select-field {
+                padding: 10px 12px; border-radius: 9px; font-size: 0.9rem;
+            }
+            .input-field:focus, .select-field:focus { /* Adapt focus shadow */
+                 box-shadow: 0 0 0 2.5px color-mix(in srgb, var(--d-accent) 25%, transparent);
+            }
+            body.light-mode .input-field:focus, body.light-mode .select-field:focus {
+                 box-shadow: 0 0 0 2.5px color-mix(in srgb, var(--l-accent) 25%, transparent);
+            }
+
+            .input-group { gap: 7px; }
+            .input-group .select-field { flex-basis: 100px; padding-right: 4px; padding-left: 4px; }
+
+            .button-primary {
+                padding: 11px 18px; font-size: 0.9rem; border-radius: 9px;
+                color: #0A0F14; /* Dark text on mobile buttons */
+                box-shadow: 0 3px 10px color-mix(in srgb, var(--d-accent) 25%, transparent);
+            }
+             body.light-mode .button-primary { color: #fff; } /* Light text on light mobile buttons */
+
+
+            #validationError { margin-top: 8px; font-size: 0.8rem; min-height: 1.4em; }
+
+            .display-section { margin-bottom: 16px; }
+            @keyframes fadeInScaleUp { /* Mobile version if different */
+                0% { opacity: 0; transform: scale(0.92); }
+                100% { opacity: 1; transform: scale(1); }
+            }
+
+            .money-display-container { margin-bottom: 2px; padding: 4px 0; }
+            .money-display { font-size: 2.5rem; }
+            .money-edit-input { font-size: 2.3rem; width: 88%; }
+
+            .time-display { font-size: 1.15rem; margin-bottom: 16px; }
+
+            .progress-group { margin-bottom: 10px; }
+            .progress-label { font-size: 0.7rem; margin-bottom: 4px; }
+            .progress-bar-container { height: 7px; border-radius: 3.5px; }
+            .progress-bar-fill { border-radius: 3.5px; }
+
+            .controls {
+                grid-template-columns: 1fr; /* Stack buttons */
+                gap: 9px;
+                margin-top: 3px;
+            }
+            @keyframes fadeInUpControls { /* Mobile version if different */
+                0% { opacity: 0; transform: translateY(10px); }
+                100% { opacity: 1; transform: translateY(0); }
+            }
+            .controls .button-primary { padding: 10px 14px; font-size: 0.85rem; }
+            .controls .button-primary:disabled {
+                background: color-mix(in srgb, var(--d-text-secondary) 25%, transparent);
+                color: color-mix(in srgb, var(--d-text-primary) 50%, transparent);
+            }
+             body.light-mode .controls .button-primary:disabled {
+                background: color-mix(in srgb, var(--l-text-secondary) 25%, transparent);
+                color: color-mix(in srgb, var(--l-text-primary) 50%, transparent);
+            }
+
+
+            .particle { width: 4px; height: 4px; }
+            @keyframes burst { /* Mobile version if different */
+                0% { transform: translate(-50%, -50%) scale(0.2); opacity: 1; }
+                100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="theme-switcher" id="themeSwitcher">☀️</div>
+
+    <div class="container">
+        <h1 id="mainTitle">CountCash </h1>
+
+        <div class="section" id="configSection">
+            <div class="form-group">
+                <label for="hourlyRate">Tarifa por Hora</label>
+                <div class="input-group">
+                    <input type="number" class="input-field" id="hourlyRate" placeholder="Ej: 25" min="0" step="0.01">
+                    <select id="currencySymbol" class="select-field">
+                        <option value="€">EUR (€)</option>
+                        <option value="$">USD ($)</option>
+                        <option value="£">GBP (£)</option>
+                        <option value="¥">JPY (¥)</option>
+                        <option value="₹">INR (₹)</option>
+                        <option value="₽">RUB (₽)</option>
+                        <option value="CAD">CAD ($)</option>
+                        <option value="AUD">AUD ($)</option>
+                        <option value="CHF">CHF</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="monetaryGoal">Objetivo Monetario (Opcional)</label>
+                <input type="number" class="input-field" id="monetaryGoal" placeholder="Ej: 500" min="0" step="1">
+            </div>
+             <div class="form-group">
+                <label for="timeGoalHours">Objetivo de Tiempo (Horas)</label>
+                <input type="number" class="input-field" id="timeGoalHours" placeholder="Ej: 8" min="0" step="0.1" value="8">
+            </div>
+            <button id="startTrackingBtn" class="button-primary">Iniciar Seguimiento</button>
+            <div id="validationError"></div>
+        </div>
+
+        <div class="section hidden" id="trackerSection">
+            <div class="display-section">
+                <div class="money-display-container" id="moneyDisplayContainer">
+                    <div class="particle-emitter" id="particleEmitter"></div>
+                    <span class="money-display" id="moneyDisplay">0.00</span>
+                </div>
+                <div class="time-display" id="timeDisplay">00:00:00</div>
+
+                <div class="progress-group" id="timeProgressGroup">
+                    <div class="progress-label">
+                        <span>Progreso Tiempo</span>
+                        <span class="value" id="timeProgressValue">0 / 8h</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="timeProgressBar"></div>
+                    </div>
+                </div>
+                <div class="progress-group" id="earningsProgressGroup" style="display:none;">
+                     <div class="progress-label">
+                        <span>Progreso Ganancias</span>
+                        <span class="value" id="earningsProgressValue">0 / 0</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill earnings" id="earningsProgressBar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="button-primary" id="startBtn">Iniciar</button>
+                <button class="button-primary pause-btn" id="pauseBtn" disabled>Pausar</button>
+                <button class="button-primary reset-btn" id="resetBtn" disabled>Reiniciar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        const Elements = {
+            themeSwitcher: document.getElementById('themeSwitcher'),
+            body: document.body,
+            mainTitle: document.getElementById('mainTitle'),
+            configSection: document.getElementById('configSection'),
+            trackerSection: document.getElementById('trackerSection'),
+            hourlyRateInput: document.getElementById('hourlyRate'),
+            currencySymbolSelect: document.getElementById('currencySymbol'),
+            monetaryGoalInput: document.getElementById('monetaryGoal'),
+            timeGoalHoursInput: document.getElementById('timeGoalHours'),
+            startTrackingBtn: document.getElementById('startTrackingBtn'),
+            validationError: document.getElementById('validationError'),
+            moneyDisplayContainer: document.getElementById('moneyDisplayContainer'),
+            moneyDisplay: document.getElementById('moneyDisplay'),
+            timeDisplay: document.getElementById('timeDisplay'),
+            particleEmitter: document.getElementById('particleEmitter'),
+            startBtn: document.getElementById('startBtn'),
+            pauseBtn: document.getElementById('pauseBtn'),
+            resetBtn: document.getElementById('resetBtn'),
+            timeProgressGroup: document.getElementById('timeProgressGroup'),
+            timeProgressBar: document.getElementById('timeProgressBar'),
+            timeProgressValue: document.getElementById('timeProgressValue'),
+            earningsProgressGroup: document.getElementById('earningsProgressGroup'),
+            earningsProgressBar: document.getElementById('earningsProgressBar'),
+            earningsProgressValue: document.getElementById('earningsProgressValue'),
+        };
+
+        let State = {
+            timerInterval: null,
+            startTime: null,
+            elapsedTime: 0,
+            pausedTime: 0,
+            isRunning: false,
+            hourlyRate: 0,
+            currencySymbol: '€',
+            earningsPerSecond: 0,
+            totalEarnings: 0,
+            monetaryGoal: 0,
+            timeGoalSeconds: 8 * 3600,
+            lastMoneyString: "0.00",
+            moneyMilestones: [10, 50, 100, 250, 500, 1000, 2500, 5000],
+            nextMilestoneIndex: 0,
+            isEditingMoney: false,
+            currentView: 'config',
+        };
+
+        function applyTheme(theme) {
+            Elements.body.classList.toggle('light-mode', theme === 'light');
+            Elements.themeSwitcher.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+
+        function loadPreferences() {
+            State.hourlyRate = parseFloat(localStorage.getItem('fxAdaptiveHourlyRate')) || 0;
+            State.currencySymbol = localStorage.getItem('fxAdaptiveCurrencySymbol') || '€';
+            State.monetaryGoal = parseFloat(localStorage.getItem('fxAdaptiveMonetaryGoal')) || 0;
+            State.timeGoalSeconds = (parseFloat(localStorage.getItem('fxAdaptiveTimeGoalHours')) || 8) * 3600;
+            const savedTheme = localStorage.getItem('fxAdaptiveTheme') || 'dark';
+
+            if (State.hourlyRate > 0) Elements.hourlyRateInput.value = State.hourlyRate;
+            Elements.currencySymbolSelect.value = State.currencySymbol;
+            if (State.monetaryGoal > 0) Elements.monetaryGoalInput.value = State.monetaryGoal;
+            Elements.timeGoalHoursInput.value = State.timeGoalSeconds / 3600;
+            
+            applyTheme(savedTheme);
+        }
+
+        function savePreferences() {
+            localStorage.setItem('fxAdaptiveHourlyRate', State.hourlyRate);
+            localStorage.setItem('fxAdaptiveCurrencySymbol', State.currencySymbol);
+            localStorage.setItem('fxAdaptiveMonetaryGoal', State.monetaryGoal);
+            localStorage.setItem('fxAdaptiveTimeGoalHours', State.timeGoalSeconds / 3600);
+        }
+
+        Elements.themeSwitcher.addEventListener('click', () => {
+            const newTheme = Elements.body.classList.contains('light-mode') ? 'dark' : 'light';
+            applyTheme(newTheme);
+            localStorage.setItem('fxAdaptiveTheme', newTheme);
+        });
+        
+        function switchView(viewName) {
+            if (viewName === 'config') {
+                Elements.configSection.classList.remove('hidden');
+                Elements.trackerSection.classList.add('hidden');
+                State.currentView = 'config';
+            } else if (viewName === 'tracker') {
+                Elements.configSection.classList.add('hidden');
+                Elements.trackerSection.classList.remove('hidden');
+                State.currentView = 'tracker';
+            }
+            Elements.mainTitle.style.display = 'block'; // Ensure title is always visible
+            
+            // Re-trigger animations for current section's children
+            const currentSectionEl = viewName === 'config' ? Elements.configSection : Elements.trackerSection;
+            Array.from(currentSectionEl.children).forEach(child => {
+                child.style.animation = 'none'; // Reset animation
+                void child.offsetWidth; // Trigger reflow
+                // Apply specific entry animations
+                if (child.classList.contains('display-section')) {
+                    child.style.animation = 'fadeInScaleUp 0.6s 0.1s var(--transition-curve) both';
+                } else if (child.classList.contains('controls')) {
+                    child.style.animation = 'fadeInUpControls 0.6s 0.2s var(--transition-curve) both';
+                } else if (child.classList.contains('form-group') || child === Elements.startTrackingBtn || child === Elements.validationError) {
+                    child.style.animation = 'popIn 0.5s var(--transition-curve) both';
+                }
+            });
+        }
+
+
+        function formatTime(milliseconds, showSeconds = true) {
+            const totalSeconds = Math.floor(milliseconds / 1000);
+            const h = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+            const m = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+            const s = String(totalSeconds % 60).padStart(2, '0');
+            return showSeconds ? `${h}:${m}:${s}` : `${h}h ${m}m`;
+        }
+        
+        function updateMoneyDisplayDOM(amount, symbol) {
+            const formattedAmount = amount.toFixed(2);
+            Elements.moneyDisplay.textContent = `${symbol}${formattedAmount}`;
+            State.lastMoneyString = formattedAmount;
+        }
+
+        function createParticles(count = 7) {
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const angle = Math.random() * Math.PI * 2;
+                const distance = (window.innerWidth < 600 ? 35 : 40) + (Math.random() * (window.innerWidth < 600 ? 15: 20) ); // Smaller range for mobile
+                particle.style.setProperty('--tx', `${Math.cos(angle) * distance}px`);
+                particle.style.setProperty('--ty', `${Math.sin(angle) * distance}px`);
+                Elements.particleEmitter.appendChild(particle);
+                setTimeout(() => particle.remove(), (window.innerWidth < 600 ? 700 : 800) );
+            }
+        }
+        
+        function updateProgressBars() {
+            const timeProgressPercent = Math.min(100, (State.elapsedTime / (State.timeGoalSeconds * 1000)) * 100);
+            Elements.timeProgressBar.style.width = `${timeProgressPercent}%`;
+            Elements.timeProgressValue.textContent = `${formatTime(State.elapsedTime, false)} / ${formatTime(State.timeGoalSeconds * 1000, false)}`;
+
+            if (State.monetaryGoal > 0) {
+                Elements.earningsProgressGroup.style.display = 'block';
+                const earningsProgressPercent = Math.min(100, (State.totalEarnings / State.monetaryGoal) * 100);
+                Elements.earningsProgressBar.style.width = `${earningsProgressPercent}%`;
+                Elements.earningsProgressValue.textContent = `${State.currencySymbol}${State.totalEarnings.toFixed(2)} / ${State.currencySymbol}${State.monetaryGoal.toFixed(2)}`;
+            } else {
+                Elements.earningsProgressGroup.style.display = 'none';
+            }
+        }
+
+        function updateDisplay() {
+            if (State.isEditingMoney) return;
+
+            const currentTime = Date.now();
+            State.elapsedTime = (currentTime - State.startTime) + State.pausedTime;
+            State.totalEarnings = (State.elapsedTime / 1000) * State.earningsPerSecond;
+
+            updateMoneyDisplayDOM(State.totalEarnings, State.currencySymbol);
+            Elements.timeDisplay.textContent = formatTime(State.elapsedTime);
+            updateProgressBars();
+
+            if (State.nextMilestoneIndex < State.moneyMilestones.length && State.totalEarnings >= State.moneyMilestones[State.nextMilestoneIndex]) {
+                createParticles();
+                State.nextMilestoneIndex++;
+            }
+        }
+
+        Elements.startTrackingBtn.addEventListener('click', () => {
+            const rate = parseFloat(Elements.hourlyRateInput.value);
+            const symbol = Elements.currencySymbolSelect.value;
+            const monetaryGoal = parseFloat(Elements.monetaryGoalInput.value) || 0;
+            const timeGoalHours = parseFloat(Elements.timeGoalHoursInput.value);
+
+            Elements.validationError.textContent = '';
+
+            if (isNaN(rate) || rate <= 0) {
+                Elements.validationError.textContent = 'Tarifa por hora inválida.';
+                Elements.hourlyRateInput.focus();
+                return;
+            }
+             if (isNaN(timeGoalHours) || timeGoalHours <= 0) {
+                Elements.validationError.textContent = 'Objetivo de tiempo inválido.';
+                Elements.timeGoalHoursInput.focus();
+                return;
+            }
+
+            State.hourlyRate = rate;
+            State.currencySymbol = symbol;
+            State.monetaryGoal = monetaryGoal;
+            State.timeGoalSeconds = timeGoalHours * 3600;
+            State.earningsPerSecond = State.hourlyRate / 3600;
+            
+            resetTimerState(false);
+            savePreferences();
+            switchView('tracker');
+        });
+
+        function resetTimerState(switchToConfigView = true) {
+            clearInterval(State.timerInterval);
+            State.isRunning = false;
+            State.elapsedTime = 0;
+            State.pausedTime = 0;
+            State.totalEarnings = 0;
+            State.startTime = null;
+            State.nextMilestoneIndex = 0;
+
+            updateMoneyDisplayDOM(0, State.currencySymbol);
+            Elements.timeDisplay.textContent = formatTime(0);
+            updateProgressBars();
+
+            Elements.startBtn.disabled = false;
+            Elements.pauseBtn.disabled = true;
+            Elements.resetBtn.disabled = true;
+
+            if (switchToConfigView) {
+                switchView('config');
+            }
+        }
+
+        Elements.startBtn.addEventListener('click', () => {
+            if (!State.isRunning) {
+                State.startTime = Date.now();
+                State.timerInterval = setInterval(updateDisplay, 200);
+                State.isRunning = true;
+                Elements.startBtn.disabled = true;
+                Elements.pauseBtn.disabled = false;
+                Elements.resetBtn.disabled = false;
+            }
+        });
+
+        Elements.pauseBtn.addEventListener('click', () => {
+            if (State.isRunning) {
+                clearInterval(State.timerInterval);
+                State.isRunning = false;
+                State.pausedTime = State.elapsedTime;
+                Elements.startBtn.disabled = false;
+                Elements.pauseBtn.disabled = true;
+            }
+        });
+
+        Elements.resetBtn.addEventListener('click', () => {
+            resetTimerState(true); // No confirmation
+        });
+
+        Elements.moneyDisplayContainer.addEventListener('click', () => {
+            if (State.isRunning || State.isEditingMoney) return;
+
+            State.isEditingMoney = true;
+            const currentMoneyValue = State.totalEarnings.toFixed(2);
+            Elements.moneyDisplay.style.display = 'none';
+
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.inputMode = 'decimal';
+            input.className = 'money-edit-input';
+            input.value = currentMoneyValue;
+            input.step = "0.01";
+            
+            Elements.moneyDisplayContainer.insertBefore(input, Elements.particleEmitter.nextSibling);
+            input.focus();
+            input.select();
+
+            const saveEdit = () => {
+                const newRawValue = parseFloat(input.value);
+                if (!isNaN(newRawValue) && newRawValue >= 0) {
+                    State.totalEarnings = newRawValue;
+                    if (State.earningsPerSecond > 0) {
+                        const equivalentElapsedTime = (State.totalEarnings / State.earningsPerSecond) * 1000;
+                        State.elapsedTime = equivalentElapsedTime;
+                        State.pausedTime = equivalentElapsedTime;
+                    } else {
+                        State.elapsedTime = State.pausedTime;
+                    }
+                    State.nextMilestoneIndex = 0;
+                    for(let i=0; i < State.moneyMilestones.length; i++) {
+                        if(State.totalEarnings >= State.moneyMilestones[i]) State.nextMilestoneIndex = i + 1;
+                        else break;
+                    }
+                    updateMoneyDisplayDOM(State.totalEarnings, State.currencySymbol);
+                    Elements.timeDisplay.textContent = formatTime(State.elapsedTime);
+                    updateProgressBars();
+                }
+                input.remove();
+                Elements.moneyDisplay.style.display = 'inline-block';
+                State.isEditingMoney = false;
+                document.removeEventListener('click', outsideClickListener);
+            };
+            
+            input.addEventListener('blur', saveEdit);
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') input.blur();
+                else if (e.key === 'Escape') {
+                    input.value = currentMoneyValue;
+                    input.blur();
+                }
+            });
+            
+            const outsideClickListener = (event) => {
+                if (!Elements.moneyDisplayContainer.contains(event.target) && event.target !== input) {
+                    saveEdit();
+                }
+            };
+            setTimeout(() => document.addEventListener('click', outsideClickListener), 0);
+        });
+        
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && State.isRunning && State.startTime) {
+                updateDisplay();
+            }
+        });
+
+        window.onload = () => {
+            loadPreferences();
+            updateMoneyDisplayDOM(State.totalEarnings, State.currencySymbol);
+            Elements.timeDisplay.textContent = formatTime(State.elapsedTime);
+            updateProgressBars();
+            switchView('config');
+        };
+
+    </script>
+</body>
+</html>
