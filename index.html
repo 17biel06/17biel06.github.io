@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>17biel06's Projects</title>
+    <style>
+        /* Basic styling will be added in a later step */
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 960px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 30px;
+        }
+        header h1 {
+            color: #007bff; /* Bootstrap primary blue */
+        }
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .project-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .project-card h3 {
+            margin-top: 0;
+            color: #0056b3; /* Darker blue for card titles */
+        }
+        .project-card p {
+            font-size: 0.9em;
+            color: #555;
+            min-height: 40px; /* Ensure consistent card height */
+        }
+        .project-card a {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #28a745; /* Bootstrap success green */
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .project-card a:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.9em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Welcome to 17biel06's Projects</h1>
+            <p>A collection of web applications and games.</p>
+        </header>
+
+        <main>
+            <div class="project-grid" id="projectGrid">
+                <div class="project-card">
+                    <h3>CountCash App</h3>
+                    <p>An application for tracking income, hourly rates, and monetary goals.</p>
+                    <a href="countcash/index.html">View Project</a>
+                </div>
+                <div class="project-card">
+                    <h3>VerbMaster English</h3>
+                    <p>Learn and practice irregular English verbs with flashcards and quizzes.</p>
+                    <a href="english/index.html">View Project</a>
+                </div>
+                <div class="project-card">
+                    <h3>Laberinto Pro</h3>
+                    <p>A maze game with classic, time attack, and exploration modes.</p>
+                    <a href="laberinto/index.html">View Project</a>
+                </div>
+                <div class="project-card">
+                    <h3>Mobile Gadgets 2025</h3>
+                    <p>A page showcasing essential mobile accessories with Amazon links.</p>
+                    <a href="productos/index.html">View Project</a>
+                </div>
+                <div class="project-card">
+                    <h3>ReNomIt!</h3>
+                    <p>A naming game/tool available in Spanish and Catalan.</p>
+                    <a href="renomit/index.html">View Project</a>
+                </div>
+                <div class="project-card">
+                    <h3>Saveur Restaurant</h3>
+                    <p>Website for Saveur, a Mediterranean haute cuisine restaurant.</p>
+                    <a href="webpages/saveur/index.html">View Project</a>
+                </div>
+                <div class="project-card">
+                    <h3>TechCo AI Solutions</h3>
+                    <p>Landing page for TechCo, a company providing AI solutions for businesses.</p>
+                    <a href="webpages/tech/index.html">View Project</a>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 17biel06</p>
+        </footer>
+    </div>
+</body>
+</html>
