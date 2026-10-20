@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://17biel06.github.io/redeslab/sitemap.xml
